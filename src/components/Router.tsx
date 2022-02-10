@@ -21,37 +21,35 @@ import Cart from "../routes/Cart";
 
 function AppRouter({ userObject, refreshUser }) {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
-	console.log(isLoggedIn);
+	console.log(userObject);
 	return (
 		<Router>
-			<Header />
-			<Navigation />
+			<Header userObject={userObject} />
+			<Navigation userObject={userObject} />
 			<Switch>
 				{isLoggedIn ? (
 					<>
-						<div>
-							<Route exact path="/">
-								<Home userObject={userObject} />
-							</Route>
-							<Route exact path="/profile">
-								<Profile />
-							</Route>
-							<Route exact path="/search">
-								<Search />
-							</Route>
-							<Route exact path="/like">
-								<Like />
-							</Route>
-							<Route exact path="/addposting">
-								<AddPosting />
-							</Route>
-							<Route exact path="/message">
-								<Message />
-							</Route>
-							<Route exact path="/cart">
-								<Cart />
-							</Route>
-						</div>
+						<Route exact path="/">
+							<Home userObject={userObject} />
+						</Route>
+						<Route path={`/profile/${userObject?.uid}`}>
+							<Profile userObject={userObject} refreshUser={refreshUser} />
+						</Route>
+						<Route exact path="/search">
+							<Search />
+						</Route>
+						<Route exact path="/like">
+							<Like />
+						</Route>
+						<Route exact path="/addposting">
+							<AddPosting userObject={userObject} refreshUser={refreshUser} />
+						</Route>
+						<Route exact path="/message">
+							<Message />
+						</Route>
+						<Route exact path="/cart">
+							<Cart />
+						</Route>
 					</>
 				) : (
 					<Route exact path="/">

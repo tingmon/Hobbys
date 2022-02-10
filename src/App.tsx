@@ -62,6 +62,19 @@ a{
   text-decoration: none;
   color:inherit;
 }
+html, body{
+	padding: 0;
+	margin: 0;
+  }
+  html{
+	height: 100%;
+  }
+  body{
+	min-height: 100%;
+  }
+  input[type="file"] {
+    display: none;
+}
 `;
 
 const Title = styled.h1`
@@ -72,6 +85,7 @@ const Title = styled.h1`
 const Wrapper = styled.div`
 	display: flex;
 	height: 100vh;
+	min-height: 100%;
 	width: 100vw;
 	justify-content: center;
 	align-items: center;
@@ -82,6 +96,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
 	width: 450px;
 	height: 100vh;
+	min-height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -98,6 +113,7 @@ function App() {
 
 	const assignDisplayName = async () => {
 		const user = authService.currentUser;
+		console.log("maybe problem ", user?.displayName);
 		const noDNUser = await dbService
 			.collection("UserInfo")
 			.where("uid", "==", user?.uid)
@@ -108,6 +124,7 @@ function App() {
 		await user?.updateProfile({
 			displayName: newDisplayName,
 		});
+		console.log("maybe problem ", user?.displayName);
 		refreshUser();
 	};
 
@@ -122,7 +139,6 @@ function App() {
 					uid: user.uid,
 					photoURL: user.photoURL,
 					updateProfile: (args: any) => {
-						console.log(args);
 						user.updateProfile(args);
 					},
 				});
@@ -141,7 +157,9 @@ function App() {
 	}, []);
 
 	const refreshUser = () => {
+		console.log("refreshing");
 		const user = authService.currentUser; // too big object for noticing subtle change.
+		console.log(user?.displayName);
 		setUserObject({
 			displayName: user.displayName,
 			uid: user.uid,

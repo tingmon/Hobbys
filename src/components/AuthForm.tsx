@@ -8,17 +8,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import ToggleButton from "@mui/material/ToggleButton";
 import { Ranks } from "../atoms";
 
-interface IForm {
-	email: string;
-	password: string;
-	passwordConfirm: string;
-	userName?: string;
-	streetName?: string;
-	city?: string;
-	province?: string;
-	postalCode?: string;
-}
-
 const SignUpForm = styled.form`
 	width: 100%;
 	max-width: 320px;
@@ -83,6 +72,17 @@ interface IAdditionalUserInfo {
 	rank: Ranks;
 }
 
+interface IForm {
+	email: string;
+	password: string;
+	passwordConfirm: string;
+	userName?: string;
+	streetName?: string;
+	city?: string;
+	province?: string;
+	postalCode?: string;
+}
+
 function AuthForm() {
 	const [newAccount, setNewAccount] = useState(false);
 	const {
@@ -95,6 +95,16 @@ function AuthForm() {
 
 	const onValid = async (data: IForm) => {
 		console.log(data);
+		// make your own error conditions(address validation)
+		// one address input filled? -> every address inputs required
+		// 		if (data.password !== data.passwordConfirm) {
+		// 			setError(
+		// 				"passwordConfirm",
+		// 				{ message: "password inputs are not same" },
+		// 				{ shouldFocus: true }
+		// 			);
+		// 		}
+		//
 		if (newAccount && data.password !== data.passwordConfirm) {
 			setError(
 				"passwordConfirm",
@@ -196,21 +206,25 @@ function AuthForm() {
 							})}
 							placeholder="*Enter User Name"
 						/>
+						<ErrorMessage>{errors?.userName?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("streetName")}
 							placeholder="Enter Street Name"
 						/>
+						<ErrorMessage>{errors?.streetName?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("city")}
 							placeholder="Enter City"
 						/>
+						<ErrorMessage>{errors?.city?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("province")}
 							placeholder="Enter Province"
 						/>
+						<ErrorMessage>{errors?.province?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("postalCode", {
@@ -222,6 +236,7 @@ function AuthForm() {
 							})}
 							placeholder="Enter Postal Code"
 						/>
+						<ErrorMessage>{errors?.postalCode?.message}</ErrorMessage>
 						<SubmitBtn>Sign Up</SubmitBtn>
 					</SignUpForm>
 				</>

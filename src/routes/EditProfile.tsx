@@ -55,7 +55,7 @@ const SubmitBtn = styled.button`
 	font-weight: bold;
 `;
 
-const PostingForm = styled.form`
+const EditForm = styled.form`
 	width: 100%;
 	max-width: 320px;
 	display: flex;
@@ -98,7 +98,7 @@ interface IForm {
 	postalCode?: string;
 }
 
-function AddPosting({ userObject, refreshUser }) {
+function EditProfile({ userObject, refreshUser, userInfo }) {
 	const history = useHistory();
 	const [newPhotoURL, setNewPhotoURL] = useState(userObject.photoURL);
 	const [previewImg, setpreviewImg] = useState(null);
@@ -114,7 +114,20 @@ function AddPosting({ userObject, refreshUser }) {
 		formState: { errors },
 		setValue,
 		setError,
-	} = useForm<IForm>();
+	} = useForm<IForm>({
+		defaultValues: {
+			userName: userInfo.docs[0].data().userName,
+			streetName: userInfo.docs[0].data().streetName,
+			city: userInfo.docs[0].data().city,
+			province: userInfo.docs[0].data().province,
+			postalCode: userInfo.docs[0].data().postalCode,
+		},
+	});
+
+	const onLogOutClick = () => {
+		authService.signOut();
+		history.push("/");
+	};
 
 	const onValid = async (data: IForm) => {
 		// make your own error conditions(address validation)
@@ -220,12 +233,13 @@ function AddPosting({ userObject, refreshUser }) {
 
 	return (
 		<Container className="container">
-			<PostingForm onSubmit={handleSubmit(onValid)}>
+			<EditForm onSubmit={handleSubmit(onValid)} className="profileForm">
 				<label style={{ color: "#04aaff" }}>
 					<input
 						type="file"
 						accept="image/*"
 						onChange={onFileChange}
+						className="formBtn"
 						style={{ marginTop: 10, height: 27, paddingBottom: 3 }}
 					/>
 					<PhotoInput>
@@ -265,9 +279,12 @@ function AddPosting({ userObject, refreshUser }) {
 					placeholder="Edit Postal Code"
 				/>
 				<SubmitBtn>Edit Profile</SubmitBtn>
-			</PostingForm>
+				<LogoutBtn className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+					Log Out
+				</LogoutBtn>
+			</EditForm>
 		</Container>
 	);
 }
 
-export default AddPosting;
+export default EditProfile;

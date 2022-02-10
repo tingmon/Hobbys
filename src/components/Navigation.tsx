@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// @ts-nocheck
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -13,7 +17,7 @@ const NavContainer = styled.nav`
 	display: flex;
 	justify-content: center;
 	position: fixed; /* Set the navbar to fixed position */
-	bottom: 0; /* Position the navbar at the bottom of the page */
+	bottom: 0px; /* Position the navbar at the bottom of the page */
 	width: 100%; /* Full width */
 	max-width: 450px;
 `;
@@ -40,7 +44,7 @@ const NavItem = styled.li`
 	}
 `;
 
-const Navigation = () => {
+const Navigation = ({ userObject }) => {
 	return (
 		<NavContainer>
 			<NavList>
@@ -60,7 +64,7 @@ const Navigation = () => {
 					</Link>
 				</NavItem>
 				<NavItem>
-					<Link to="/profile">
+					<Link to={`/profile/${userObject?.uid}`}>
 						<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
 					</Link>
 				</NavItem>
