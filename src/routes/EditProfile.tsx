@@ -177,7 +177,7 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 
 				const imgFileRef = storageService
 					.ref()
-					.child(`${userObject.uid}/${uuidv4()}`);
+					.child(`${userObject.uid}/profile/${uuidv4()}`);
 
 				const response = await imgFileRef.putString(newPhotoURL, "data_url");
 
@@ -189,24 +189,22 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 				refreshUser();
 				setpreviewImg(null);
 
-				// USE THIS CODE LATER
-				// //해당 if문의 경우 사진이 변경 되었으므로 유저의 프사정보를 트윗에도 함께 업데이트 해줘야함
-				// //트윗 콜렉션 불러서 WHERE, MAP 써서 일일이 변경
-				// const tweets = await dbService
-				// 	.collection("tweets")
-				// 	.where("creatorId", "==", userObject.uid)
-				// 	.orderBy("createdAt", "desc")
-				// 	.get();
-				// // appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
-				// const appliedTweets = tweets.docs.map((doc) => doc.id);
-				// // 게시물 아이디의 작성자 프사 정보를 전부 수정
-				// appliedTweets.forEach((element) => {
-				// 	dbService.doc(`tweets/${element}`).update({
-				// 		creatorImgUrl: imgFileUrl,
-				// 	});
-				// });
+				//해당 if문의 경우 사진이 변경 되었으므로 유저의 프사정보를 트윗에도 함께 업데이트 해줘야함
+				//트윗 콜렉션 불러서 WHERE, MAP 써서 일일이 변경
+				const posting = await dbService
+					.collection("Posting")
+					.where("creatorId", "==", userObject.uid)
+					.orderBy("createdAt", "desc")
+					.get();
+				// appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
+				const appliedPosting = posting.docs.map((doc) => doc.id);
+				// 게시물 아이디의 작성자 프사 정보를 전부 수정
+				appliedPosting.forEach((element) => {
+					dbService.doc(`Posting/${element}`).update({
+						creatorImgUrl: imgFileUrl,
+					});
+				});
 			} catch (error) {
-				console.log("error");
 				console.log(error);
 				return;
 			}

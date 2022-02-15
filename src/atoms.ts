@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { isNullishCoalesce } from "typescript";
 
 export interface IUserMetaData {
 	creationTime: string;
@@ -54,9 +55,36 @@ export interface ISellerRank {
 	rank: Ranks;
 }
 
+interface IPostingInfo {
+	photos: string[];
+	userObject: any;
+}
+
 export const isLoggedInState = atom<boolean>({
 	key: "isLoggedIn",
 	default: false,
+});
+
+// uid of current user
+export const uidAtom = atom<string>({
+	key: "uid",
+	default: "",
+});
+
+// userObject atom to use anywhere
+export const userObjectAtom = atom<any>({
+	key: "userObject",
+	default: null,
+});
+
+export const postingsObject = atom<any>({
+	key: "postingsObject",
+	default: null,
+});
+
+export const photoURLAtom = atom<string>({
+	key: "photoURL",
+	default: "",
 });
 
 // export const userObjectState = atom<IUserObject>({

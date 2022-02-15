@@ -5,6 +5,6 @@ export const lightTheme: DefaultTheme = {
 	textColor: "#ecf0f1",
 	btnColor: "#9b59b6",
 	formColor: "#34495e",
-	mainColor: "#c0392b",
+	mainColor: "#0984e3",
 	secondColor: "#ecf0f1",
 };

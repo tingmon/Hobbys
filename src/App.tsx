@@ -6,7 +6,14 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { isLoggedInState, IUserObject, Ranks } from "./atoms";
+import {
+	isLoggedInState,
+	IUserObject,
+	Ranks,
+	uidAtom,
+	userObjectAtom,
+	userObjectUidAtom,
+} from "./atoms";
 import { authService, dbService } from "./fbase";
 import AppRouter from "./components/Router";
 
@@ -108,32 +115,34 @@ function App() {
 	const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 	const [init, setInit] = useState(false);
 	const [userObject, setUserObject] = useState(null);
+	const setUidAtom = useSetRecoilState(uidAtom);
+	const setUserObjectAtom = useSetRecoilState(userObjectAtom);
 	// console.log(authService.currentUser);
 	// console.log(isLoggedInState);
 
 	const assignDisplayName = async () => {
 		const user = authService.currentUser;
-		console.log("maybe problem ", user?.displayName);
+		// console.log("maybe problem ", user?.displayName);
 		const noDNUser = await dbService
 			.collection("UserInfo")
 			.where("uid", "==", user?.uid)
 			.get();
 
 		const newDisplayName = noDNUser.docs[0].data().userName;
-		console.log(newDisplayName);
+		// console.log(newDisplayName);
 		await user?.updateProfile({
 			displayName: newDisplayName,
 		});
-		console.log("maybe problem ", user?.displayName);
+		// console.log("maybe problem ", user?.displayName);
 		refreshUser();
 	};
 
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
-			console.log(user);
+			// console.log(user);
 			if (user) {
 				// setIsLoggedIn(true);
-				console.log(user.displayName);
+				// console.log(user.displayName);
 				setUserObject({
 					displayName: user.displayName,
 					uid: user.uid,
@@ -142,12 +151,14 @@ function App() {
 						user.updateProfile(args);
 					},
 				});
-				console.log(userObject);
+				// console.log(userObject);
 				setIsLoggedIn(true);
+				setUidAtom(user.uid);
 				assignDisplayName();
 			} else {
-				setUserObject(null);
 				setIsLoggedIn(false);
+				setUserObject(null);
+				setUidAtom("");
 			}
 			// else{
 			//   setIsLoggedIn(false);
@@ -159,7 +170,7 @@ function App() {
 	const refreshUser = () => {
 		console.log("refreshing");
 		const user = authService.currentUser; // too big object for noticing subtle change.
-		console.log(user?.displayName);
+		// console.log(user?.displayName);
 		setUserObject({
 			displayName: user.displayName,
 			uid: user.uid,
@@ -168,7 +179,8 @@ function App() {
 		});
 	};
 
-	console.log(userObject);
+	setUserObjectAtom(userObject);
+	// console.log(userObjectAtom);
 
 	return (
 		<>

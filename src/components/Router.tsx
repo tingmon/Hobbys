@@ -2,8 +2,8 @@
 // @ts-ignore
 // @ts-nocheck
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoggedInState, photoURLAtom, uidAtom } from "../atoms";
 import Navigation from "./Navigation";
 import Header from "./Header";
 import Home from "../routes/Home";
@@ -18,10 +18,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Cart from "../routes/Cart";
+import AddPostingDetail from "../routes/AddPostingDetail";
 
 function AppRouter({ userObject, refreshUser }) {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
-	console.log(userObject);
+	const [uid, setUidAtom] = useRecoilState(uidAtom);
+
 	return (
 		<Router>
 			<Header userObject={userObject} />
@@ -43,6 +45,9 @@ function AppRouter({ userObject, refreshUser }) {
 						</Route>
 						<Route exact path="/addposting">
 							<AddPosting userObject={userObject} refreshUser={refreshUser} />
+						</Route>
+						<Route path={`/addposting/${uid}`}>
+							<AddPostingDetail />
 						</Route>
 						<Route exact path="/message">
 							<Message />

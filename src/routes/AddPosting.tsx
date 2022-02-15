@@ -14,6 +14,19 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import Carousel from "react-material-ui-carousel";
+import { Paper, Button } from "@mui/material";
+import carouselStyle from "../styles/Carousel.module.css";
+import {
+	photoURLAtom,
+	postingInfoAtom,
+	uidAtom,
+	userObjectAtom,
+	userObjectUidAtom,
+} from "../atoms";
+import { Link, Route, Switch } from "react-router-dom";
+import AddPostingDetail from "./AddPostingDetail";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -64,7 +77,7 @@ const PostingForm = styled.form`
 	align-items: center;
 `;
 
-const LogoutBtn = styled.button`
+const NextBtn = styled.button`
 	cursor: pointer;
 	width: 100%;
 	padding: 7px 20px;
@@ -99,130 +112,65 @@ interface IForm {
 }
 
 function AddPosting({ userObject, refreshUser }) {
-	const history = useHistory();
-	const [newPhotoURL, setNewPhotoURL] = useState(userObject.photoURL);
-	const [previewImg, setpreviewImg] = useState(null);
-
-	// const userInfo = await dbService
-	// 	.collection("UserInfo")
-	// 	.where("uid", "==", userObject?.uid)
-	// 	.get();
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		setValue,
-		setError,
-	} = useForm<IForm>();
-
-	const onValid = async (data: IForm) => {
-		// make your own error conditions(address validation)
-		// one address input filled? -> every address inputs required
-		// 		if (data.password !== data.passwordConfirm) {
-		// 			setError(
-		// 				"passwordConfirm",
-		// 				{ message: "password inputs are not same" },
-		// 				{ shouldFocus: true }
-		// 			);
-		// 		}
-		//
-		const userInfo = await dbService
-			.collection("UserInfo")
-			.where("uid", "==", userObject?.uid)
-			.get();
-		if (
-			data.streetName !== "" ||
-			data.city !== "" ||
-			data.province !== "" ||
-			data.postalCode !== "" ||
-			data.userName !== ""
-		) {
-			const userUpdate = {
-				userName: data.userName,
-				streetName: data.streetName,
-				city: data.city,
-				province: data.province,
-				postalCode: data.postalCode,
-			};
-			await userInfo.docs[0].ref.update(userUpdate);
-		}
-
-		if (userObject.displayName !== data.userName && data.userName !== "") {
-			await userObject.updateProfile({
-				displayName: data.userName,
-			});
-			// userInfo.docs[0].data().userName = data.userName;
-			refreshUser();
-		}
-		if (userObject.photoURL !== newPhotoURL) {
-			let imgFileUrl = "";
-			try {
-				if (userObject.photoURL !== null) {
-					await storageService.refFromURL(userObject.photoURL).delete();
-				}
-
-				const imgFileRef = storageService
-					.ref()
-					.child(`${userObject.uid}/${uuidv4()}`);
-
-				const response = await imgFileRef.putString(newPhotoURL, "data_url");
-
-				imgFileUrl = await response.ref.getDownloadURL();
-
-				await userObject.updateProfile({
-					photoURL: imgFileUrl,
-				});
-				refreshUser();
-				setpreviewImg(null);
-
-				// USE THIS CODE LATER
-				// //해당 if문의 경우 사진이 변경 되었으므로 유저의 프사정보를 트윗에도 함께 업데이트 해줘야함
-				// //트윗 콜렉션 불러서 WHERE, MAP 써서 일일이 변경
-				// const tweets = await dbService
-				// 	.collection("tweets")
-				// 	.where("creatorId", "==", userObject.uid)
-				// 	.orderBy("createdAt", "desc")
-				// 	.get();
-				// // appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
-				// const appliedTweets = tweets.docs.map((doc) => doc.id);
-				// // 게시물 아이디의 작성자 프사 정보를 전부 수정
-				// appliedTweets.forEach((element) => {
-				// 	dbService.doc(`tweets/${element}`).update({
-				// 		creatorImgUrl: imgFileUrl,
-				// 	});
-				// });
-			} catch (error) {
-				console.log("error");
-				console.log(error);
-				return;
-			}
-		}
-		alert("Profile Updated!");
-	};
+	// const [newPhotoURLs, setNewPhotoURLs] = useState<string>([]);
+	// const [previewImgs, setpreviewImgs] = useState<string>([]);
+	const uid = useRecoilValue(uidAtom);
+	const [photoURL, setPhotoURLAtom] = useRecoilState(photoURLAtom);
 
 	const onFileChange = (event) => {
+		// setNewPhotoURLs([]);
+		// setpreviewImgs([]);
+		setPhotoURLAtom([]);
 		const {
 			target: { files },
 		} = event;
-		const imgFile = files[0];
-		const reader = new FileReader();
-		reader.readAsDataURL(imgFile);
-		//This onloadend is triggered each time the reading operation is completed
-		reader.onloadend = (finishedEvent) => {
-			const {
-				currentTarget: { result },
-			} = finishedEvent;
-			setNewPhotoURL(result);
-			setpreviewImg(result);
-		};
+		// console.log(files);
+		// const imgFile: string[];
+		for (let i = 0; i < files.length; i++) {
+			const imgFile = files[i];
+			// console.log(imgFile);
+			const reader = new FileReader();
+			reader.readAsDataURL(imgFile);
+			reader.onloadend = (finishedEvent) => {
+				const {
+					currentTarget: { result },
+				} = finishedEvent;
+				// console.log(result);
+				setPhotoURLAtom((prev) => [result, ...prev]);
+			};
+		}
 	};
+
+	useEffect(() => {
+		// setNewPhotoURLs(photoURL);
+		// setpreviewImgs(photoURL);
+		// console.log("asdf", photoURL);
+		// console.log(newPhotoURLs);
+		// console.log(previewImgs);
+	}, []);
+
+	// console.log(newPhotoURLs);
+	// console.log(previewImgs);
+	// console.log("fff", photoURL);
+
+	function Item(props) {
+		return (
+			<Paper>
+				<img style={{ height: 350, width: 350 }} src={props.item} />
+			</Paper>
+		);
+	}
+
+	// setPhotoURLAtom(newPhotoURLs);
+
+	// console.log(photos);
 
 	return (
 		<Container className="container">
-			<PostingForm onSubmit={handleSubmit(onValid)}>
+			<PostingForm>
 				<label style={{ color: "#04aaff" }}>
 					<input
+						multiple
 						type="file"
 						accept="image/*"
 						onChange={onFileChange}
@@ -230,42 +178,29 @@ function AddPosting({ userObject, refreshUser }) {
 					/>
 					<PhotoInput>
 						<FontAwesomeIcon icon={faCloudUploadAlt} />
-						<span> Change profile photo</span>
+						<span> Upload Photos</span>
 					</PhotoInput>
 				</label>
-
-				{previewImg && <PreviewImg src={previewImg}></PreviewImg>}
-				<InputField
-					type="text"
-					{...register("userName", {
-						minLength: { value: 2, message: "User Name is too Short" },
-					})}
-					placeholder="Edit User Name"
-				/>
-				<InputField
-					type="text"
-					{...register("streetName")}
-					placeholder="Edit Street Name"
-				/>
-				<InputField type="text" {...register("city")} placeholder="Edit City" />
-				<InputField
-					type="text"
-					{...register("province")}
-					placeholder="Edit Province"
-				/>
-				<InputField
-					type="text"
-					{...register("postalCode", {
-						pattern: {
-							value:
-								/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
-							message: "Invalid Postal Code Pattern",
-						},
-					})}
-					placeholder="Edit Postal Code"
-				/>
-				<SubmitBtn>Edit Profile</SubmitBtn>
 			</PostingForm>
+			<Carousel
+				className={carouselStyle.carousel}
+				navButtonsAlwaysVisible={true}
+				autoPlay={false}
+			>
+				{photoURL &&
+					photoURL.map((item, index) => <Item key={index} item={item}></Item>)}
+			</Carousel>
+			{photoURL && (
+				<NextBtn>
+					<Link
+						to={{
+							pathname: `/addposting/${uid}`,
+						}}
+					>
+						Next
+					</Link>
+				</NextBtn>
+			)}
 		</Container>
 	);
 }
