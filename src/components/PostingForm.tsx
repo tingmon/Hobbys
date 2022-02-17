@@ -139,6 +139,7 @@ function PostingForm() {
 			if (onSale) {
 				const posting: IPosting = {
 					creatorUid: userObject.uid,
+					creatorDisplayName: userObject.displayName,
 					creatorImgUrl: userObject.photoURL,
 					photoUrl: postingImgArr,
 					createdAt: Date.now(),
@@ -154,6 +155,7 @@ function PostingForm() {
 			} else {
 				const posting: IPosting = {
 					creatorUid: userObject.uid,
+					creatorDisplayName: userObject.displayName,
 					creatorImgUrl: userObject.photoURL,
 					photoUrl: postingImgArr,
 					createdAt: Date.now(),
