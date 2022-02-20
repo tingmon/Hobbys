@@ -44,7 +44,7 @@ export interface IUserObject {
 
 export enum Ranks {
 	"Bronze" = "Bronze",
-	"Silver" = "BSilverronze",
+	"Silver" = "Silver",
 	"Gold" = "Gold",
 	"Platinum" = "Platinum",
 	"Master" = "Master",
@@ -85,6 +85,11 @@ export const postingsObject = atom<any>({
 export const photoURLAtom = atom<string>({
 	key: "photoURL",
 	default: "",
+});
+
+export const selectedPostingAtom = atom<any>({
+	key: "selectedPosting",
+	default: null,
 });
 
 // export const userObjectState = atom<IUserObject>({

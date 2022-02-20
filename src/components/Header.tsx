@@ -18,6 +18,7 @@ const NavContainer = styled.nav`
 	width: 100%; /* Full width */
 	background-color: ${(props) => props.theme.secondColor};
 	max-width: 450px;
+	z-index: 1;
 `;
 
 const NavList = styled.ul`

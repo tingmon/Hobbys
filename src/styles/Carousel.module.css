@@ -10,3 +10,16 @@
 		height: auto;
 	}
 }
+
+.homeCarousel {
+	width: 330px;
+	height: 330px;
+	margin: 10px auto;
+}
+
+@media (max-width: 330px) {
+	.homeCarousel {
+		width: auto;
+		height: auto;
+	}
+}

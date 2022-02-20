@@ -128,7 +128,7 @@ function App() {
 			.where("uid", "==", user?.uid)
 			.get();
 
-		const newDisplayName = noDNUser.docs[0].data().userName;
+		const newDisplayName = noDNUser.docs[0].data().displayName;
 		// console.log(newDisplayName);
 		await user?.updateProfile({
 			displayName: newDisplayName,
@@ -139,7 +139,7 @@ function App() {
 
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
-			// console.log(user);
+			console.log(user);
 			if (user) {
 				// setIsLoggedIn(true);
 				// console.log(user.displayName);

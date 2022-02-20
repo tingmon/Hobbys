@@ -3,20 +3,28 @@
 // @ts-nocheck
 import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useHistory } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Link, useHistory } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fetchPosting } from "../api";
-import { postingsObject } from "../atoms";
+import { postingsObject, selectedPostingAtom } from "../atoms";
 import { authService, dbService } from "../fbase";
 import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+import CommentIcon from "@mui/icons-material/Comment";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const PreviewImg = styled.img`
-	border-radius: 10%;
-	width: 150px;
-	height: 150px;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
 `;
 
 const Container = styled.div`
@@ -29,15 +37,59 @@ const Container = styled.div`
 	align-items: center;
 `;
 
+const PostingContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-template-rows: repeat(1, 500px);
+	grid-auto-rows: 500px;
+	z-index: 0;
+`;
+
+const Posting = styled.div`
+	border: 1px solid black;
+	margin-bottom: 10px;
+	max-width: 330px;
+`;
+
+const PostingHeader = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+const SaleTag = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const ProfileTag = styled.div`
+	display: flex;
+	align-items: center;
+	img {
+		margin-right: 5px;
+	}
+`;
+
+const PostingFooter = styled.div``;
+
+const LikeAndComment = styled.div``;
+
+const TextBox = styled.div`
+	word-wrap: break-word;
+	overflow: auto;
+`;
+
 function Home({ userObject }) {
 	const [postings, setPostings] = useRecoilState(postingsObject);
+	const [selectedPosting, setSelectedPosting] =
+		useRecoilState(selectedPostingAtom);
 
 	async function fetchPosting() {
 		dbService
 			.collection("Posting")
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snapshot) => {
-				console.log(snapshot);
+				// console.log(snapshot);
 				const postingSnapshot = snapshot.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
@@ -51,34 +103,90 @@ function Home({ userObject }) {
 	}, []);
 
 	function Item(props) {
-		console.log(props);
+		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 350, width: 350 }} src={props.item} />
+				<img style={{ height: 330, width: 330 }} src={props.item} />
 			</Paper>
 		);
 	}
+
+	const PostingIconClicked = (postingInfo) => {
+		console.log(postingInfo);
+		setSelectedPosting(postingInfo);
+	};
 
 	return (
 		<div>
 			{postings && (
 				<Container>
 					<h1>Welcome {userObject?.displayName}</h1>
-					{postings.map((item, index) => (
-						<>
-							<PreviewImg key={index} src={item.creatorImgUrl}></PreviewImg>
-							{item.photoUrl.map((photo) => (
+					<PostingContainer>
+						{postings.map((item, index) => (
+							<Posting>
+								<PostingHeader>
+									<ProfileTag>
+										<Link
+											to={`/${item?.creatorUid}/profile`}
+											onClick={() => PostingIconClicked(item)}
+										>
+											<PreviewImg
+												key={index}
+												src={item.creatorImgUrl}
+											></PreviewImg>
+										</Link>
+										{item.creatorDisplayName}
+									</ProfileTag>
+									{item.soldOut ? (
+										<SaleTag>
+											<LoyaltyIcon />
+											<span>Sold out</span>
+										</SaleTag>
+									) : item.onSale ? (
+										<SaleTag>
+											<LoyaltyIcon />
+											<span>On Sale</span>
+										</SaleTag>
+									) : (
+										<SaleTag>
+											<LoyaltyIcon />
+											<span>Not for Sale</span>
+										</SaleTag>
+									)}
+									{item.creatorUid == userObject.uid && (
+										<Link
+											to="/editposting"
+											onClick={() => PostingIconClicked(item)}
+										>
+											<EditIcon />
+										</Link>
+									)}
+								</PostingHeader>
+
 								<Carousel
-									className={carouselStyle.carousel}
+									className={carouselStyle.homeCarousel}
 									navButtonsAlwaysVisible={true}
 									autoPlay={false}
 								>
-									{console.log(photo)}
-									<Item key={index} item={photo}></Item>
+									{/* {console.log(photo)} */}
+									{item.photoUrl.map((photo) => (
+										<Item key={index} item={photo}></Item>
+									))}
 								</Carousel>
-							))}
-						</>
-					))}
+
+								<PostingFooter>
+									<LikeAndComment>
+										<FavoriteBorderIcon />
+										<CommentIcon />
+										<AddShoppingCartIcon />
+									</LikeAndComment>
+									<TextBox>
+										<span>{item.text}</span>
+									</TextBox>
+								</PostingFooter>
+							</Posting>
+						))}
+					</PostingContainer>
 				</Container>
 			)}
 		</div>

@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import EditProfile from "./EditProfile";
 import TradeRecord from "./TradeRecord";
 import { v4 as uuidv4 } from "uuid";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedPostingAtom, userObjectAtom } from "../atoms";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -117,12 +119,10 @@ const Posting = styled.div`
 	border: 1px solid black;
 `;
 
-interface IRouteParam {
-	uid: string;
-}
-
-function Profile({ userObject, refreshUser }) {
-	// const { uid } = useParams<IRouteParam>();
+function Profile({ refreshUser }) {
+	const { uid } = useParams();
+	const [isLoading, setIsLoading] = useState(true);
+	const [isOwner, setIsOwner] = useState(false);
 	const [rank, setRank] = useState("");
 	const [follower, setFollower] = useState(0);
 	const [following, setFollowing] = useState(0);
@@ -130,134 +130,248 @@ function Profile({ userObject, refreshUser }) {
 	const [showEdit, setShowEdit] = useState(false);
 	const [showRecord, setShowRecord] = useState(false);
 	const [userData, setUserData] = useState(null);
-
+	const [photoURL, setPhotoURL] = useState("");
+	const [displayName, setDisplayName] = useState("");
+	// current user
+	const userObject = useRecoilValue(userObjectAtom);
+	const [selectedPostingInfo, setSelectedPostingInfo] =
+		useRecoilState(selectedPostingAtom);
+	console.log(uid);
 	useEffect(async () => {
-		const userInfo = await dbService
-			.collection("UserInfo")
-			.where("uid", "==", userObject?.uid)
-			.get();
-		setRank(userInfo.docs[0].data().rank);
-		setUserData(userInfo);
+		if (
+			userObject?.uid === selectedPostingInfo?.creatorUid ||
+			selectedPostingInfo === null
+		) {
+			setSelectedPostingInfo(null);
+			setIsOwner(true);
+			console.log("true is running");
+		} else {
+			setIsOwner(false);
+		}
+		console.log(selectedPostingInfo);
+		console.log(userObject);
+		if (selectedPostingInfo === null) {
+			const userInfo = await dbService
+				.collection("UserInfo")
+				.where("uid", "==", userObject.uid)
+				.get();
 
-		// retrieve people I follow
-		const followerInfo = await dbService
-			.collection("Follow")
-			.where("agent", "==", userObject?.uid)
-			.get();
-		setFollower(followerInfo.docs.length);
-		// retrieve people who follow me
-		const followingInfo = await dbService
-			.collection("Follow")
-			.where("passive", "==", userObject?.uid)
-			.get();
-		setFollowing(followingInfo.docs.length);
-		console.log(follower, following);
-		// retrieve user posting, use reactQuery later.
-		// const postings = await dbService
-		// 	.collection("Postings")
-		// 	.where("creatorId", "==", userObject.uid)
-		// 	.orderBy("createdAt", "desc")
-		// 	.get();
-		// console.log(postings.docs.map((doc) => doc.id));
-		// console.log(postings.docs.map((doc) => doc.data().creatorImgUrl));
-	}, []);
+			setRank(userInfo.docs[0].data().rank);
+			setUserData(userInfo);
+			setDisplayName(userObject.displayName);
+			setPhotoURL(userObject.photoURL);
+
+			// retrieve people I follow
+			const followerInfo = await dbService
+				.collection("Follow")
+				.where("agent", "==", userObject.uid)
+				.get();
+
+			setFollower(followerInfo.docs.length);
+
+			// retrieve people who follow me
+			const followingInfo = await dbService
+				.collection("Follow")
+				.where("passive", "==", userObject.uid)
+				.get();
+
+			setFollowing(followingInfo.docs.length);
+			// console.log(follower, following);
+			// retrieve user posting, use reactQuery later.
+			// const postings = await dbService
+			// 	.collection("Postings")
+			// 	.where("creatorId", "==", userObject.uid)
+			// 	.orderBy("createdAt", "desc")
+			// 	.get();
+			// console.log(postings.docs.map((doc) => doc.id));
+			// console.log(postings.docs.map((doc) => doc.data().creatorImgUrl));
+		} else {
+			console.log(selectedPostingInfo.creatorUid);
+			const userInfo = await dbService
+				.collection("UserInfo")
+				.where("uid", "==", selectedPostingInfo.creatorUid)
+				.get();
+			setRank(userInfo.docs[0].data().rank);
+			setUserData(userInfo);
+			setDisplayName(selectedPostingInfo.creatorDisplayName);
+			setPhotoURL(selectedPostingInfo.creatorImgUrl);
+
+			// retrieve people I follow
+			const followerInfo = await dbService
+				.collection("Follow")
+				.where("agent", "==", selectedPostingInfo.creatorUid)
+				.get();
+			setFollower(followerInfo.docs.length);
+			// retrieve people who follow me
+			const followingInfo = await dbService
+				.collection("Follow")
+				.where("passive", "==", selectedPostingInfo.creatorUid)
+				.get();
+			setFollowing(followingInfo.docs.length);
+			// console.log(follower, following);
+			// retrieve user posting, use reactQuery later.
+			// const postings = await dbService
+			// 	.collection("Postings")
+			// 	.where("creatorId", "==", userObject.uid)
+			// 	.orderBy("createdAt", "desc")
+			// 	.get();
+			// console.log(postings.docs.map((doc) => doc.id));
+			// console.log(postings.docs.map((doc) => doc.data().creatorImgUrl));
+		}
+		setIsLoading(false);
+	}, [uid]);
 
 	return (
-		<Container>
-			<Header>
-				<label>
-					<TitleImage src={userObject?.photoURL} alt="No Img" />
-				</label>
-				<Title>{userObject?.displayName}</Title>
-			</Header>
-
-			<Overview>
-				<OverviewItem>
-					<span>Rank</span>
-					<span>{rank}</span>
-				</OverviewItem>
-				<OverviewItem>
-					<span>Follower</span>
-					<span>{follower}</span>
-				</OverviewItem>
-				<OverviewItem>
-					<span>Following</span>
-					<span>{following}</span>
-				</OverviewItem>
-			</Overview>
-			<Tabs>
-				<Tab isActive={true}>
-					<Link
-						onClick={() => {
-							if (showRecord === true) {
-								setShowRecord(false);
-								setShowPosting(false);
-								setShowEdit(true);
-							} else {
-								setShowEdit((prev) => !prev);
-								setShowPosting((prev) => !prev);
-							}
-						}}
-						to={`/profile/${userObject.uid}/edit`}
-					>
-						Edit
-					</Link>
-				</Tab>
-				<Tab isActive={true}>
-					<Link
-						onClick={() => {
-							if (showEdit === true) {
-								setShowEdit(false);
-								setShowPosting(false);
-								setShowRecord(true);
-							} else {
-								setShowRecord((prev) => !prev);
-								setShowPosting((prev) => !prev);
-							}
-						}}
-						to={`/profile/${userObject.uid}/record`}
-					>
-						Record
-					</Link>
-				</Tab>
-			</Tabs>
-
-			{showPosting && !showEdit && !showRecord ? (
-				<PostingContainer>
-					<Posting style={{ backgroundColor: "red" }}>1</Posting>
-					<Posting style={{ backgroundColor: "blue" }}>2</Posting>
-					<Posting style={{ backgroundColor: "green" }}>3</Posting>
-					<Posting style={{ backgroundColor: "orange" }}>5</Posting>
-					<Posting style={{ backgroundColor: "white" }}>6</Posting>
-					<Posting style={{ backgroundColor: "yellow" }}>7</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-					<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-				</PostingContainer>
+		<>
+			{isLoading ? (
+				"Loading..."
 			) : (
-				<Switch>
-					<Route path={`/profile/${userObject.uid}/edit`}>
-						<EditProfile
-							userObject={userObject}
-							refreshUser={refreshUser}
-							userInfo={userData}
-						/>
-					</Route>
-					<Route path={`/profile/${userObject.uid}/record`}>
-						<TradeRecord />
-					</Route>
-				</Switch>
+				<Container>
+					{isOwner ? (
+						<Header>
+							<label>
+								<TitleImage src={photoURL} alt="No Img" />
+							</label>
+							<Title>{displayName}</Title>
+						</Header>
+					) : (
+						<Header>
+							<label>
+								<TitleImage src={photoURL} alt="No Img" />
+							</label>
+							<Title>{displayName}</Title>
+						</Header>
+					)}
+
+					<Overview>
+						<OverviewItem>
+							<span>Rank</span>
+							<span>{rank}</span>
+						</OverviewItem>
+						<OverviewItem>
+							<span>Follower</span>
+							<span>{follower}</span>
+						</OverviewItem>
+						<OverviewItem>
+							<span>Following</span>
+							<span>{following}</span>
+						</OverviewItem>
+					</Overview>
+					{isOwner ? (
+						<Tabs>
+							<Tab isActive={true}>
+								<Link
+									onClick={() => {
+										if (showRecord === true) {
+											setShowRecord(false);
+											setShowPosting(false);
+											setShowEdit(true);
+										} else {
+											setShowEdit((prev) => !prev);
+											setShowPosting((prev) => !prev);
+										}
+									}}
+									to={`/${userObject.uid}/profile/edit`}
+								>
+									Edit
+								</Link>
+							</Tab>
+							<Tab isActive={true}>
+								<Link
+									onClick={() => {
+										if (showEdit === true) {
+											setShowEdit(false);
+											setShowPosting(false);
+											setShowRecord(true);
+										} else {
+											setShowRecord((prev) => !prev);
+											setShowPosting((prev) => !prev);
+										}
+									}}
+									to={`/${userObject.uid}/profile/record`}
+								>
+									Record
+								</Link>
+							</Tab>
+						</Tabs>
+					) : (
+						<Tabs>
+							<Tab isActive={true}>
+								<Link
+									onClick={() => {
+										if (showRecord === true) {
+											setShowRecord(false);
+											setShowPosting(false);
+											setShowEdit(true);
+										} else {
+											setShowEdit((prev) => !prev);
+											setShowPosting((prev) => !prev);
+										}
+									}}
+									to={`/${userObject.uid}/profile/edit`}
+								>
+									Follow
+								</Link>
+							</Tab>
+							<Tab isActive={true}>
+								<Link
+									onClick={() => {
+										if (showEdit === true) {
+											setShowEdit(false);
+											setShowPosting(false);
+											setShowRecord(true);
+										} else {
+											setShowRecord((prev) => !prev);
+											setShowPosting((prev) => !prev);
+										}
+									}}
+									to={`/${userObject.uid}/profile/record`}
+								>
+									Message
+								</Link>
+							</Tab>
+						</Tabs>
+					)}
+
+					{showPosting && !showEdit && !showRecord ? (
+						<PostingContainer>
+							<Posting style={{ backgroundColor: "red" }}>1</Posting>
+							<Posting style={{ backgroundColor: "blue" }}>2</Posting>
+							<Posting style={{ backgroundColor: "green" }}>3</Posting>
+							<Posting style={{ backgroundColor: "orange" }}>5</Posting>
+							<Posting style={{ backgroundColor: "white" }}>6</Posting>
+							<Posting style={{ backgroundColor: "yellow" }}>7</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+						</PostingContainer>
+					) : (
+						<Switch>
+							<Route path={`/${userObject.uid}/profile/edit`}>
+								<EditProfile
+									userObject={userObject}
+									refreshUser={refreshUser}
+									userInfo={userData}
+								/>
+							</Route>
+							<Route path={`/${userObject.uid}/profile/record`}>
+								<TradeRecord />
+							</Route>
+						</Switch>
+					)}
+				</Container>
 			)}
-		</Container>
+		</>
 	);
 }
+
 export default Profile;

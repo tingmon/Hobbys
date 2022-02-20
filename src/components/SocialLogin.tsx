@@ -1,5 +1,5 @@
 import react, { useState } from "react";
-import { authService, firebaseInstance } from "../fbase";
+import { authService, dbService, firebaseInstance } from "../fbase";
 // import AuthForm from "components/AuthForm";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import {
 	faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
+import { Ranks } from "../atoms";
 
 const AuthBtns = styled.div`
 	display: flex;
@@ -29,6 +30,19 @@ const AuthBtn = styled.button`
 	cursor: pointer;
 `;
 
+interface IAdditionalUserInfo {
+	uid?: string;
+	displayName?: string;
+	streetName?: string;
+	city?: string;
+	province?: string;
+	postalCode?: string;
+	sellerPoint: number;
+	buyerPoint: number;
+	rank: Ranks;
+	photoURL?: string;
+}
+
 function SocialLogin() {
 	const onSocialClick = async (event: any) => {
 		const {
@@ -42,6 +56,24 @@ function SocialLogin() {
 		}
 		const data = await authService.signInWithPopup(provider);
 		console.log(data);
+		console.log(data.additionalUserInfo);
+		console.log(data.additionalUserInfo?.isNewUser);
+
+		if (data.additionalUserInfo?.isNewUser) {
+			const userInfo: IAdditionalUserInfo = {
+				uid: data.user?.uid,
+				displayName: data.user?.displayName || undefined,
+				streetName: "",
+				city: "",
+				province: "",
+				postalCode: "",
+				sellerPoint: 0,
+				buyerPoint: 0,
+				rank: Ranks.Bronze,
+				photoURL: data.user?.photoURL || undefined,
+			};
+			await dbService.collection("UserInfo").add(userInfo);
+		}
 	};
 	return (
 		<AuthBtns>

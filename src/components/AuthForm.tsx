@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// @ts-nocheck
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -62,7 +66,7 @@ const PageTitle = styled.span`
 
 interface IAdditionalUserInfo {
 	uid?: string;
-	userName?: string;
+	displayName?: string;
 	streetName?: string;
 	city?: string;
 	province?: string;
@@ -70,6 +74,7 @@ interface IAdditionalUserInfo {
 	sellerPoint: number;
 	buyerPoint: number;
 	rank: Ranks;
+	photoURL?: string;
 }
 
 interface IForm {
@@ -127,7 +132,7 @@ function AuthForm() {
 
 				const userInfo: IAdditionalUserInfo = {
 					uid: user.user?.uid,
-					userName: data.userName,
+					displayName: data.userName,
 					streetName: data.streetName,
 					city: data.city,
 					province: data.province,
@@ -135,7 +140,9 @@ function AuthForm() {
 					sellerPoint: 0,
 					buyerPoint: 0,
 					rank: Ranks.Bronze,
+					photoURL: "",
 				};
+				console.log(userInfo);
 				await dbService.collection("UserInfo").add(userInfo);
 				// data.username
 			} else {

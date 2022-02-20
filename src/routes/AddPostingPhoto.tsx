@@ -78,14 +78,25 @@ const PostingForm = styled.form`
 `;
 
 const NextBtn = styled.button`
-	cursor: pointer;
-	width: 100%;
-	padding: 7px 20px;
 	text-align: center;
+	background: #04aaff;
 	color: white;
-	border-radius: 20px;
+	margin-top: 10px;
 	cursor: pointer;
-	background-color: tomato;
+
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+
+	a {
+		display: block;
+	}
 `;
 
 const PreviewImg = styled.img`
@@ -111,7 +122,7 @@ interface IForm {
 	postalCode?: string;
 }
 
-function AddPosting({ userObject, refreshUser }) {
+function AddPostingPhoto({ userObject, refreshUser }) {
 	// const [newPhotoURLs, setNewPhotoURLs] = useState<string>([]);
 	// const [previewImgs, setpreviewImgs] = useState<string>([]);
 	const uid = useRecoilValue(uidAtom);
@@ -205,4 +216,4 @@ function AddPosting({ userObject, refreshUser }) {
 	);
 }
 
-export default AddPosting;
+export default AddPostingPhoto;

@@ -12,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { selectedPostingAtom } from "../atoms";
 
 const NavContainer = styled.nav`
 	display: flex;
@@ -20,6 +22,7 @@ const NavContainer = styled.nav`
 	bottom: 0px; /* Position the navbar at the bottom of the page */
 	width: 100%; /* Full width */
 	max-width: 450px;
+	z-index: 1;
 `;
 
 const NavList = styled.ul`
@@ -45,6 +48,11 @@ const NavItem = styled.li`
 `;
 
 const Navigation = ({ userObject }) => {
+	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
+	const MyProfileClicked = () => {
+		setSelectedPosting(null);
+		console.log("nav work");
+	};
 	return (
 		<NavContainer>
 			<NavList>
@@ -64,7 +72,10 @@ const Navigation = ({ userObject }) => {
 					</Link>
 				</NavItem>
 				<NavItem>
-					<Link to={`/profile/${userObject?.uid}`}>
+					<Link
+						to={`/${userObject?.uid}/profile`}
+						onClick={() => MyProfileClicked()}
+					>
 						<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
 					</Link>
 				</NavItem>

@@ -7,7 +7,7 @@ import { lightTheme } from "./theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import firebase from "./fbase";
 
-console.log(firebase);
+// console.log(firebase);
 const queryClient = new QueryClient();
 
 ReactDOM.render(
