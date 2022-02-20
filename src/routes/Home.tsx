@@ -49,6 +49,8 @@ const Posting = styled.div`
 	border: 1px solid black;
 	margin-bottom: 10px;
 	max-width: 330px;
+	max-hight: 490px;
+	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
 const PostingHeader = styled.div`
@@ -80,6 +82,7 @@ const LikeAndComment = styled.div``;
 const TextBox = styled.div`
 	word-wrap: break-word;
 	overflow: auto;
+	max-height: 50px;
 `;
 
 function Home({ userObject }) {
@@ -149,7 +152,7 @@ function Home({ userObject }) {
 										<SaleTag>
 											<LoyaltyIcon />
 											<span>On Sale / </span>
-											<span>Price: {item.price}</span>
+											<span>Price: ${item.price}</span>
 										</SaleTag>
 									) : (
 										<SaleTag>
@@ -161,7 +164,7 @@ function Home({ userObject }) {
 
 								<Carousel
 									className={carouselStyle.homeCarousel}
-									navButtonsAlwaysVisible={true}
+									navButtonsAlwaysVisible={false}
 									autoPlay={false}
 								>
 									{/* {console.log(photo)} */}

@@ -62,6 +62,25 @@ const SubmitBtn = styled.button`
 	font-weight: bold;
 `;
 
+const GoBackBtn = styled.button`
+	text-align: center;
+	background: #04aaff;
+	color: white;
+	margin-top: 10px;
+	pointer
+	cursor: pointer;
+
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+`;
+
 const ErrorMessage = styled.span`
 	color: red;
 `;
@@ -118,9 +137,29 @@ function PostingForm() {
 		history.push("/addposting");
 	};
 
+	const onUploadClicked = (event) => {
+		event.stopPropagation();
+	};
+
 	const onValid = async (data: IForm) => {
 		console.log(data);
 		// console.log(photoURL);
+		if (data.price > 9999) {
+			setError(
+				"price",
+				{ message: "Too Expensive! Enter Less Than 9999$" },
+				{ shouldFocus: true }
+			);
+			throw "too expensive";
+		}
+		if (data.price < 0) {
+			setError(
+				"price",
+				{ message: "Negative Number is not Allowed!" },
+				{ shouldFocus: true }
+			);
+			throw "negative number";
+		}
 		try {
 			setIsLoading(true);
 			let imgFileUrl = "";
@@ -216,22 +255,29 @@ function PostingForm() {
 						<InputField
 							type="text"
 							{...register("text", {})}
-							placeholder="*Enter Text"
+							placeholder="Enter Text"
 						/>
 						<ErrorMessage>{errors?.text?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("category", {})}
-							placeholder="*Enter Category"
+							placeholder="Enter Category"
 						/>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
 						{isLoading ? (
-							<SubmitBtn disabled>Uploading...</SubmitBtn>
+							<>
+								<SubmitBtn disabled style={{ cursor: "wait" }}>
+									Uploading...
+								</SubmitBtn>
+								<GoBackBtn disabled>Go Back</GoBackBtn>
+							</>
 						) : (
-							<SubmitBtn>Upload Posting</SubmitBtn>
+							<>
+								<SubmitBtn onClick={onUploadClicked}>Upload Posting</SubmitBtn>
+								<GoBackBtn onClick={onGoBackClicked}>Go Back</GoBackBtn>
+							</>
 						)}
 					</SignUpForm>
-					<SubmitBtn onClick={onGoBackClicked}>Go Back</SubmitBtn>
 				</>
 			) : (
 				<>
@@ -252,17 +298,24 @@ function PostingForm() {
 						<InputField
 							type="number"
 							step="0.01"
-							{...register("price", {})}
+							{...register("price", { required: "Price is Required" })}
 							placeholder="*Enter price"
 						/>
 						<ErrorMessage>{errors?.price?.message}</ErrorMessage>
 						{isLoading ? (
-							<SubmitBtn disabled>Uploading...</SubmitBtn>
+							<>
+								<SubmitBtn disabled style={{ cursor: "wait" }}>
+									Uploading...
+								</SubmitBtn>
+								<GoBackBtn disabled>Go Back</GoBackBtn>
+							</>
 						) : (
-							<SubmitBtn>Upload Posting</SubmitBtn>
+							<>
+								<SubmitBtn onClick={onUploadClicked}>Upload Posting</SubmitBtn>
+								<GoBackBtn onClick={onGoBackClicked}>Go Back</GoBackBtn>
+							</>
 						)}
 					</LoginForm>
-					<SubmitBtn onClick={onGoBackClicked}>Go Back</SubmitBtn>
 				</>
 			)}
 		</>

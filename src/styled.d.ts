@@ -10,5 +10,9 @@ declare module "styled-components" {
 		formColor: string;
 		mainColor: string;
 		secondColor: string;
+		postingBgColor: string;
+
+		cursorActive: string;
+		cursorNotActive: string;
 	}
 }

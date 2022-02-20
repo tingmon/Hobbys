@@ -133,15 +133,14 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 
 	const onValid = async (data: IForm) => {
 		// make your own error conditions(address validation)
-		// one address input filled? -> every address inputs required
-		// 		if (data.password !== data.passwordConfirm) {
-		// 			setError(
-		// 				"passwordConfirm",
-		// 				{ message: "password inputs are not same" },
-		// 				{ shouldFocus: true }
-		// 			);
-		// 		}
-		//
+		// if (data.price > 9999) {
+		// 	setError(
+		// 		"price",
+		// 		{ message: "Too Expensive! Enter Less Than 9999$" },
+		// 		{ shouldFocus: true }
+		// 	);
+		// 	throw "too expensive";
+		// }
 		const userInfo = await dbService
 			.collection("UserInfo")
 			.where("uid", "==", userObject?.uid)
@@ -187,10 +186,10 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 			let imgFileUrl = "";
 			try {
 				console.log(userObject.photoURL);
+				// google account is not applicable for this occasion
 				if (userObject.photoURL !== null) {
 					await storageService.refFromURL(userObject.photoURL).delete();
 				}
-
 				const imgFileRef = storageService
 					.ref()
 					.child(`${userObject.uid}/profile/${uuidv4()}`);
@@ -213,7 +212,6 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 				// appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
 				if (posting !== null) {
 					// 게시물 아이디의 작성자 프사 정보를 전부 수정
-
 					appliedPosting.forEach((element) => {
 						dbService.doc(`Posting/${element}`).update({
 							creatorImgUrl: imgFileUrl,
@@ -221,8 +219,34 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					});
 				}
 			} catch (error) {
-				console.log(error);
-				return;
+				const imgFileRef = storageService
+					.ref()
+					.child(`${userObject.uid}/profile/${uuidv4()}`);
+
+				const response = await imgFileRef.putString(newPhotoURL, "data_url");
+
+				imgFileUrl = await response.ref.getDownloadURL();
+
+				await userObject.updateProfile({
+					photoURL: imgFileUrl,
+				});
+				refreshUser();
+				setpreviewImg(null);
+
+				//해당 if문의 경우 사진이 변경 되었으므로 유저의 프사정보를 트윗에도 함께 업데이트 해줘야함
+				//트윗 콜렉션 불러서 WHERE, MAP 써서 일일이 변경
+				console.log("error? 2");
+
+				console.log(posting);
+				// appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
+				if (posting !== null) {
+					// 게시물 아이디의 작성자 프사 정보를 전부 수정
+					appliedPosting.forEach((element) => {
+						dbService.doc(`Posting/${element}`).update({
+							creatorImgUrl: imgFileUrl,
+						});
+					});
+				}
 			}
 		}
 		alert("Profile Updated!");
