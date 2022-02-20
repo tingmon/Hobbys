@@ -60,6 +60,9 @@ const PostingHeader = styled.div`
 const SaleTag = styled.div`
 	display: flex;
 	align-items: center;
+	span {
+		margin-left: 5px;
+	}
 `;
 
 const ProfileTag = styled.div`
@@ -123,7 +126,7 @@ function Home({ userObject }) {
 					<h1>Welcome {userObject?.displayName}</h1>
 					<PostingContainer>
 						{postings.map((item, index) => (
-							<Posting>
+							<Posting key={index}>
 								<PostingHeader>
 									<ProfileTag>
 										<Link
@@ -145,21 +148,14 @@ function Home({ userObject }) {
 									) : item.onSale ? (
 										<SaleTag>
 											<LoyaltyIcon />
-											<span>On Sale</span>
+											<span>On Sale / </span>
+											<span>Price: {item.price}</span>
 										</SaleTag>
 									) : (
 										<SaleTag>
 											<LoyaltyIcon />
 											<span>Not for Sale</span>
 										</SaleTag>
-									)}
-									{item.creatorUid == userObject.uid && (
-										<Link
-											to="/editposting"
-											onClick={() => PostingIconClicked(item)}
-										>
-											<EditIcon />
-										</Link>
 									)}
 								</PostingHeader>
 
@@ -178,7 +174,16 @@ function Home({ userObject }) {
 									<LikeAndComment>
 										<FavoriteBorderIcon />
 										<CommentIcon />
-										<AddShoppingCartIcon />
+
+										{item.creatorUid !== userObject.uid &&
+											item.onSale === true && (
+												<Link
+													to="/editposting"
+													onClick={() => PostingIconClicked(item)}
+												>
+													<AddShoppingCartIcon />
+												</Link>
+											)}
 									</LikeAndComment>
 									<TextBox>
 										<span>{item.text}</span>

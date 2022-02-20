@@ -98,7 +98,7 @@ interface IForm {
 	postalCode?: string;
 }
 
-function EditProfile({ userObject, refreshUser, userInfo }) {
+function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	const history = useHistory();
 	const [newPhotoURL, setNewPhotoURL] = useState(userObject.photoURL);
 	const [previewImg, setpreviewImg] = useState(null);
@@ -108,6 +108,8 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 	// 	.where("uid", "==", userObject?.uid)
 	// 	.get();
 
+	console.log(userInfo.docs[0].data());
+
 	const {
 		register,
 		handleSubmit,
@@ -116,7 +118,7 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 		setError,
 	} = useForm<IForm>({
 		defaultValues: {
-			userName: userInfo.docs[0].data().userName,
+			userName: userInfo.docs[0].data().displayName,
 			streetName: userInfo.docs[0].data().streetName,
 			city: userInfo.docs[0].data().city,
 			province: userInfo.docs[0].data().province,
@@ -144,6 +146,12 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 			.collection("UserInfo")
 			.where("uid", "==", userObject?.uid)
 			.get();
+		const posting = await dbService
+			.collection("Posting")
+			.where("creatorUid", "==", userObject.uid)
+			.orderBy("createdAt", "desc")
+			.get();
+		const appliedPosting = posting.docs.map((doc) => doc.id);
 		if (
 			data.streetName !== "" ||
 			data.city !== "" ||
@@ -151,8 +159,9 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 			data.postalCode !== "" ||
 			data.userName !== ""
 		) {
+			console.log(data);
 			const userUpdate = {
-				userName: data.userName,
+				displayName: data.userName,
 				streetName: data.streetName,
 				city: data.city,
 				province: data.province,
@@ -164,6 +173,12 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 		if (userObject.displayName !== data.userName && data.userName !== "") {
 			await userObject.updateProfile({
 				displayName: data.userName,
+			});
+
+			appliedPosting.forEach((element) => {
+				dbService.doc(`Posting/${element}`).update({
+					creatorDisplayName: data.userName,
+				});
 			});
 			// userInfo.docs[0].data().userName = data.userName;
 			refreshUser();
@@ -193,16 +208,12 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 				//해당 if문의 경우 사진이 변경 되었으므로 유저의 프사정보를 트윗에도 함께 업데이트 해줘야함
 				//트윗 콜렉션 불러서 WHERE, MAP 써서 일일이 변경
 				console.log("error? 2");
-				const posting = await dbService
-					.collection("Posting")
-					.where("creatorUid", "==", userObject.uid)
-					.orderBy("createdAt", "desc")
-					.get();
+
 				console.log(posting);
 				// appliedTweets는 해당 유저의 게시물의 아이디를 갖는 배열
 				if (posting !== null) {
-					const appliedPosting = posting.docs.map((doc) => doc.id);
 					// 게시물 아이디의 작성자 프사 정보를 전부 수정
+
 					appliedPosting.forEach((element) => {
 						dbService.doc(`Posting/${element}`).update({
 							creatorImgUrl: imgFileUrl,
@@ -215,6 +226,7 @@ function EditProfile({ userObject, refreshUser, userInfo }) {
 			}
 		}
 		alert("Profile Updated!");
+		history.push("/");
 	};
 
 	const onFileChange = (event) => {

@@ -13,7 +13,7 @@ import EditProfile from "./EditProfile";
 import TradeRecord from "./TradeRecord";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedPostingAtom, userObjectAtom } from "../atoms";
+import { selectedPostingAtom, userObjectAtom, postingsObject } from "../atoms";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -117,6 +117,15 @@ const PostingContainer = styled.div`
 
 const Posting = styled.div`
 	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+`;
+
+const PostingPreviewImg = styled.img`
+	min-width: 100%;
+	min-height: 100%;
 `;
 
 function Profile({ refreshUser }) {
@@ -129,14 +138,34 @@ function Profile({ refreshUser }) {
 	const [showPosting, setShowPosting] = useState(true);
 	const [showEdit, setShowEdit] = useState(false);
 	const [showRecord, setShowRecord] = useState(false);
-	const [userData, setUserData] = useState(null);
+	const [userData, setUserData] = useState<any>(null);
 	const [photoURL, setPhotoURL] = useState("");
 	const [displayName, setDisplayName] = useState("");
+
 	// current user
 	const userObject = useRecoilValue(userObjectAtom);
+	// clicked posting
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
-	console.log(uid);
+	const [postings, setPostings] = useRecoilState(postingsObject);
+	// console.log(uid);
+
+	async function fetchPosting(userId) {
+		console.log(userId);
+		dbService
+			.collection("Posting")
+			.where("creatorUid", "==", userId)
+			.orderBy("createdAt", "desc")
+			.onSnapshot((snapshot) => {
+				// console.log(snapshot);
+				const postingSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setPostings(postingSnapshot);
+			});
+	}
+
 	useEffect(async () => {
 		if (
 			userObject?.uid === selectedPostingInfo?.creatorUid ||
@@ -148,8 +177,8 @@ function Profile({ refreshUser }) {
 		} else {
 			setIsOwner(false);
 		}
-		console.log(selectedPostingInfo);
-		console.log(userObject);
+		// console.log(selectedPostingInfo);
+		// console.log(userObject);
 		if (selectedPostingInfo === null) {
 			const userInfo = await dbService
 				.collection("UserInfo")
@@ -176,16 +205,12 @@ function Profile({ refreshUser }) {
 				.get();
 
 			setFollowing(followingInfo.docs.length);
-			// console.log(follower, following);
-			// retrieve user posting, use reactQuery later.
-			// const postings = await dbService
-			// 	.collection("Postings")
-			// 	.where("creatorId", "==", userObject.uid)
-			// 	.orderBy("createdAt", "desc")
-			// 	.get();
-			// console.log(postings.docs.map((doc) => doc.id));
-			// console.log(postings.docs.map((doc) => doc.data().creatorImgUrl));
-		} else {
+			console.log(follower, following);
+
+			fetchPosting(userObject.uid);
+		}
+		// currentUser !== postingOwner
+		else {
 			console.log(selectedPostingInfo.creatorUid);
 			const userInfo = await dbService
 				.collection("UserInfo")
@@ -208,15 +233,9 @@ function Profile({ refreshUser }) {
 				.where("passive", "==", selectedPostingInfo.creatorUid)
 				.get();
 			setFollowing(followingInfo.docs.length);
-			// console.log(follower, following);
-			// retrieve user posting, use reactQuery later.
-			// const postings = await dbService
-			// 	.collection("Postings")
-			// 	.where("creatorId", "==", userObject.uid)
-			// 	.orderBy("createdAt", "desc")
-			// 	.get();
-			// console.log(postings.docs.map((doc) => doc.id));
-			// console.log(postings.docs.map((doc) => doc.data().creatorImgUrl));
+			console.log(follower, following);
+
+			fetchPosting(selectedPostingInfo.creatorUid);
 		}
 		setIsLoading(false);
 	}, [uid]);
@@ -335,24 +354,11 @@ function Profile({ refreshUser }) {
 
 					{showPosting && !showEdit && !showRecord ? (
 						<PostingContainer>
-							<Posting style={{ backgroundColor: "red" }}>1</Posting>
-							<Posting style={{ backgroundColor: "blue" }}>2</Posting>
-							<Posting style={{ backgroundColor: "green" }}>3</Posting>
-							<Posting style={{ backgroundColor: "orange" }}>5</Posting>
-							<Posting style={{ backgroundColor: "white" }}>6</Posting>
-							<Posting style={{ backgroundColor: "yellow" }}>7</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
-							<Posting style={{ backgroundColor: "purple" }}>8</Posting>
+							{postings?.map((posting, index) => (
+								<Posting key={index}>
+									<PostingPreviewImg src={posting.photoUrl[0]} />
+								</Posting>
+							))}
 						</PostingContainer>
 					) : (
 						<Switch>
@@ -361,10 +367,11 @@ function Profile({ refreshUser }) {
 									userObject={userObject}
 									refreshUser={refreshUser}
 									userInfo={userData}
+									uid={uid}
 								/>
 							</Route>
 							<Route path={`/${userObject.uid}/profile/record`}>
-								<TradeRecord />
+								<TradeRecord uid={uid} />
 							</Route>
 						</Switch>
 					)}
