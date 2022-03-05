@@ -33,7 +33,7 @@ const Header = styled.header`
 
 const Title = styled.h1`
 	font-size: 30px;
-	color: ${(props) => props.theme.textColor};
+	color: ${(props) => props.theme.displayNameColor};
 	margin-left: 20px;
 `;
 
@@ -193,7 +193,7 @@ function Profile({ refreshUser }) {
 			// retrieve people I follow
 			const followerInfo = await dbService
 				.collection("Follow")
-				.where("agent", "==", userObject.uid)
+				.where("follower", "==", userObject.uid)
 				.get();
 
 			setFollower(followerInfo.docs.length);
@@ -201,7 +201,7 @@ function Profile({ refreshUser }) {
 			// retrieve people who follow me
 			const followingInfo = await dbService
 				.collection("Follow")
-				.where("passive", "==", userObject.uid)
+				.where("following", "==", userObject.uid)
 				.get();
 
 			setFollowing(followingInfo.docs.length);

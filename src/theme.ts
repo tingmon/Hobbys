@@ -7,6 +7,7 @@ export const lightTheme: DefaultTheme = {
 	formColor: "#34495e",
 	mainColor: "#f6e58d",
 	secondColor: "#ecf0f1",
+	displayNameColor: "#2f3640",
 
 	postingBgColor: "#ffffff",
 

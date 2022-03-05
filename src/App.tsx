@@ -154,6 +154,7 @@ function App() {
 				// console.log(userObject);
 				setIsLoggedIn(true);
 				setUidAtom(user.uid);
+				// 불필요한 리프레시를 방지하기 위해 isNewUser따져서 그때만 실행하도록 나중에 바꿔야함
 				assignDisplayName();
 			} else {
 				setIsLoggedIn(false);

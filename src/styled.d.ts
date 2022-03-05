@@ -11,6 +11,7 @@ declare module "styled-components" {
 		mainColor: string;
 		secondColor: string;
 		postingBgColor: string;
+		displayNameColor: string;
 
 		cursorActive: string;
 		cursorNotActive: string;

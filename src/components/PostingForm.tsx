@@ -176,7 +176,7 @@ function PostingForm() {
 			console.log(postingImgArr);
 
 			if (onSale) {
-				const posting: IPosting = {
+				const posting = {
 					creatorUid: userObject.uid,
 					creatorDisplayName: userObject.displayName,
 					creatorImgUrl: userObject.photoURL,
@@ -187,12 +187,13 @@ function PostingForm() {
 					soldOut: false,
 					price: data.price,
 					category: data.category,
+					likes: [],
 				};
 				await dbService.collection("Posting").add(posting);
 				console.log("onsale success");
 				// data.username
 			} else {
-				const posting: IPosting = {
+				const posting = {
 					creatorUid: userObject.uid,
 					creatorDisplayName: userObject.displayName,
 					creatorImgUrl: userObject.photoURL,
@@ -203,6 +204,7 @@ function PostingForm() {
 					soldOut: false,
 					price: 0,
 					category: data.category,
+					likes: [],
 				};
 				await dbService.collection("Posting").add(posting);
 				console.log("not onsale success");
