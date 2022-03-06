@@ -203,7 +203,7 @@ function Home() {
 
 		if (likeInfo.length !== 0) {
 			for (var i = 0; i < likeInfo.length; i++) {
-				if (likeInfo[i] == userObject.uid) {
+				if (likeInfo[i] == userObject?.uid) {
 					// console.log("true for ", postingInfo.id);
 					return true;
 				}
@@ -236,6 +236,8 @@ function Home() {
 			console.log(comment);
 			const newComment = {
 				commenterUid: userObject.uid,
+				commenterPhotoURL: userObject.photoURL,
+				commeterDisplayName: userObject.displayName,
 				postingId: postingInfo.id,
 				text: comment,
 				timeStamp: Date.now(),
@@ -352,7 +354,7 @@ function Home() {
 													<CommentIcon />
 												</a>
 
-												{item.creatorUid !== userObject.uid &&
+												{item.creatorUid !== userObject?.uid &&
 													item.onSale === true && (
 														<Link
 															to="/editposting"
@@ -370,14 +372,16 @@ function Home() {
 													<p>add comment</p>
 													<InputField onChange={CommentOnChange} type="text" />
 													{comment && (
-														<Link
-															to={`/postingDetail/${selectedPosting?.id}`}
-															onClick={(event) =>
-																CommentSubmitClicked(event, item)
-															}
-														>
-															submit
-														</Link>
+														<button>
+															<Link
+																to={`/postingDetail/${selectedPosting?.id}`}
+																onClick={(event) =>
+																	CommentSubmitClicked(event, item)
+																}
+															>
+																submit
+															</Link>
+														</button>
 													)}
 												</>
 											)}

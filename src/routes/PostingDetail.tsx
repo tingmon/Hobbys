@@ -33,6 +33,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import EditPostingForm from "../components/EditPostingForm";
+import CommentList from "../components/CommentList";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
@@ -145,6 +146,13 @@ const FormContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 320px;
+`;
+
+const CommentListContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
 `;
 
 function PostingDetail() {
@@ -260,18 +268,19 @@ function PostingDetail() {
 
 	const CommentSubmitClicked = async (event, postingInfo) => {
 		event.preventDefault();
-		event.stopPropagation();
 		console.log(newComment);
 
 		const addComment = {
 			commenterUid: userObject.uid,
+			commenterPhotoURL: userObject.photoURL,
+			commeterDisplayName: userObject.displayName,
 			postingId: postingInfo.id,
 			text: newComment,
 			timeStamp: Date.now(),
 		};
 		await dbService.collection("Comment").add(addComment);
 		console.log(addComment);
-		setComments((prev) => [...prev, addComment]);
+		// setComments((prev) => [...prev, addComment]);
 	};
 
 	const onDeleteClick = async () => {
@@ -419,18 +428,26 @@ function PostingDetail() {
 												<InputField onChange={CommentOnChange} type="text" />
 
 												{newComment && (
-													<a
+													<button
 														href="#"
 														onClick={(event) =>
 															CommentSubmitClicked(event, selectedPosting)
 														}
 													>
 														submit
-													</a>
+													</button>
 												)}
 											</>
 										)}
 									</PostingFooter>
+									<CommentListContainer>
+										<ul>
+											{comments?.map((comment) => (
+												<CommentList key={comment.id} {...comment} />
+											))}
+										</ul>
+									</CommentListContainer>
+
 									<div style={{ width: 300, height: 100 }}></div>
 								</Posting>
 							</Container>
@@ -549,6 +566,14 @@ function PostingDetail() {
 											</>
 										)}
 									</PostingFooter>
+
+									<CommentListContainer>
+										<ul>
+											{comments?.map((comment) => (
+												<CommentList key={comment.id} {...comment} />
+											))}
+										</ul>
+									</CommentListContainer>
 									<div style={{ width: 300, height: 100 }}></div>
 								</Posting>
 							</Container>

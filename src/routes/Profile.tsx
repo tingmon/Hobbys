@@ -13,7 +13,12 @@ import EditProfile from "./EditProfile";
 import TradeRecord from "./TradeRecord";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedPostingAtom, userObjectAtom, postingsObject } from "../atoms";
+import {
+	selectedPostingAtom,
+	userObjectAtom,
+	postingsObject,
+	selectedCommentAtom,
+} from "../atoms";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -148,6 +153,7 @@ function Profile({ refreshUser }) {
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
 	const [postings, setPostings] = useRecoilState(postingsObject);
+	const selectedComment = useRecoilValue(selectedCommentAtom);
 	// console.log(uid);
 
 	async function fetchPosting(userId) {
@@ -179,6 +185,7 @@ function Profile({ refreshUser }) {
 		}
 		// console.log(selectedPostingInfo);
 		// console.log(userObject);
+		// 본인
 		if (selectedPostingInfo === null) {
 			const userInfo = await dbService
 				.collection("UserInfo")
@@ -210,6 +217,7 @@ function Profile({ refreshUser }) {
 			fetchPosting(userObject.uid);
 		}
 		// currentUser !== postingOwner
+		// 남의 페이지(본인 아님)
 		else {
 			console.log(selectedPostingInfo.creatorUid);
 			const userInfo = await dbService
@@ -224,13 +232,13 @@ function Profile({ refreshUser }) {
 			// retrieve people I follow
 			const followerInfo = await dbService
 				.collection("Follow")
-				.where("agent", "==", selectedPostingInfo.creatorUid)
+				.where("follower", "==", selectedPostingInfo.creatorUid)
 				.get();
 			setFollower(followerInfo.docs.length);
 			// retrieve people who follow me
 			const followingInfo = await dbService
 				.collection("Follow")
-				.where("passive", "==", selectedPostingInfo.creatorUid)
+				.where("following", "==", selectedPostingInfo.creatorUid)
 				.get();
 			setFollowing(followingInfo.docs.length);
 			console.log(follower, following);
@@ -316,38 +324,10 @@ function Profile({ refreshUser }) {
 					) : (
 						<Tabs>
 							<Tab isActive={true}>
-								<Link
-									onClick={() => {
-										if (showRecord === true) {
-											setShowRecord(false);
-											setShowPosting(false);
-											setShowEdit(true);
-										} else {
-											setShowEdit((prev) => !prev);
-											setShowPosting((prev) => !prev);
-										}
-									}}
-									to={`/${userObject.uid}/profile/edit`}
-								>
-									Follow
-								</Link>
+								<Link to={`/${userObject.uid}/profile/follow`}>Follow</Link>
 							</Tab>
 							<Tab isActive={true}>
-								<Link
-									onClick={() => {
-										if (showEdit === true) {
-											setShowEdit(false);
-											setShowPosting(false);
-											setShowRecord(true);
-										} else {
-											setShowRecord((prev) => !prev);
-											setShowPosting((prev) => !prev);
-										}
-									}}
-									to={`/${userObject.uid}/profile/record`}
-								>
-									Message
-								</Link>
+								<Link to={`/${userObject.uid}/profile/message`}>Message</Link>
 							</Tab>
 						</Tabs>
 					)}

@@ -102,6 +102,11 @@ export const selectedPostingAtom = atom<any>({
 	default: null,
 });
 
+export const selectedCommentAtom = atom<any>({
+	key: "selectedCommentAtom",
+	default: null,
+});
+
 // export const userObjectState = atom<IUserObject>({
 // 	key: "userObject",
 // 	default: {
