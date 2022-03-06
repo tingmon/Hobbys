@@ -7,7 +7,12 @@ import { useQuery } from "react-query";
 import { Link, useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fetchPosting } from "../api";
-import { postingsObject, selectedPostingAtom } from "../atoms";
+import {
+	postingsObject,
+	selectedPostingAtom,
+	isNewUserAtom,
+	userObjectAtom,
+} from "../atoms";
 import { authService, dbService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
@@ -76,6 +81,18 @@ const ProfileTag = styled.div`
 	}
 `;
 
+const InputField = styled.input`
+	max-width: 255px;
+	width: 100%;
+	padding: 5px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-right: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+`;
+
 const PostingFooter = styled.div``;
 
 const LikeAndComment = styled.div``;
@@ -86,16 +103,16 @@ const TextBox = styled.div`
 	max-height: 50px;
 `;
 
-function Home({ userObject }) {
+function Home() {
+	const history = useHistory();
 	const [postings, setPostings] = useRecoilState(postingsObject);
+	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPosting, setSelectedPosting] =
 		useRecoilState(selectedPostingAtom);
 	const [likeList, setLikeList] = useState([]);
-	const [isLike, setIsLike] = useState(false);
+	const [comment, setComment] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
-
-	const [testing, setTesting] = useState("");
-	let arr = [];
+	const [isCommenting, setIsCommenting] = useState(false);
 
 	async function fetchPosting() {
 		dbService
@@ -179,44 +196,7 @@ function Home({ userObject }) {
 		}
 	};
 
-	// const Testing = (likeItem, postingItem, index) => {
-	// 	console.log(postingItem.id);
-	// 	if (!arr.includes(postingItem.id) && likeItem.postingId == postingItem.id) {
-	// 		arr.push(postingItem.id);
-	// 		console.log("like", arr);
-	// 		return (
-	// 			<>
-	// 				<a
-	// 					key={index}
-	// 					href="#"
-	// 					onClick={(event) => LikeIconClicked(event, postingItem)}
-	// 				>
-	// 					<FavoriteBorderIcon style={{ backgroundColor: "red" }} />
-	// 				</a>
-	// 			</>
-	// 		);
-	// 	} else if (arr.includes(postingItem.id)) {
-	// 		console.log("null", arr);
-	// 		return null;
-	// 	} else if (!likeList.includes(postingItem.id)) {
-	// 		arr.push(postingItem.id);
-	// 		console.log("not like", arr);
-	// 		console.log(likeList);
-	// 		return (
-	// 			<>
-	// 				<a
-	// 					key={index}
-	// 					href="#"
-	// 					onClick={(event) => LikeIconClicked(event, postingItem)}
-	// 				>
-	// 					<FavoriteBorderIcon />
-	// 				</a>
-	// 			</>
-	// 		);
-	// 	}
-	// };
-
-	const Testing = (postingInfo) => {
+	const PaintLikeIcon = (postingInfo) => {
 		const likeInfo = postingInfo.likes.likerUid.map((uid) => uid);
 
 		// console.log(likeInfo, postingInfo.id);
@@ -224,13 +204,46 @@ function Home({ userObject }) {
 		if (likeInfo.length !== 0) {
 			for (var i = 0; i < likeInfo.length; i++) {
 				if (likeInfo[i] == userObject.uid) {
-					console.log("true for ", postingInfo.id);
+					// console.log("true for ", postingInfo.id);
 					return true;
 				}
 			}
 		}
-		console.log("false for ", postingInfo.id);
+		// console.log("false for ", postingInfo.id);
 		return false;
+	};
+
+	const CommentIconClicked = (event, postingInfo) => {
+		event.preventDefault();
+		if (postingInfo.id == selectedPosting?.id) {
+			setIsCommenting((prev) => !prev);
+		} else if (postingInfo.id !== selectedPosting?.id) {
+			setIsCommenting(true);
+			setSelectedPosting(postingInfo);
+		}
+	};
+
+	const CommentOnChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setComment(value);
+	};
+
+	const CommentSubmitClicked = async (event, postingInfo) => {
+		if (comment !== "") {
+			event.stopPropagation();
+			console.log(comment);
+			const newComment = {
+				commenterUid: userObject.uid,
+				postingId: postingInfo.id,
+				text: comment,
+				timeStamp: Date.now(),
+			};
+			await dbService.collection("Comment").add(newComment);
+		} else {
+			history.push("/");
+		}
 	};
 
 	return (
@@ -282,15 +295,22 @@ function Home({ userObject }) {
 											navButtonsAlwaysVisible={false}
 											autoPlay={false}
 										>
-											{/* {console.log(photo)} */}
 											{item.photoUrl.map((photo) => (
-												<Item key={index} item={photo}></Item>
+												<>
+													<Link
+														to={`/postingDetail/${selectedPosting?.id}`}
+														onClick={() => PostingIconClicked(item)}
+														onMouseEnter={() => PostingIconClicked(item)}
+													>
+														<Item key={index} item={photo}></Item>
+													</Link>
+												</>
 											))}
 										</Carousel>
 										<PostingFooter>
 											<LikeAndComment>
 												{likeList.length !== 0 && item.likes.likerUid ? (
-													Testing(item) == true ? (
+													PaintLikeIcon(item) == true ? (
 														<>
 															<a
 																href="#"
@@ -325,8 +345,12 @@ function Home({ userObject }) {
 														</a>
 													</>
 												)}
-
-												<CommentIcon />
+												<a
+													href="#"
+													onClick={(event) => CommentIconClicked(event, item)}
+												>
+													<CommentIcon />
+												</a>
 
 												{item.creatorUid !== userObject.uid &&
 													item.onSale === true && (
@@ -341,7 +365,24 @@ function Home({ userObject }) {
 											<TextBox>
 												<span>{item.text}</span>
 											</TextBox>
+											{isCommenting && item.id == selectedPosting.id && (
+												<>
+													<p>add comment</p>
+													<InputField onChange={CommentOnChange} type="text" />
+													{comment && (
+														<Link
+															to={`/postingDetail/${selectedPosting?.id}`}
+															onClick={(event) =>
+																CommentSubmitClicked(event, item)
+															}
+														>
+															submit
+														</Link>
+													)}
+												</>
+											)}
 										</PostingFooter>
+										<div style={{ width: 300, height: 150 }}></div>
 									</Posting>
 								))}
 							</PostingContainer>

@@ -27,6 +27,7 @@ import Cart from "../routes/Cart";
 import AddPostingDetail from "../routes/AddPostingDetail";
 import AddPostingPhoto from "../routes/AddPostingPhoto";
 import EditPosting from "../routes/EditPosting";
+import PostingDetail from "../routes/PostingDetail";
 
 function AppRouter({ refreshUser }) {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
@@ -68,6 +69,9 @@ function AppRouter({ refreshUser }) {
 						</Route>
 						<Route exact path="/editposting">
 							<EditPosting userObject={userObject} />
+						</Route>
+						<Route exact path={`/postingDetail/${selectedPostingInfo?.id}`}>
+							<PostingDetail />
 						</Route>
 						<Route path={`/addposting/${uid}`}>
 							<AddPostingDetail />

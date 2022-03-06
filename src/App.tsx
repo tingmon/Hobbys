@@ -13,6 +13,8 @@ import {
 	uidAtom,
 	userObjectAtom,
 	userObjectUidAtom,
+	isNewUserAtom,
+	isInitialized,
 } from "./atoms";
 import { authService, dbService } from "./fbase";
 import AppRouter from "./components/Router";
@@ -113,10 +115,11 @@ const Container = styled.div`
 
 function App() {
 	const setIsLoggedIn = useSetRecoilState(isLoggedInState);
-	const [init, setInit] = useState(false);
+	const [init, setInit] = useRecoilState(isInitialized);
 	const [userObject, setUserObject] = useState(null);
 	const setUidAtom = useSetRecoilState(uidAtom);
 	const setUserObjectAtom = useSetRecoilState(userObjectAtom);
+	const [isNewUser, setIsNewUser] = useRecoilState(isNewUserAtom);
 	// console.log(authService.currentUser);
 	// console.log(isLoggedInState);
 
@@ -156,6 +159,7 @@ function App() {
 				setUidAtom(user.uid);
 				// 불필요한 리프레시를 방지하기 위해 isNewUser따져서 그때만 실행하도록 나중에 바꿔야함
 				assignDisplayName();
+				setUserObjectAtom(userObject);
 			} else {
 				setIsLoggedIn(false);
 				setUserObject(null);

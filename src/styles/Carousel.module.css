@@ -23,3 +23,17 @@
 		height: auto;
 	}
 }
+
+.detailCarousel {
+	width: 400px;
+	height: 400px;
+	margin: 10px auto;
+	z-index: 0;
+}
+
+@media (max-width: 400px) {
+	.detailCarousel {
+		width: auto;
+		height: auto;
+	}
+}

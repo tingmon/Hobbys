@@ -9,7 +9,8 @@ import {
 	faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
-import { Ranks } from "../atoms";
+import { isNewUserAtom, Ranks } from "../atoms";
+import { useRecoilState } from "recoil";
 
 const AuthBtns = styled.div`
 	display: flex;
@@ -44,6 +45,7 @@ interface IAdditionalUserInfo {
 }
 
 function SocialLogin() {
+	const [isNewUser, setIsNewUser] = useRecoilState<any>(isNewUserAtom);
 	const onSocialClick = async (event: any) => {
 		const {
 			target: { name },
@@ -55,9 +57,11 @@ function SocialLogin() {
 			provider = new firebaseInstance.auth.GithubAuthProvider();
 		}
 		const data = await authService.signInWithPopup(provider);
+		const flag = data.additionalUserInfo?.isNewUser;
 		console.log(data);
 		console.log(data.additionalUserInfo);
 		console.log(data.additionalUserInfo?.isNewUser);
+		setIsNewUser(flag);
 
 		if (data.additionalUserInfo?.isNewUser) {
 			const userInfo: IAdditionalUserInfo = {

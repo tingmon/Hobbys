@@ -65,6 +65,16 @@ export const isLoggedInState = atom<boolean>({
 	default: false,
 });
 
+export const isNewUserAtom = atom<any>({
+	key: "isNewUserAtom",
+	default: false,
+});
+
+export const isInitialized = atom<any>({
+	key: "isInitialized",
+	default: false,
+});
+
 // uid of current user
 export const uidAtom = atom<string>({
 	key: "uid",
