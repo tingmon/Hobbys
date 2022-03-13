@@ -19,6 +19,8 @@ import {
 	postingsObject,
 	selectedCommentAtom,
 } from "../atoms";
+import { flexbox } from "@mui/system";
+import { Prev } from "react-bootstrap/esm/PageItem";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -138,12 +140,14 @@ function Profile({ refreshUser }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOwner, setIsOwner] = useState(false);
 	const [rank, setRank] = useState("");
-	const [follower, setFollower] = useState(0);
-	const [following, setFollowing] = useState(0);
+	const [follower, setFollower] = useState<any>([]);
+	const [following, setFollowing] = useState<any>([]);
 	const [showPosting, setShowPosting] = useState(true);
 	const [showEdit, setShowEdit] = useState(false);
 	const [showRecord, setShowRecord] = useState(false);
 	const [userData, setUserData] = useState<any>(null);
+	const [followInfo, setFollowInfo] = useState<any>(null);
+	const [isFollowing, setIsFollowing] = useState(false);
 	const [photoURL, setPhotoURL] = useState("");
 	const [displayName, setDisplayName] = useState("");
 
@@ -152,12 +156,14 @@ function Profile({ refreshUser }) {
 	// clicked posting
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
-	const [postings, setPostings] = useRecoilState(postingsObject);
-	const selectedComment = useRecoilValue(selectedCommentAtom);
+	// clicked Comment
+	const [selectedComment, setSelectedComment] =
+		useRecoilState(selectedCommentAtom);
+
 	// console.log(uid);
+	const [postings, setPostings] = useRecoilState(postingsObject);
 
 	async function fetchPosting(userId) {
-		console.log(userId);
 		dbService
 			.collection("Posting")
 			.where("creatorUid", "==", userId)
@@ -172,81 +178,198 @@ function Profile({ refreshUser }) {
 			});
 	}
 
+	const isOwnerChange = (flag) => {
+		setIsOwner(flag);
+	};
+
+	const PostingIconClicked = (postingInfo) => {
+		setSelectedPostingInfo(postingInfo);
+		setSelectedComment(null);
+	};
+
+	const followClicked = async () => {
+		console.log("follow clicked");
+		if (selectedPostingInfo?.creatorUid) {
+		}
+		const follow = {
+			followerUid: userObject.uid,
+			followerPhotoURL: userObject.photoURL,
+			followerDisplayName: userObject.displayName,
+			followingUid:
+				selectedPostingInfo?.creatorUid || selectedComment?.commenterUid,
+			followingPhotoURL:
+				selectedPostingInfo?.creatorImgUrl ||
+				selectedComment?.commenterPhotoURL,
+			followingDisplayName:
+				selectedPostingInfo?.creatorDisplayName ||
+				selectedComment?.commeterDisplayName,
+		};
+
+		await dbService.collection("Follow").add(follow);
+		setIsFollowing(true);
+		// 레코드 저장하고 setFollowInfo로 현재 저장된 기록을 갖고 있어야 함.
+
+		// retrieveFollowInfo(
+		// 	selectedPostingInfo?.creatorUid || selectedComment?.commenterUid
+		// );
+	};
+
+	const unFollowClicked = async () => {
+		setFollowInfoCheck();
+		console.log("unfollow clicked");
+
+		console.log(followInfo);
+		await dbService.doc(`Follow/${followInfo.id}`).delete();
+		setIsFollowing(false);
+		setFollowInfo(null);
+	};
+
+	const setFollowInfoCheck = () => {
+		console.log(follower);
+		follower.forEach((element) => {
+			if (element.followerUid === userObject.uid) {
+				console.log("following true");
+				console.log(element);
+				setFollowInfo(element);
+			}
+		});
+	};
+
+	const setDisplayNameAndPhotoURL = (name, url) => {
+		setDisplayName(name);
+		setPhotoURL(url);
+	};
+
+	const retrieveFollowInfo = async (uid) => {
+		// retrieve people who is followed by user
+		// 주체
+		dbService
+			.collection("Follow")
+			.where("followerUid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const followSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setFollowing(followSnapshot);
+			});
+
+		// retrieve people who follow this user
+		// 대상
+		dbService
+			.collection("Follow")
+			.where("followingUid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const followSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setFollower(followSnapshot);
+			});
+
+		const isFollowCheck = await dbService
+			.collection("Follow")
+			.where("followerUid", "==", userObject.uid)
+			.get();
+		// console.log(isFollowCheck.docs[0].data().followerDisplayName);
+		if (isFollowCheck.docs[0].data().followerUid === userObject.uid) {
+			setIsFollowing(true);
+		} else {
+			setIsFollowing(false);
+		}
+	};
+
 	useEffect(async () => {
+		console.log(selectedPostingInfo);
+		console.log(selectedComment);
 		if (
 			userObject?.uid === selectedPostingInfo?.creatorUid ||
-			selectedPostingInfo === null
+			userObject?.uid === selectedComment?.commenterUid
 		) {
 			setSelectedPostingInfo(null);
-			setIsOwner(true);
-			console.log("true is running");
+			setSelectedComment(null);
+
+			// console.log("true is running");
 		} else {
-			setIsOwner(false);
+			isOwnerChange(false);
 		}
-		// console.log(selectedPostingInfo);
-		// console.log(userObject);
 		// 본인
-		if (selectedPostingInfo === null) {
+		if (selectedPostingInfo === null && selectedComment === null) {
+			console.log("I'm owner");
+			isOwnerChange(true);
+
 			const userInfo = await dbService
 				.collection("UserInfo")
 				.where("uid", "==", userObject.uid)
 				.get();
-
 			setRank(userInfo.docs[0].data().rank);
 			setUserData(userInfo);
-			setDisplayName(userObject.displayName);
-			setPhotoURL(userObject.photoURL);
 
-			// retrieve people I follow
-			const followerInfo = await dbService
-				.collection("Follow")
-				.where("follower", "==", userObject.uid)
-				.get();
+			setDisplayNameAndPhotoURL(userObject.displayName, userObject.photoURL);
 
-			setFollower(followerInfo.docs.length);
-
-			// retrieve people who follow me
-			const followingInfo = await dbService
-				.collection("Follow")
-				.where("following", "==", userObject.uid)
-				.get();
-
-			setFollowing(followingInfo.docs.length);
-			console.log(follower, following);
+			retrieveFollowInfo(userObject.uid);
 
 			fetchPosting(userObject.uid);
 		}
-		// currentUser !== postingOwner
 		// 남의 페이지(본인 아님)
-		else {
-			console.log(selectedPostingInfo.creatorUid);
+		else if (selectedPostingInfo !== null) {
+			console.log("from posting link");
+			if (selectedPostingInfo.creatorUid === userObject.uid) {
+				isOwnerChange(true);
+			}
+
 			const userInfo = await dbService
 				.collection("UserInfo")
 				.where("uid", "==", selectedPostingInfo.creatorUid)
 				.get();
 			setRank(userInfo.docs[0].data().rank);
 			setUserData(userInfo);
+
 			setDisplayName(selectedPostingInfo.creatorDisplayName);
 			setPhotoURL(selectedPostingInfo.creatorImgUrl);
 
-			// retrieve people I follow
-			const followerInfo = await dbService
-				.collection("Follow")
-				.where("follower", "==", selectedPostingInfo.creatorUid)
-				.get();
-			setFollower(followerInfo.docs.length);
-			// retrieve people who follow me
-			const followingInfo = await dbService
-				.collection("Follow")
-				.where("following", "==", selectedPostingInfo.creatorUid)
-				.get();
-			setFollowing(followingInfo.docs.length);
-			console.log(follower, following);
+			setDisplayNameAndPhotoURL(
+				selectedPostingInfo.creatorDisplayName,
+				selectedPostingInfo.creatorImgUrl
+			);
+
+			retrieveFollowInfo(selectedPostingInfo.creatorUid);
+
+			// follower.map(
+			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
+			// );
 
 			fetchPosting(selectedPostingInfo.creatorUid);
+		} else if (selectedComment !== null) {
+			console.log("from comment link");
+			if (selectedComment.commenterUid === userObject.uid) {
+				isOwnerChange(true);
+			}
+			const userInfo = await dbService
+				.collection("UserInfo")
+				.where("uid", "==", selectedComment.commenterUid)
+				.get();
+			setRank(userInfo.docs[0].data().rank);
+			setUserData(userInfo);
+
+			setDisplayNameAndPhotoURL(
+				selectedComment.commeterDisplayName,
+				selectedComment.commenterPhotoURL
+			);
+
+			retrieveFollowInfo(selectedComment.commenterUid);
+
+			// follower.map(
+			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
+			// );
+
+			fetchPosting(selectedComment.commenterUid);
 		}
 		setIsLoading(false);
 	}, [uid]);
+
+	// console.log(followInfo);
+	// console.log(follower);
 
 	return (
 		<>
@@ -277,11 +400,11 @@ function Profile({ refreshUser }) {
 						</OverviewItem>
 						<OverviewItem>
 							<span>Follower</span>
-							<span>{follower}</span>
+							<span>{follower.length}</span>
 						</OverviewItem>
 						<OverviewItem>
 							<span>Following</span>
-							<span>{following}</span>
+							<span>{following.length}</span>
 						</OverviewItem>
 					</Overview>
 					{isOwner ? (
@@ -323,8 +446,16 @@ function Profile({ refreshUser }) {
 						</Tabs>
 					) : (
 						<Tabs>
-							<Tab isActive={true}>
-								<Link to={`/${userObject.uid}/profile/follow`}>Follow</Link>
+							<Tab isActive={true} onMouseEnter={() => setFollowInfoCheck()}>
+								{!isFollowing ? (
+									<a href="#" onClick={followClicked}>
+										Follow
+									</a>
+								) : (
+									<a href="#" onClick={unFollowClicked}>
+										UnFollow
+									</a>
+								)}
 							</Tab>
 							<Tab isActive={true}>
 								<Link to={`/${userObject.uid}/profile/message`}>Message</Link>
@@ -336,7 +467,13 @@ function Profile({ refreshUser }) {
 						<PostingContainer>
 							{postings?.map((posting, index) => (
 								<Posting key={index}>
-									<PostingPreviewImg src={posting.photoUrl[0]} />
+									<Link
+										to={`/postingDetail/${posting?.id}`}
+										onClick={() => PostingIconClicked(posting)}
+										onMouseEnter={() => PostingIconClicked(posting)}
+									>
+										<PostingPreviewImg src={posting.photoUrl[0]} />
+									</Link>
 								</Posting>
 							))}
 						</PostingContainer>
@@ -355,6 +492,7 @@ function Profile({ refreshUser }) {
 							</Route>
 						</Switch>
 					)}
+					<div style={{ width: 300, height: 150 }}></div>
 				</Container>
 			)}
 		</>

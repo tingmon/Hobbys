@@ -443,7 +443,7 @@ function PostingDetail() {
 									<CommentListContainer>
 										<ul>
 											{comments?.map((comment) => (
-												<CommentList key={comment.id} {...comment} />
+												<CommentList key={comment.id} comment={comment} />
 											))}
 										</ul>
 									</CommentListContainer>
@@ -570,7 +570,7 @@ function PostingDetail() {
 									<CommentListContainer>
 										<ul>
 											{comments?.map((comment) => (
-												<CommentList key={comment.id} {...comment} />
+												<CommentList key={comment.id} comment={comment} />
 											))}
 										</ul>
 									</CommentListContainer>

@@ -11,6 +11,9 @@ import {
 } from "../atoms";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { dbService } from "../fbase";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
@@ -26,65 +29,85 @@ const ProfileTag = styled.div`
 	}
 `;
 
-function CommentList({
-	id,
-	commenterUid,
-	postingId,
-	commenterPhotoURL,
-	commeterDisplayName,
-	text,
-	timeStamp,
-}) {
+const IconElement = styled.a`
+	margin: 10px;
+`;
+
+function CommentList({ comment }) {
 	const userObject = useRecoilValue(userObjectAtom);
-	const selectedPosting = useRecoilValue(selectedPostingAtom);
+	const [selectedPosting, setSelectedPosting] =
+		useRecoilState(selectedPostingAtom);
 	const [selectedComment, setSelectedComment] =
 		useRecoilState(selectedCommentAtom);
 	const [isOwner, setIsOwner] = useState(false);
-
-	const CommentIconClicked = (commenterUid) => {
-		console.log(commenterUid);
-		setSelectedComment(commenterUid);
-	};
+	const [commentInfo, setCommentInfo] = useState(null);
 
 	useEffect(() => {
 		if (userObject.uid === selectedPosting.creatorUid) {
 			setIsOwner(true);
 		}
+		console.log(comment);
+
+		setCommentInfo(() => {});
 	}, []);
 
+	const CommentIconClicked = () => {
+		console.log(comment);
+
+		setSelectedComment(comment);
+		console.log(selectedComment);
+	};
+
+	const clearSelectedPosting = () => {
+		setSelectedPosting(null);
+		console.log("clear selected posting");
+	};
+
+	const onDeleteClick = async (event) => {
+		event.preventDefault();
+		await dbService.doc(`Comment/${comment.id}`).delete();
+	};
+
+	// need to create onDelete function
 	//프리뷰이미지와 디스플레이네임 코멘트를 단 유저 것으로 바꿔야함
 	return (
 		<>
-			{userObject.uid == commenterUid ? (
+			{userObject.uid == comment?.commenterUid ? (
 				<>
 					<li>
-						<ProfileTag>
+						<ProfileTag onMouseEnter={() => CommentIconClicked()}>
 							<Link
-								to={`/${commenterUid}/profile`}
-								onClick={() => CommentIconClicked(commenterUid)}
+								to={`/${comment?.commenterUid}/profile`}
+								onClick={() => clearSelectedPosting()}
 							>
-								<PreviewImg src={commenterPhotoURL}></PreviewImg>
+								<PreviewImg src={comment?.commenterPhotoURL}></PreviewImg>
 							</Link>
-							{commeterDisplayName}
+							{comment?.commeterDisplayName}
 						</ProfileTag>
-						<span>{text}</span>
-						<button>delete</button>
+						<span>{comment?.text}</span>
+						<IconElement href="#" onClick={onDeleteClick}>
+							<FontAwesomeIcon icon={faTrash} />
+						</IconElement>
 					</li>
 				</>
 			) : (
 				<>
 					<li>
-						<ProfileTag>
+						<ProfileTag onMouseEnter={() => CommentIconClicked()}>
 							<Link
-								to={`/${commenterUid}/profile`}
-								onClick={() => CommentIconClicked(commenterUid)}
+								to={`/${comment?.commenterUid}/profile`}
+								onClick={() => clearSelectedPosting()}
 							>
-								<PreviewImg src={commenterPhotoURL}></PreviewImg>
+								<PreviewImg src={comment?.commenterPhotoURL}></PreviewImg>
 							</Link>
-							{commeterDisplayName}
+							{comment?.commeterDisplayName}
 						</ProfileTag>
-						<span>{text}</span>
-						{isOwner && <button>delete</button>}
+						<span>{comment?.text}</span>
+						{isOwner && (
+							<IconElement href="#" onClick={onDeleteClick}>
+								<FontAwesomeIcon icon={faTrash} />
+							</IconElement>
+						)}
 					</li>
 				</>
 			)}

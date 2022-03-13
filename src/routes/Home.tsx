@@ -12,6 +12,7 @@ import {
 	selectedPostingAtom,
 	isNewUserAtom,
 	userObjectAtom,
+	selectedCommentAtom,
 } from "../atoms";
 import { authService, dbService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
@@ -109,6 +110,7 @@ function Home() {
 	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPosting, setSelectedPosting] =
 		useRecoilState(selectedPostingAtom);
+	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const [likeList, setLikeList] = useState([]);
 	const [comment, setComment] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
@@ -157,11 +159,13 @@ function Home() {
 	const PostingIconClicked = (postingInfo) => {
 		console.log(postingInfo);
 		setSelectedPosting(postingInfo);
+		setSelectedComment(null);
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
 		event.preventDefault();
 		setSelectedPosting(postingInfo);
+		setSelectedComment(null);
 		let isCancel = false;
 		const like = {
 			likerUid: userObject.uid,
@@ -220,6 +224,7 @@ function Home() {
 		} else if (postingInfo.id !== selectedPosting?.id) {
 			setIsCommenting(true);
 			setSelectedPosting(postingInfo);
+			setSelectedComment(null);
 		}
 	};
 

@@ -13,7 +13,7 @@ import {
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { selectedPostingAtom } from "../atoms";
+import { selectedCommentAtom, selectedPostingAtom } from "../atoms";
 
 const NavContainer = styled.nav`
 	display: flex;
@@ -49,8 +49,10 @@ const NavItem = styled.li`
 
 const Navigation = ({ userObject }) => {
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
+	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const MyProfileClicked = () => {
 		setSelectedPosting(null);
+		setSelectedComment(null);
 		console.log("nav work");
 	};
 	return (
