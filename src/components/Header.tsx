@@ -80,15 +80,6 @@ function Header() {
 						/>
 					</Link>
 				</NavItem>
-				<NavItem>
-					<Link to="/cart">
-						<FontAwesomeIcon
-							icon={faShoppingCart}
-							color={"#04AAFF"}
-							size="2x"
-						/>
-					</Link>
-				</NavItem>
 			</NavList>
 		</NavContainer>
 	);

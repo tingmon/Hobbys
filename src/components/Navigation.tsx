@@ -5,6 +5,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import {
+	faShoppingCart,
 	faUser,
 	faSearch,
 	faHeart,
@@ -71,6 +72,15 @@ const Navigation = ({ userObject }) => {
 				<NavItem>
 					<Link to="/like">
 						<FontAwesomeIcon icon={faHeart} color={"#04AAFF"} size="2x" />
+					</Link>
+				</NavItem>
+				<NavItem>
+					<Link to="/cart">
+						<FontAwesomeIcon
+							icon={faShoppingCart}
+							color={"#04AAFF"}
+							size="2x"
+						/>
 					</Link>
 				</NavItem>
 				<NavItem>
