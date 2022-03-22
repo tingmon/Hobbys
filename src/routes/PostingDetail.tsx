@@ -328,10 +328,10 @@ function PostingDetail() {
 												<LoyaltyIcon />
 												<span>Sold out</span>
 											</SaleTag>
-										) : selectedPosting.onSale ? (
+										) : selectedPosting.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon />
-												<span>On Sale / </span>
+												<span>For Sale / </span>
 												<span>Price: ${selectedPosting.price}</span>
 											</SaleTag>
 										) : (
@@ -395,7 +395,7 @@ function PostingDetail() {
 												</IconElement>
 
 												{selectedPosting.creatorUid !== userObject.uid &&
-													selectedPosting.onSale === true && (
+													selectedPosting.forSale === true && (
 														<Link
 															to="/editposting"
 															onClick={() =>
@@ -415,6 +415,9 @@ function PostingDetail() {
 												</IconElement>
 											</div>
 										</LikeAndComment>
+										<TextBox>
+											<span>Item Name: {selectedPosting.itemName}</span>
+										</TextBox>
 										<TextBox>
 											<span>Category: {selectedPosting.category}</span>
 										</TextBox>
@@ -472,7 +475,7 @@ function PostingDetail() {
 												<LoyaltyIcon />
 												<span>Sold out</span>
 											</SaleTag>
-										) : selectedPosting.onSale ? (
+										) : selectedPosting.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon />
 												<span>On Sale / </span>
@@ -534,7 +537,7 @@ function PostingDetail() {
 												</IconElement>
 
 												{selectedPosting.creatorUid !== userObject.uid &&
-													selectedPosting.onSale === true && (
+													selectedPosting.forSale === true && (
 														<Link
 															to="/editposting"
 															onClick={() =>
@@ -547,7 +550,13 @@ function PostingDetail() {
 											</div>
 										</LikeAndComment>
 										<TextBox>
-											<span>{selectedPosting.text}</span>
+											<span>Item Name: {selectedPosting.itemName}</span>
+										</TextBox>
+										<TextBox>
+											<span>Category: {selectedPosting.category}</span>
+										</TextBox>
+										<TextBox>
+											<span>Text: {selectedPosting.text}</span>
 										</TextBox>
 										{isCommenting && (
 											<>

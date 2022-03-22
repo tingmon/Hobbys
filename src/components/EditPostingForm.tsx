@@ -103,9 +103,10 @@ const PreviewImg = styled.img`
 
 interface IForm {
 	text: string;
-	onSale: boolean;
+	forSale: boolean;
 	price: number;
 	category: string;
+	itemName: string;
 }
 
 interface IPosting {
@@ -114,7 +115,7 @@ interface IPosting {
 	photoUrl: string;
 	createdAt: number;
 	text: string;
-	onSale: boolean;
+	forSale: boolean;
 	soldOut: boolean;
 	price: number;
 	category: string;
@@ -123,7 +124,7 @@ interface IPosting {
 function EditPostingForm() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(false);
-	const [onSale, setOnSale] = useState(true);
+	const [forSale, setForSale] = useState(true);
 	const userObject = useRecoilValue(userObjectAtom);
 	const selectedPosting = useRecoilValue(selectedPostingAtom);
 	const {
@@ -141,7 +142,7 @@ function EditPostingForm() {
 	});
 
 	useEffect(() => {
-		setOnSale(selectedPosting.onSale);
+		setForSale(selectedPosting.forSale);
 	}, []);
 
 	const onEditClicked = (event) => {
@@ -170,23 +171,25 @@ function EditPostingForm() {
 		try {
 			setIsLoading(true);
 
-			if (onSale) {
+			if (forSale) {
 				dbService.doc(`Posting/${selectedPosting.id}`).update({
 					text: data.text,
-					onSale: onSale,
+					forSale: forSale,
 					price: data.price,
 					category: data.category,
+					itemName: data.itemName,
 				});
-				console.log("onsale success");
+				console.log("forSale success");
 				// data.username
 			} else {
 				dbService.doc(`Posting/${selectedPosting.id}`).update({
 					text: data.text,
-					onSale: onSale,
+					forSale: forSale,
 					price: 0,
 					category: data.category,
+					itemName: "",
 				});
-				console.log("not onsale success");
+				console.log("not forSale success");
 			}
 			alert("Posting Edited!");
 			history.push("/");
@@ -201,7 +204,7 @@ function EditPostingForm() {
 				<FormControlLabel
 					control={
 						<Checkbox
-							checked={onSale}
+							checked={forSale}
 							sx={{
 								color: pink[800],
 								"&.Mui-checked": {
@@ -210,17 +213,17 @@ function EditPostingForm() {
 							}}
 						/>
 					}
-					label="On Sale?"
+					label="For Sale?"
 					onChange={(event) => {
 						if (event.target.checked) {
-							setOnSale(true);
+							setForSale(true);
 						} else {
-							setOnSale(false);
+							setForSale(false);
 						}
 					}}
 				/>
 			</FormGroup>
-			{!onSale ? (
+			{!forSale ? (
 				<>
 					<PageTitle></PageTitle>
 					<SignUpForm onSubmit={handleSubmit(onValid)}>
@@ -265,6 +268,14 @@ function EditPostingForm() {
 							placeholder="*Enter Category"
 						/>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
+
+						<InputField
+							type="text"
+							{...register("itemName", {})}
+							placeholder="*Enter Item Name"
+						/>
+						<ErrorMessage>{errors?.itemName?.message}</ErrorMessage>
+
 						<InputField
 							type="number"
 							step="0.01"

@@ -15,7 +15,7 @@ import Header from "./Header";
 import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Search from "../routes/Search";
-import Like from "../routes/Like";
+import LikeList from "../routes/LikeList";
 import AddPosting from "../routes/AddPostingPhoto";
 import Message from "../routes/Message";
 import Posting from "../routes/Posting";
@@ -26,7 +26,6 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Cart from "../routes/Cart";
 import AddPostingDetail from "../routes/AddPostingDetail";
 import AddPostingPhoto from "../routes/AddPostingPhoto";
-import EditPosting from "../routes/EditPosting";
 import PostingDetail from "../routes/PostingDetail";
 
 function AppRouter({ refreshUser }) {
@@ -58,17 +57,14 @@ function AppRouter({ refreshUser }) {
 						<Route exact path="/search">
 							<Search />
 						</Route>
-						<Route exact path="/like">
-							<Like />
+						<Route exact path="/likelist">
+							<LikeList />
 						</Route>
 						<Route exact path="/addposting">
 							<AddPostingPhoto
 								userObject={userObject}
 								refreshUser={refreshUser}
 							/>
-						</Route>
-						<Route exact path="/editposting">
-							<EditPosting userObject={userObject} />
 						</Route>
 						<Route exact path={`/postingDetail/${selectedPostingInfo?.id}`}>
 							<PostingDetail />

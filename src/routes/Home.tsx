@@ -13,6 +13,7 @@ import {
 	isNewUserAtom,
 	userObjectAtom,
 	selectedCommentAtom,
+	cartAtom,
 } from "../atoms";
 import { authService, dbService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
@@ -111,6 +112,7 @@ function Home() {
 	const [selectedPosting, setSelectedPosting] =
 		useRecoilState(selectedPostingAtom);
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
+	const [cart, setCart] = useRecoilState(cartAtom);
 	const [likeList, setLikeList] = useState([]);
 	const [comment, setComment] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
@@ -141,8 +143,22 @@ function Home() {
 			});
 	}
 
+	async function fetchCart() {
+		dbService
+			.collection("Cart")
+			.where("cartOwnerUid", "==", userObject.uid)
+			.onSnapshot((snapshot) => {
+				const cartSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setCart(cartSnapshot);
+			});
+	}
+
 	useEffect(() => {
 		fetchPosting();
+		fetchCart();
 		setIsLoading(false);
 		// arr = likeList;
 	}, []);
@@ -160,6 +176,46 @@ function Home() {
 		console.log(postingInfo);
 		setSelectedPosting(postingInfo);
 		setSelectedComment(null);
+	};
+
+	const AddCartIconClicked = async (postingInfo) => {
+		// if user has no cart, create cart first.
+		// after adding item, show message box and 'go to cart' button.
+		setSelectedPosting(postingInfo);
+		setSelectedComment(null);
+
+		if (cart.length == 0) {
+			console.log("???");
+			const cart = {
+				cartOwnerUid: userObject.uid,
+				items: [
+					{
+						item: [
+							{
+								postingId: postingInfo.id,
+								creatorUid: postingInfo.creatorUid,
+								creatorDisplayName: postingInfo.creatorDisplayName,
+								itemPhoto: postingInfo.photoUrl[0],
+								itemName: postingInfo.itemName,
+								itemCategory: postingInfo.category,
+								itemPrice: postingInfo.price,
+							},
+						],
+					},
+				],
+			};
+			await dbService.collection("Cart").add(cart);
+			console.log("cart added");
+		} else {
+			// await dbService.collection("Like").add(like);
+
+			// dbService.doc(`Posting/${postingInfo.id}`).update({
+			// 	"likes.likerUid": firebaseInstance.firestore.FieldValue.arrayUnion(
+			// 		userObject.uid
+			// 	),
+			// });
+			console.log(cart);
+		}
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
@@ -253,6 +309,8 @@ function Home() {
 		}
 	};
 
+	console.log(cart);
+
 	return (
 		<div>
 			{isLoading ? (
@@ -283,10 +341,10 @@ function Home() {
 													<LoyaltyIcon />
 													<span>Sold out</span>
 												</SaleTag>
-											) : item.onSale ? (
+											) : item.forSale ? (
 												<SaleTag>
 													<LoyaltyIcon />
-													<span>On Sale / </span>
+													<span>For Sale / </span>
 													<span>Price: ${item.price}</span>
 												</SaleTag>
 											) : (
@@ -360,10 +418,10 @@ function Home() {
 												</a>
 
 												{item.creatorUid !== userObject?.uid &&
-													item.onSale === true && (
+													item.forSale === true && (
 														<Link
-															to="/editposting"
-															onClick={() => PostingIconClicked(item)}
+															to="/cart"
+															onClick={() => AddCartIconClicked(item)}
 														>
 															<AddShoppingCartIcon />
 														</Link>

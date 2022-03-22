@@ -70,7 +70,7 @@ const Navigation = ({ userObject }) => {
 					</Link>
 				</NavItem>
 				<NavItem>
-					<Link to="/like">
+					<Link to="/likelist">
 						<FontAwesomeIcon icon={faHeart} color={"#04AAFF"} size="2x" />
 					</Link>
 				</NavItem>

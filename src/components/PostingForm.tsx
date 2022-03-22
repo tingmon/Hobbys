@@ -97,9 +97,10 @@ const PreviewImg = styled.img`
 
 interface IForm {
 	text: string;
-	onSale: boolean;
+	forSale: boolean;
 	price: number;
 	category: string;
+	itemName: string;
 }
 
 interface IPosting {
@@ -108,16 +109,17 @@ interface IPosting {
 	photoUrl: string;
 	createdAt: number;
 	text: string;
-	onSale: boolean;
+	forSale: boolean;
 	soldOut: boolean;
 	price: number;
 	category: string;
+	itemName: string;
 }
 
 function PostingForm() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(false);
-	const [onSale, setOnSale] = useState(true);
+	const [forSale, setForSale] = useState(true);
 	const userObject = useRecoilValue(userObjectAtom);
 	const [photoURL, setPhotoURLAtom] = useRecoilState(photoURLAtom); // posting images url
 	const {
@@ -175,7 +177,7 @@ function PostingForm() {
 
 			console.log(postingImgArr);
 
-			if (onSale) {
+			if (forSale) {
 				const posting = {
 					creatorUid: userObject.uid,
 					creatorDisplayName: userObject.displayName,
@@ -183,14 +185,15 @@ function PostingForm() {
 					photoUrl: postingImgArr,
 					createdAt: Date.now(),
 					text: data.text,
-					onSale: onSale,
+					forSale: forSale,
 					soldOut: false,
+					itemName: data.itemName,
 					price: data.price,
 					category: data.category,
 					likes: [],
 				};
 				await dbService.collection("Posting").add(posting);
-				console.log("onsale success");
+				console.log("forSale success");
 				// data.username
 			} else {
 				const posting = {
@@ -200,14 +203,15 @@ function PostingForm() {
 					photoUrl: postingImgArr,
 					createdAt: Date.now(),
 					text: data.text,
-					onSale: onSale,
+					forSale: forSale,
 					soldOut: false,
+					itemName: "",
 					price: 0,
 					category: data.category,
 					likes: [],
 				};
 				await dbService.collection("Posting").add(posting);
-				console.log("not onsale success");
+				console.log("not forSale success");
 			}
 			setPhotoURLAtom("");
 			alert("Posting Uploaded!");
@@ -240,17 +244,17 @@ function PostingForm() {
 							}}
 						/>
 					}
-					label="On Sale?"
+					label="For Sale?"
 					onChange={(event) => {
 						if (event.target.checked) {
-							setOnSale(true);
+							setForSale(true);
 						} else {
-							setOnSale(false);
+							setForSale(false);
 						}
 					}}
 				/>
 			</FormGroup>
-			{!onSale ? (
+			{!forSale ? (
 				<>
 					<PageTitle></PageTitle>
 					<SignUpForm onSubmit={handleSubmit(onValid)}>
@@ -297,11 +301,19 @@ function PostingForm() {
 							placeholder="*Enter Category"
 						/>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
+
+						<InputField
+							type="text"
+							{...register("itemName", {})}
+							placeholder="*Enter Item Name"
+						/>
+						<ErrorMessage>{errors?.itemName?.message}</ErrorMessage>
+
 						<InputField
 							type="number"
 							step="0.01"
 							{...register("price", { required: "Price is Required" })}
-							placeholder="*Enter price"
+							placeholder="*Enter Price"
 						/>
 						<ErrorMessage>{errors?.price?.message}</ErrorMessage>
 						{isLoading ? (
