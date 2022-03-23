@@ -85,7 +85,7 @@ const NextBtn = styled.button`
 	cursor: pointer;
 
 	max-width: 320px;
-	width: 100%;
+	width: 300px;
 	padding: 10px;
 	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
@@ -202,15 +202,13 @@ function AddPostingPhoto({ userObject, refreshUser }) {
 					photoURL.map((item, index) => <Item key={index} item={item}></Item>)}
 			</Carousel>
 			{photoURL && (
-				<NextBtn>
-					<Link
-						to={{
-							pathname: `/addposting/${uid}`,
-						}}
-					>
-						Next
-					</Link>
-				</NextBtn>
+				<Link
+					to={{
+						pathname: `/addposting/${uid}`,
+					}}
+				>
+					<NextBtn>Next</NextBtn>
+				</Link>
 			)}
 		</Container>
 	);

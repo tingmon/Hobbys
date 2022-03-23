@@ -90,6 +90,10 @@ const PhotoInput = styled.span`
 	margin-bottom: 5px;
 `;
 
+const ErrorMessage = styled.span`
+	color: red;
+`;
+
 interface IForm {
 	userName?: string;
 	streetName?: string;
@@ -102,6 +106,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	const history = useHistory();
 	const [newPhotoURL, setNewPhotoURL] = useState(userObject.photoURL);
 	const [previewImg, setpreviewImg] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	// const userInfo = await dbService
 	// 	.collection("UserInfo")
@@ -119,16 +124,17 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	} = useForm<IForm>({
 		defaultValues: {
 			userName: userInfo.docs[0].data().displayName,
-			streetName: userInfo.docs[0].data().streetName,
-			city: userInfo.docs[0].data().city,
-			province: userInfo.docs[0].data().province,
-			postalCode: userInfo.docs[0].data().postalCode,
 		},
 	});
 
 	const onLogOutClick = () => {
 		authService.signOut();
 		history.push("/");
+	};
+
+	const onEditClick = (event) => {
+		event.stopPropagation();
+		setIsLoading(true);
 	};
 
 	const onValid = async (data: IForm) => {
@@ -151,20 +157,10 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 			.orderBy("createdAt", "desc")
 			.get();
 		const appliedPosting = posting.docs.map((doc) => doc.id);
-		if (
-			data.streetName !== "" ||
-			data.city !== "" ||
-			data.province !== "" ||
-			data.postalCode !== "" ||
-			data.userName !== ""
-		) {
+		if (data.userName !== "") {
 			console.log(data);
 			const userUpdate = {
 				displayName: data.userName,
-				streetName: data.streetName,
-				city: data.city,
-				province: data.province,
-				postalCode: data.postalCode,
 			};
 			await userInfo.docs[0].ref.update(userUpdate);
 		}
@@ -295,32 +291,31 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					})}
 					placeholder="Edit User Name"
 				/>
-				<InputField
-					type="text"
-					{...register("streetName")}
-					placeholder="Edit Street Name"
-				/>
-				<InputField type="text" {...register("city")} placeholder="Edit City" />
-				<InputField
-					type="text"
-					{...register("province")}
-					placeholder="Edit Province"
-				/>
-				<InputField
-					type="text"
-					{...register("postalCode", {
-						pattern: {
-							value:
-								/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
-							message: "Invalid Postal Code Pattern",
-						},
-					})}
-					placeholder="Edit Postal Code"
-				/>
-				<SubmitBtn>Edit Profile</SubmitBtn>
-				<LogoutBtn className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
-					Log Out
-				</LogoutBtn>
+				<ErrorMessage>{errors?.email?.message}</ErrorMessage>
+				{isLoading ? (
+					<>
+						<SubmitBtn disabled style={{ cursor: "wait" }}>
+							Applying...
+						</SubmitBtn>
+						<LogoutBtn
+							className="formBtn cancelBtn logOut"
+							disabled
+							style={{ cursor: "wait" }}
+						>
+							Log Out
+						</LogoutBtn>
+					</>
+				) : (
+					<>
+						<SubmitBtn onClick={onEditClick}>Edit Profile</SubmitBtn>
+						<LogoutBtn
+							className="formBtn cancelBtn logOut"
+							onClick={onLogOutClick}
+						>
+							Log Out
+						</LogoutBtn>
+					</>
+				)}
 			</EditForm>
 		</Container>
 	);

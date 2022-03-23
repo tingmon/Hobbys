@@ -128,15 +128,31 @@ const Posting = styled.div`
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
+	a {
+		width: 100%;
+		height: 100%;
+	}
+`;
+
+const PostingCenter = styled.div`
+	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	height: 100%;
 `;
 
 const PostingPreviewImg = styled.img`
 	min-width: 100%;
 	min-height: 100%;
+	max-width: 100%;
+	max-height: 100%;
 `;
 
 function Profile({ refreshUser }) {
-	const { uid } = useParams();
+	let { uid } = useParams();
+
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOwner, setIsOwner] = useState(false);
 	const [rank, setRank] = useState("");
@@ -163,7 +179,7 @@ function Profile({ refreshUser }) {
 	// console.log(uid);
 	const [postings, setPostings] = useRecoilState(postingsObject);
 
-	async function fetchPosting(userId) {
+	async function fetchPostings(userId) {
 		dbService
 			.collection("Posting")
 			.where("creatorUid", "==", userId)
@@ -240,7 +256,7 @@ function Profile({ refreshUser }) {
 		setPhotoURL(url);
 	};
 
-	const retrieveFollowInfo = async (uid) => {
+	const retrieveFollowInfo = async (uid, flag) => {
 		// retrieve people who is followed by user
 		// 주체
 		dbService
@@ -267,19 +283,42 @@ function Profile({ refreshUser }) {
 				setFollower(followSnapshot);
 			});
 
-		const isFollowCheck = await dbService
-			.collection("Follow")
-			.where("followerUid", "==", userObject.uid)
-			.get();
-		// console.log(isFollowCheck.docs[0].data().followerDisplayName);
-		if (isFollowCheck.docs[0].data().followerUid === userObject.uid) {
-			setIsFollowing(true);
-		} else {
-			setIsFollowing(false);
+		// selectedPostingInfo?.creatorUid || selectedComment?.commenterUid,
+		if (flag) {
+			if (selectedPostingInfo != null) {
+				const isFollowCheck = await dbService
+					.collection("Follow")
+					.where("followerUid", "==", userObject.uid)
+					.where("followingUid", "==", selectedPostingInfo.creatorUid)
+					.get();
+
+				if (isFollowCheck.docs[0] != undefined) {
+					if (isFollowCheck.docs[0].data().followerUid === userObject.uid) {
+						setIsFollowing(true);
+					} else {
+						setIsFollowing(false);
+					}
+				}
+			} else {
+				const isFollowCheck = await dbService
+					.collection("Follow")
+					.where("followerUid", "==", userObject.uid)
+					.where("followingUid", "==", selectedComment.commenterUid)
+					.get();
+
+				if (isFollowCheck.docs[0] != undefined) {
+					if (isFollowCheck.docs[0].data().followerUid === userObject.uid) {
+						setIsFollowing(true);
+					} else {
+						setIsFollowing(false);
+					}
+				}
+			}
 		}
 	};
 
 	useEffect(async () => {
+		setPostings(null);
 		console.log(selectedPostingInfo);
 		console.log(selectedComment);
 		if (
@@ -307,9 +346,9 @@ function Profile({ refreshUser }) {
 
 			setDisplayNameAndPhotoURL(userObject.displayName, userObject.photoURL);
 
-			retrieveFollowInfo(userObject.uid);
+			retrieveFollowInfo(userObject.uid, false);
 
-			fetchPosting(userObject.uid);
+			fetchPostings(userObject.uid);
 		}
 		// 남의 페이지(본인 아님)
 		else if (selectedPostingInfo !== null) {
@@ -333,13 +372,13 @@ function Profile({ refreshUser }) {
 				selectedPostingInfo.creatorImgUrl
 			);
 
-			retrieveFollowInfo(selectedPostingInfo.creatorUid);
+			retrieveFollowInfo(selectedPostingInfo.creatorUid, true);
 
 			// follower.map(
 			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
 			// );
 
-			fetchPosting(selectedPostingInfo.creatorUid);
+			fetchPostings(selectedPostingInfo.creatorUid);
 		} else if (selectedComment !== null) {
 			console.log("from comment link");
 			if (selectedComment.commenterUid === userObject.uid) {
@@ -357,19 +396,20 @@ function Profile({ refreshUser }) {
 				selectedComment.commenterPhotoURL
 			);
 
-			retrieveFollowInfo(selectedComment.commenterUid);
+			retrieveFollowInfo(selectedComment.commenterUid, true);
 
 			// follower.map(
 			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
 			// );
 
-			fetchPosting(selectedComment.commenterUid);
+			fetchPostings(selectedComment.commenterUid);
 		}
 		setIsLoading(false);
 	}, [uid]);
 
 	// console.log(followInfo);
 	// console.log(follower);
+	console.log(uid);
 
 	return (
 		<>
@@ -472,7 +512,9 @@ function Profile({ refreshUser }) {
 										onClick={() => PostingIconClicked(posting)}
 										onMouseEnter={() => PostingIconClicked(posting)}
 									>
-										<PostingPreviewImg src={posting.photoUrl[0]} />
+										<PostingCenter>
+											<PostingPreviewImg src={posting.photoUrl[0]} />
+										</PostingCenter>
 									</Link>
 								</Posting>
 							))}

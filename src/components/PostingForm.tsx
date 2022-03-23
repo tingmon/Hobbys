@@ -275,7 +275,9 @@ function PostingForm() {
 								<SubmitBtn disabled style={{ cursor: "wait" }}>
 									Uploading...
 								</SubmitBtn>
-								<GoBackBtn disabled>Go Back</GoBackBtn>
+								<GoBackBtn disabled style={{ cursor: "wait" }}>
+									Go Back
+								</GoBackBtn>
 							</>
 						) : (
 							<>
@@ -321,7 +323,9 @@ function PostingForm() {
 								<SubmitBtn disabled style={{ cursor: "wait" }}>
 									Uploading...
 								</SubmitBtn>
-								<GoBackBtn disabled>Go Back</GoBackBtn>
+								<GoBackBtn disabled style={{ cursor: "wait" }}>
+									Go Back
+								</GoBackBtn>
 							</>
 						) : (
 							<>

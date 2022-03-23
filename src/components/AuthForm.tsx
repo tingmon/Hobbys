@@ -133,10 +133,6 @@ function AuthForm() {
 				const userInfo: IAdditionalUserInfo = {
 					uid: user.user?.uid,
 					displayName: data.userName,
-					streetName: data.streetName,
-					city: data.city,
-					province: data.province,
-					postalCode: data.postalCode,
 					sellerPoint: 0,
 					buyerPoint: 0,
 					rank: Ranks.Bronze,
@@ -214,36 +210,6 @@ function AuthForm() {
 							placeholder="*Enter User Name"
 						/>
 						<ErrorMessage>{errors?.userName?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("streetName")}
-							placeholder="Enter Street Name"
-						/>
-						<ErrorMessage>{errors?.streetName?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("city")}
-							placeholder="Enter City"
-						/>
-						<ErrorMessage>{errors?.city?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("province")}
-							placeholder="Enter Province"
-						/>
-						<ErrorMessage>{errors?.province?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("postalCode", {
-								pattern: {
-									value:
-										/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
-									message: "Invalid Postal Code Pattern",
-								},
-							})}
-							placeholder="Enter Postal Code"
-						/>
-						<ErrorMessage>{errors?.postalCode?.message}</ErrorMessage>
 						<SubmitBtn>Sign Up</SubmitBtn>
 					</SignUpForm>
 				</>

@@ -105,18 +105,24 @@ const TextBox = styled.div`
 	max-height: 50px;
 `;
 
+const CartIcon = styled.a`
+	cursor: pointer;
+`;
+
 function Home() {
 	const history = useHistory();
+	const [likeList, setLikeList] = useState<any>([]);
+	const [comment, setComment] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
+	const [isCommenting, setIsCommenting] = useState(false);
+
+	// recoil
 	const [postings, setPostings] = useRecoilState(postingsObject);
 	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPosting, setSelectedPosting] =
 		useRecoilState(selectedPostingAtom);
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const [cart, setCart] = useRecoilState(cartAtom);
-	const [likeList, setLikeList] = useState([]);
-	const [comment, setComment] = useState("");
-	const [isLoading, setIsLoading] = useState(true);
-	const [isCommenting, setIsCommenting] = useState(false);
 
 	async function fetchPosting() {
 		dbService
@@ -130,7 +136,9 @@ function Home() {
 				}));
 				setPostings(postingSnapshot);
 			});
+	}
 
+	function fetchLike() {
 		dbService
 			.collection("Like")
 			.where("likerUid", "==", userObject.uid)
@@ -143,7 +151,7 @@ function Home() {
 			});
 	}
 
-	async function fetchCart() {
+	function fetchCart() {
 		dbService
 			.collection("Cart")
 			.where("cartOwnerUid", "==", userObject.uid)
@@ -152,12 +160,13 @@ function Home() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				setCart(cartSnapshot);
+				setCart(cartSnapshot.splice(0));
 			});
 	}
 
 	useEffect(() => {
 		fetchPosting();
+		fetchLike();
 		fetchCart();
 		setIsLoading(false);
 		// arr = likeList;
@@ -190,35 +199,41 @@ function Home() {
 				cartOwnerUid: userObject.uid,
 				items: [
 					{
-						item: [
-							{
-								postingId: postingInfo.id,
-								creatorUid: postingInfo.creatorUid,
-								creatorDisplayName: postingInfo.creatorDisplayName,
-								itemPhoto: postingInfo.photoUrl[0],
-								itemName: postingInfo.itemName,
-								itemCategory: postingInfo.category,
-								itemPrice: postingInfo.price,
-							},
-						],
+						postingId: postingInfo.id,
+						creatorUid: postingInfo.creatorUid,
+						creatorDisplayName: postingInfo.creatorDisplayName,
+						itemPhoto: postingInfo.photoUrl[0],
+						itemName: postingInfo.itemName,
+						itemCategory: postingInfo.category,
+						itemPrice: postingInfo.price,
 					},
 				],
 			};
 			await dbService.collection("Cart").add(cart);
 			console.log("cart added");
 		} else {
-			// await dbService.collection("Like").add(like);
-
-			// dbService.doc(`Posting/${postingInfo.id}`).update({
-			// 	"likes.likerUid": firebaseInstance.firestore.FieldValue.arrayUnion(
-			// 		userObject.uid
-			// 	),
-			// });
 			console.log(cart);
+			console.log("cart exsist");
+			dbService.doc(`Cart/${cart[0].id}`).update({
+				items: firebaseInstance.firestore.FieldValue.arrayUnion({
+					postingId: postingInfo.id,
+					creatorUid: postingInfo.creatorUid,
+					creatorDisplayName: postingInfo.creatorDisplayName,
+					itemPhoto: postingInfo.photoUrl[0],
+					itemName: postingInfo.itemName,
+					itemCategory: postingInfo.category,
+					itemPrice: postingInfo.price,
+				}),
+			});
+		}
+		fetchCart();
+		if (window.confirm("Item Added! Go to Cart?")) {
+			history.push("/cart");
 		}
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
+		console.log("like clicked");
 		event.preventDefault();
 		setSelectedPosting(postingInfo);
 		setSelectedComment(null);
@@ -309,7 +324,7 @@ function Home() {
 		}
 	};
 
-	console.log(cart);
+	console.log(postings);
 
 	return (
 		<div>
@@ -334,7 +349,12 @@ function Home() {
 														src={item.creatorImgUrl}
 													></PreviewImg>
 												</Link>
-												{item.creatorDisplayName}
+												<Link
+													to={`/${item?.creatorUid}/profile`}
+													onClick={() => PostingIconClicked(item)}
+												>
+													{item.creatorDisplayName}
+												</Link>
 											</ProfileTag>
 											{item.soldOut ? (
 												<SaleTag>
@@ -419,17 +439,17 @@ function Home() {
 
 												{item.creatorUid !== userObject?.uid &&
 													item.forSale === true && (
-														<Link
-															to="/cart"
-															onClick={() => AddCartIconClicked(item)}
-														>
+														<CartIcon onClick={() => AddCartIconClicked(item)}>
 															<AddShoppingCartIcon />
-														</Link>
+														</CartIcon>
 													)}
 											</LikeAndComment>
-											<TextBox>
-												<span>{item.text}</span>
-											</TextBox>
+											{!isCommenting && (
+												<TextBox>
+													<span>{item.text}</span>
+												</TextBox>
+											)}
+
 											{isCommenting && item.id == selectedPosting.id && (
 												<>
 													<p>add comment</p>

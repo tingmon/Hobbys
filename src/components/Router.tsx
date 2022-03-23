@@ -4,6 +4,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+	cartAtom,
 	isLoggedInState,
 	photoURLAtom,
 	selectedPostingAtom,
@@ -27,10 +28,11 @@ import Cart from "../routes/Cart";
 import AddPostingDetail from "../routes/AddPostingDetail";
 import AddPostingPhoto from "../routes/AddPostingPhoto";
 import PostingDetail from "../routes/PostingDetail";
+import Checkout from "../routes/Checkout";
 
 function AppRouter({ refreshUser }) {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
-	const [uid, setUidAtom] = useRecoilState(uidAtom);
+	const uid = useRecoilValue(uidAtom);
 	const userObject = useRecoilValue(userObjectAtom);
 	const selectedPostingInfo = useRecoilValue(selectedPostingAtom);
 
@@ -44,6 +46,7 @@ function AppRouter({ refreshUser }) {
 						<Route exact path="/">
 							<Home userObject={userObject} />
 						</Route>
+
 						{selectedPostingInfo === null ? (
 							<Route path={`/:uid/profile`}>
 								<Profile userObject={userObject} refreshUser={refreshUser} />
@@ -57,26 +60,34 @@ function AppRouter({ refreshUser }) {
 						<Route exact path="/search">
 							<Search />
 						</Route>
+
 						<Route exact path="/likelist">
 							<LikeList />
 						</Route>
+
+						<Route exact path={`/postingDetail/${selectedPostingInfo?.id}`}>
+							<PostingDetail />
+						</Route>
+
 						<Route exact path="/addposting">
 							<AddPostingPhoto
 								userObject={userObject}
 								refreshUser={refreshUser}
 							/>
 						</Route>
-						<Route exact path={`/postingDetail/${selectedPostingInfo?.id}`}>
-							<PostingDetail />
-						</Route>
 						<Route path={`/addposting/${uid}`}>
 							<AddPostingDetail />
 						</Route>
+
 						<Route exact path="/message">
 							<Message />
 						</Route>
-						<Route exact path="/cart">
+
+						<Route exact path={`/cart`}>
 							<Cart />
+						</Route>
+						<Route exact path={`/cart/${uid}`}>
+							<Checkout />
 						</Route>
 					</>
 				) : (

@@ -67,10 +67,6 @@ function SocialLogin() {
 			const userInfo: IAdditionalUserInfo = {
 				uid: data.user?.uid,
 				displayName: data.user?.displayName || undefined,
-				streetName: "",
-				city: "",
-				province: "",
-				postalCode: "",
 				sellerPoint: 0,
 				buyerPoint: 0,
 				rank: Ranks.Bronze,
