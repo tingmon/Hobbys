@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { cartAtom, totalInfoAtom } from "../atoms";
+import { cartAtom, priceTotalInfoAtom, totalInfoAtom } from "../atoms";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
@@ -107,7 +107,7 @@ const Value = styled.div``;
 
 function Cart() {
 	const [cart, setCart] = useRecoilState(cartAtom);
-	const setTotalInfo = useSetRecoilState(totalInfoAtom);
+	const setPriceTotal = useSetRecoilState(priceTotalInfoAtom);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEmpty, setIsEmpty] = useState(true);
@@ -143,7 +143,7 @@ function Cart() {
 					total: subTotalValue + shippingValue,
 				};
 				console.log(totalInfo);
-				setTotalInfo(totalInfo);
+				setPriceTotal(totalInfo);
 			}
 			setIsLoading(false);
 			setItems(itemsArray);

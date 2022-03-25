@@ -124,10 +124,38 @@ function TradeRecord() {
 			});
 	}
 
-	async function fetchTransactionRecord(uid) {
+	async function fetchSellTransactions(uid) {
 		dbService
 			.collection("TransactionInfo")
 			.where("sellerUid", "==", uid)
+			.orderBy("timeStamp", "desc")
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setSellingRecord(recordSnapshot);
+			});
+	}
+
+	async function fetchBuyTransactions(uid) {
+		dbService
+			.collection("TransactionInfo")
+			.where("buyerUid", "==", uid)
+			.orderBy("timeStamp", "desc")
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setBuyingRecord(recordSnapshot);
+			});
+	}
+
+	async function fetchAllTransactions(uid) {
+		dbService
+			.collection("TransactionInfo")
+			.where("combinedUid", "array-contains", uid)
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
 				const recordSnapshot = snapshot.docs.map((doc) => ({
@@ -165,15 +193,13 @@ function TradeRecord() {
 	}
 
 	useEffect(() => {
-		fetchTransactionRecord(userObject.uid).then(
+		fetchAllTransactions(userObject.uid).then(
 			console.log("fetching transaction record done")
 		);
-
-		fetchUserInfo(userObject.uid).then(console.log("user info: ", userInfo));
-
 		fetchPaymentInfo(userObject.uid).then(
 			console.log("payment info: ", paymentInfo)
 		);
+		fetchUserInfo(userObject.uid).then(console.log("user info: ", userInfo));
 
 		setIsLoading(false);
 	}, []);
@@ -199,7 +225,7 @@ function TradeRecord() {
 						</>
 					) : (
 						<>
-							<span>You have no payment info!</span>
+							<span>Complete payment info for your next purchase</span>
 							<Link>
 								<GoPaymentBtnRed onClick={() => {}}>
 									Go to Payment Info

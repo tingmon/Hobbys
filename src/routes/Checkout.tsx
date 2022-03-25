@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { cartAtom, totalInfoAtom } from "../atoms";
+import { cartAtom, priceTotalInfoAtom, totalInfoAtom } from "../atoms";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
@@ -100,7 +100,7 @@ const SubmitBtn = styled.button`
 
 function Checkout() {
 	const [isLoading, setIsLoading] = useState(true);
-	const totalInfo = useRecoilValue(totalInfoAtom);
+	const totalInfo = useRecoilValue(priceTotalInfoAtom);
 
 	console.log(totalInfo);
 
