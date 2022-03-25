@@ -1,15 +1,15 @@
 import { DefaultTheme } from "styled-components";
 
 export const lightTheme: DefaultTheme = {
-	bgColor: "#6ab04c",
+	bgColor: "#e8ebed",
 	textColor: "#ecf0f1",
 	btnColor: "#9b59b6",
 	formColor: "#34495e",
-	mainColor: "#f6e58d",
-	secondColor: "#ecf0f1",
+	mainColor: "#83c1be",
+	secondColor: "#e8ebed",
 	displayNameColor: "#2f3640",
 
-	postingBgColor: "#ffffff",
+	postingBgColor: "#f7f8f9",
 
 	cursorActive: "pointer",
 	cursorNotActive: "wait",

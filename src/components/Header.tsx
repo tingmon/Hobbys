@@ -30,7 +30,7 @@ const NavList = styled.ul`
 
 const NavItem = styled.li`
 	font-size: 15px;
-	margin: 10px 5px 10px 5px;
+	margin: 0px 2px 0px 5px;
 	a {
 		padding: 10px 5px 10px 5px;
 		transition: color 0.2s ease-in;
@@ -49,33 +49,35 @@ const LogoContainer = styled.div`
 	margin-left: 15px;
 `;
 
-const Logo = styled.img``;
+//const Logo = styled.img``;
 
 const Hobbys = styled.h1`
-	margin: 10px 2px 10px 5px;
-	font-size: x-large;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	margin: 0px 2px 5px 5px;
+	font-size: 25px;
 	font-weight: bold;
+	color: #F1A909;
 `;
+//<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
 function Header() {
 	return (
 		<NavContainer>
 			<LogoContainer>
-				<FontAwesomeIcon icon={faTools} color={"#c0392b"} size="2x" />
-				<Hobbys>Hobby's</Hobbys>
-				<FontAwesomeIcon icon={faStar} color={"#c0392b"} size="2x" />
+				
+				<Hobbys>HOBBY'S</Hobbys>
 			</LogoContainer>
 			<NavList>
 				<NavItem>
 					<Link to="/addposting">
-						<FontAwesomeIcon icon={faPlusSquare} color={"#04AAFF"} size="2x" />
+						<FontAwesomeIcon icon={faPlusSquare} color={"#45615F"} size="2x" />
 					</Link>
 				</NavItem>
 				<NavItem>
 					<Link to="/message">
 						<FontAwesomeIcon
 							icon={faFacebookMessenger}
-							color={"#04AAFF"}
+							color={"#45615F"}
 							size="2x"
 						/>
 					</Link>
