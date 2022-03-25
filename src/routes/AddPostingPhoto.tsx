@@ -78,22 +78,20 @@ const PostingForm = styled.form`
 `;
 
 const NextBtn = styled.button`
-	text-align: center;
-	background: #04aaff;
-	color: white;
-	margin-top: 10px;
-	cursor: pointer;
 
-	max-width: 320px;
-	width: 300px;
-	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 10px;
-	font-size: 12px;
-	color: black;
-	font-weight: bold;
-
+font-family: 'Noto Sans', sans-serif;
+text-align: center;
+margin-top: 10px;
+cursor: pointer;
+border-color: ${(props) => props.theme.secondColor};	
+background-color: ${(props) => props.theme.secondColor};
+max-width: 320px;
+width: 100%;
+padding: 10px;
+border-radius: 15px;
+margin-bottom: 10px;
+font-size: 12px;
+color: black;
 	a {
 		display: block;
 	}
@@ -106,11 +104,13 @@ const PreviewImg = styled.img`
 `;
 
 const PhotoInput = styled.span`
+	font-family: 'Noto Sans', sans-serif;
+	color: #000;
 	display: block;
 	cursor: pointer;
-	background-color: ${(props) => props.theme.textColor};
+	background-color: ${(props) => props.theme.secondColor};
 	padding: 10px;
-	border-radius: 40px;
+	border-radius: 15px;
 	margin-bottom: 5px;
 `;
 

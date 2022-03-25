@@ -20,13 +20,13 @@ import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import LoyaltyIcon from "@mui/icons-material/PaidRounded";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
-import CommentIcon from "@mui/icons-material/Comment";
+import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const PreviewImg = styled.img`
@@ -39,7 +39,7 @@ const Container = styled.div`
 	max-width: 480px;
 	margin: 0 auto;
 	width: 100%;
-	height: 80vh;
+	height: 85vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -47,31 +47,39 @@ const Container = styled.div`
 
 const PostingContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-	grid-template-rows: repeat(1, 500px);
-	grid-auto-rows: 500px;
+	grid-template-columns: repeat(1, 450px);
+	grid-template-rows: repeat(1, 600px);
+	grid-auto-rows:600px;
 	z-index: 0;
+	background-color: ${(props) => props.theme.postingBgColor};
+	
 `;
 
 const Posting = styled.div`
-	border: 1px solid black;
-	margin-bottom: 10px;
-	max-width: 330px;
+	font-size: 15px;
+	margin: 2px;
+	// max-width: 475px;
 	max-hight: 490px;
+	width:100%
 	background-color: ${(props) => props.theme.postingBgColor};
+	border-bottom: 0.2px solid #c9cdd2 ;
 `;
 
 const PostingHeader = styled.div`
+	font-family: 'Hammersmith One', sans-serif;
+	font-weight:bold;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	margin:2px;
 `;
 
 const SaleTag = styled.div`
 	display: flex;
 	align-items: center;
 	span {
-		margin-left: 5px;
+		margin-left: 2px;
+		margin-top:2px;
 	}
 `;
 
@@ -79,7 +87,7 @@ const ProfileTag = styled.div`
 	display: flex;
 	align-items: center;
 	img {
-		margin-right: 5px;
+		margin-right: 7px;
 	}
 `;
 
@@ -100,9 +108,14 @@ const PostingFooter = styled.div``;
 const LikeAndComment = styled.div``;
 
 const TextBox = styled.div`
+	margin:3px;
 	word-wrap: break-word;
 	overflow: auto;
 	max-height: 50px;
+
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	-webkit-scrollbar:none;
 `;
 
 const CartIcon = styled.a`
@@ -176,7 +189,7 @@ function Home() {
 		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 330, width: 330 }} src={props.item} />
+				<img style={{ height: 430, width:430 }} src={props.item} />
 			</Paper>
 		);
 	}
@@ -324,8 +337,6 @@ function Home() {
 		}
 	};
 
-	console.log(postings);
-
 	return (
 		<div>
 			{isLoading ? (
@@ -334,7 +345,6 @@ function Home() {
 				<>
 					{postings && (
 						<Container>
-							<h1>Welcome {userObject?.displayName}</h1>
 							<PostingContainer>
 								{postings.map((item, index) => (
 									<Posting key={index}>
@@ -358,19 +368,16 @@ function Home() {
 											</ProfileTag>
 											{item.soldOut ? (
 												<SaleTag>
-													<LoyaltyIcon />
-													<span>Sold out</span>
+													<LoyaltyIcon style={{fill: "#b81414"}}/>
 												</SaleTag>
 											) : item.forSale ? (
 												<SaleTag>
-													<LoyaltyIcon />
-													<span>For Sale / </span>
+													<LoyaltyIcon style={{fill: "#206a22"}}/>
 													<span>Price: ${item.price}</span>
 												</SaleTag>
 											) : (
 												<SaleTag>
-													<LoyaltyIcon />
-													<span>Not for Sale</span>
+													<LoyaltyIcon style={{fill: "#827C76"}}/>
 												</SaleTag>
 											)}
 										</PostingHeader>
@@ -404,7 +411,7 @@ function Home() {
 																}
 															>
 																<FavoriteBorderIcon
-																	style={{ backgroundColor: "red" }}
+																	style={{ color: "red" }}
 																/>
 															</a>
 														</>

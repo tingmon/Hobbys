@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&family=Noto+Sans&display=swap');
+
 .carousel {
 	width: 350px;
 	height: 500px;
@@ -12,8 +14,8 @@
 }
 
 .homeCarousel {
-	width: 330px;
-	height: 330px;
+	width: 430px;
+	height: 430px;
 	margin: 10px auto;
 }
 

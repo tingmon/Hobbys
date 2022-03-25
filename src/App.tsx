@@ -98,11 +98,12 @@ const Wrapper = styled.div`
 	width: 100vw;
 	justify-content: center;
 	align-items: center;
-	background-color: ${(props) => props.theme.bgColor};
+	background-color: #ffffff;
 	margin: 0 auto;
 `;
 
 const Container = styled.div`
+	font-family: 'Noto Sans', sans-serif;
 	width: 450px;
 	height: 100vh;
 	min-height: 100%;
@@ -110,7 +111,7 @@ const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin: 0 auto;
-	background-color: ${(props) => props.theme.mainColor};
+	background-color: #ffffff;
 `;
 
 function App() {

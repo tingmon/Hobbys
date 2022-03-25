@@ -24,7 +24,7 @@ import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
@@ -42,6 +42,7 @@ const PreviewImg = styled.img`
 `;
 
 const Container = styled.div`
+	font-family: 'Noto Sans', sans-serif;
 	max-width: 450px;
 	margin: 0 auto;
 	width: 100%;
@@ -369,7 +370,7 @@ function PostingDetail() {
 															}
 														>
 															<FavoriteBorderIcon
-																style={{ backgroundColor: "red" }}
+																style={{ color: "#e61919" }}
 															/>
 														</IconElement>
 													</>
@@ -511,7 +512,7 @@ function PostingDetail() {
 															}
 														>
 															<FavoriteBorderIcon
-																style={{ backgroundColor: "red" }}
+																style={{ color: "#e61919" }}
 															/>
 														</IconElement>
 													</>

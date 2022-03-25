@@ -35,7 +35,7 @@ const NavList = styled.ul`
 
 const NavItem = styled.li`
 	font-size: 15px;
-	margin: 10px;
+	margin: 0px 2px 0px 5px;
 	a {
 		padding: 10px;
 		transition: color 0.2s ease-in;
@@ -61,24 +61,24 @@ const Navigation = ({ userObject }) => {
 			<NavList>
 				<NavItem>
 					<Link to="/">
-						<FontAwesomeIcon icon={faHome} color={"#04AAFF"} size="2x" />
+						<FontAwesomeIcon icon={faHome} color={"#45615F"} size="2x" />
 					</Link>
 				</NavItem>
 				<NavItem>
 					<Link to="/search">
-						<FontAwesomeIcon icon={faSearch} color={"#04AAFF"} size="2x" />
+						<FontAwesomeIcon icon={faSearch} color={"#45615F"} size="2x" />
 					</Link>
 				</NavItem>
 				<NavItem>
 					<Link to="/likelist">
-						<FontAwesomeIcon icon={faHeart} color={"#04AAFF"} size="2x" />
+						<FontAwesomeIcon icon={faHeart} color={"#45615F"} size="2x" />
 					</Link>
 				</NavItem>
 				<NavItem>
 					<Link to="/cart">
 						<FontAwesomeIcon
 							icon={faShoppingCart}
-							color={"#04AAFF"}
+							color={"#45615F"}
 							size="2x"
 						/>
 					</Link>
@@ -88,7 +88,7 @@ const Navigation = ({ userObject }) => {
 						to={`/${userObject?.uid}/profile`}
 						onClick={() => MyProfileClicked()}
 					>
-						<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
+						<FontAwesomeIcon icon={faUser} color={"#b0d5d4"} size="2x" />
 					</Link>
 				</NavItem>
 			</NavList>

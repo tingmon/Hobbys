@@ -19,6 +19,8 @@ import { v4 as uuidv4 } from "uuid";
 import { pink } from "@mui/material/colors";
 
 const SignUpForm = styled.form`
+	font-family: 'Noto Sans', sans-serif;
+	color: #000;	
 	width: 100%;
 	max-width: 320px;
 	display: flex;
@@ -26,6 +28,8 @@ const SignUpForm = styled.form`
 `;
 
 const LoginForm = styled.form`
+	font-family: 'Noto Sans', sans-serif;
+	color: #000;
 	width: 100%;
 	max-width: 320px;
 	display: flex;
@@ -33,52 +37,52 @@ const LoginForm = styled.form`
 `;
 
 const InputField = styled.input`
+	font-family: 'Noto Sans', sans-serif;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
+	border-radius: 15px;
+	border-color: ${(props) => props.theme.secondColor};	
+
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
 `;
 
 const SubmitBtn = styled.button`
+	font-family: 'Hammersmith One', sans-serif;
+	color: #000;
+	display: block;
 	text-align: center;
-	background: #04aaff;
-	color: white;
+	border-color: ${(props) => props.theme.secondColor};	
+
+	background-color: ${(props) => props.theme.secondColor};	
 	margin-top: 10px;
 	cursor: pointer;
-
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
+	border-radius: 15px;
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
 `;
 
 const GoBackBtn = styled.button`
+	font-family: 'Hammersmith One', sans-serif;
 	text-align: center;
-	background: #04aaff;
-	color: white;
 	margin-top: 10px;
-	pointer
 	cursor: pointer;
-
+	border-color: ${(props) => props.theme.secondColor};	
+	background-color: ${(props) => props.theme.secondColor};
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
+	border-radius: 15px;
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
 `;
 
 const ErrorMessage = styled.span`
