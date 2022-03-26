@@ -115,6 +115,24 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 
 	console.log(userInfo.docs[0].data());
 
+	async function fetchAddressInfo(uid) {
+		dbService
+			.collection("AddressInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(recordSnapshot[0]);
+				setPaymentInfo(recordSnapshot[0]);
+			});
+	}
+
+	useEffect(() => {
+		fetchAddressInfo(uid);
+	}, []);
+
 	const {
 		register,
 		handleSubmit,

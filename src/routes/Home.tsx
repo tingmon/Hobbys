@@ -137,7 +137,7 @@ function Home() {
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const [cart, setCart] = useRecoilState(cartAtom);
 
-	async function fetchPosting() {
+	async function fetchHomePostings() {
 		dbService
 			.collection("Posting")
 			.orderBy("createdAt", "desc")
@@ -147,6 +147,7 @@ function Home() {
 					id: doc.id,
 					...doc.data(),
 				}));
+				console.log(postingSnapshot);
 				setPostings(postingSnapshot);
 			});
 	}
@@ -180,11 +181,10 @@ function Home() {
 	}
 
 	useEffect(() => {
-		fetchPosting();
+		fetchHomePostings();
 		fetchLike();
 		fetchCart();
 		setIsLoading(false);
-		// arr = likeList;
 	}, []);
 
 	function Item(props) {
@@ -248,7 +248,6 @@ function Home() {
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
-		console.log("like clicked");
 		event.preventDefault();
 		setSelectedPosting(postingInfo);
 		setSelectedComment(null);
@@ -277,7 +276,7 @@ function Home() {
 			});
 		} else {
 			await dbService.collection("Like").add(like);
-
+			console.log("like clicked");
 			dbService.doc(`Posting/${postingInfo.id}`).update({
 				"likes.likerUid": firebaseInstance.firestore.FieldValue.arrayUnion(
 					userObject.uid

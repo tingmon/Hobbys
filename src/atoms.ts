@@ -112,14 +112,19 @@ export const selectedCommentAtom = atom<any>({
 	default: null,
 });
 
-export const totalInfoAtom = atom<any>({
+export const priceTotalInfoAtom = atom<any>({
 	key: "totalInfo",
 	default: null,
 });
 
-export const likeAtom = atom<any>({
-	key: "like",
-	default: "null",
+export const addressInfoAtom = atom<any>({
+	key: "addressInfoAtom",
+	default: null,
+});
+
+export const paymentInfoAtom = atom<any>({
+	key: "paymentInfoAtom",
+	default: null,
 });
 
 // export const userObjectState = atom<IUserObject>({

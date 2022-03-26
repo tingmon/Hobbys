@@ -179,7 +179,8 @@ function Profile({ refreshUser }) {
 	// console.log(uid);
 	const [postings, setPostings] = useRecoilState(postingsObject);
 
-	async function fetchPostings(userId) {
+	async function fetchUserPostings(userId) {
+		console.log("profile fetch posting");
 		dbService
 			.collection("Posting")
 			.where("creatorUid", "==", userId)
@@ -190,6 +191,7 @@ function Profile({ refreshUser }) {
 					id: doc.id,
 					...doc.data(),
 				}));
+				console.log(postingSnapshot);
 				setPostings(postingSnapshot);
 			});
 	}
@@ -348,7 +350,7 @@ function Profile({ refreshUser }) {
 
 			retrieveFollowInfo(userObject.uid, false);
 
-			fetchPostings(userObject.uid);
+			fetchUserPostings(userObject.uid);
 		}
 		// 남의 페이지(본인 아님)
 		else if (selectedPostingInfo !== null) {
@@ -378,7 +380,7 @@ function Profile({ refreshUser }) {
 			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
 			// );
 
-			fetchPostings(selectedPostingInfo.creatorUid);
+			fetchUserPostings(selectedPostingInfo.creatorUid);
 		} else if (selectedComment !== null) {
 			console.log("from comment link");
 			if (selectedComment.commenterUid === userObject.uid) {
@@ -402,7 +404,7 @@ function Profile({ refreshUser }) {
 			// 	(doc) => doc.followerUid === userObject.uid && { setFollowInfo(doc); }
 			// );
 
-			fetchPostings(selectedComment.commenterUid);
+			fetchUserPostings(selectedComment.commenterUid);
 		}
 		setIsLoading(false);
 	}, [uid]);
@@ -463,7 +465,7 @@ function Profile({ refreshUser }) {
 									}}
 									to={`/${userObject.uid}/profile/edit`}
 								>
-									Edit
+									<span>Edit Profile</span>
 								</Link>
 							</Tab>
 							<Tab isActive={true}>
@@ -480,7 +482,7 @@ function Profile({ refreshUser }) {
 									}}
 									to={`/${userObject.uid}/profile/record`}
 								>
-									Record
+									Transactions
 								</Link>
 							</Tab>
 						</Tabs>

@@ -122,7 +122,7 @@ interface IForm {
 	postalCode?: string;
 }
 
-function AddPostingPhoto({ userObject, refreshUser }) {
+function AddPostingPhoto() {
 	// const [newPhotoURLs, setNewPhotoURLs] = useState<string>([]);
 	// const [previewImgs, setpreviewImgs] = useState<string>([]);
 	const uid = useRecoilValue(uidAtom);
