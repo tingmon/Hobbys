@@ -49,10 +49,9 @@ const PostingContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(1, 450px);
 	grid-template-rows: repeat(1, 600px);
-	grid-auto-rows:600px;
+	grid-auto-rows: 600px;
 	z-index: 0;
 	background-color: ${(props) => props.theme.postingBgColor};
-	
 `;
 
 const Posting = styled.div`
@@ -66,12 +65,12 @@ const Posting = styled.div`
 `;
 
 const PostingHeader = styled.div`
-	font-family: 'Hammersmith One', sans-serif;
-	font-weight:bold;
+	font-family: "Hammersmith One", sans-serif;
+	font-weight: bold;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin:2px;
+	margin: 2px;
 `;
 
 const SaleTag = styled.div`
@@ -79,7 +78,7 @@ const SaleTag = styled.div`
 	align-items: center;
 	span {
 		margin-left: 2px;
-		margin-top:2px;
+		margin-top: 2px;
 	}
 `;
 
@@ -108,14 +107,14 @@ const PostingFooter = styled.div``;
 const LikeAndComment = styled.div``;
 
 const TextBox = styled.div`
-	margin:3px;
+	margin: 3px;
 	word-wrap: break-word;
 	overflow: auto;
 	max-height: 50px;
 
 	-ms-overflow-style: none;
 	scrollbar-width: none;
-	-webkit-scrollbar:none;
+	-webkit-scrollbar: none;
 `;
 
 const CartIcon = styled.a`
@@ -189,7 +188,7 @@ function Home() {
 		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 430, width:430 }} src={props.item} />
+				<img style={{ height: 430, width: 430 }} src={props.item} />
 			</Paper>
 		);
 	}
@@ -336,6 +335,8 @@ function Home() {
 		}
 	};
 
+	console.log(userObject);
+
 	return (
 		<div>
 			{isLoading ? (
@@ -367,16 +368,16 @@ function Home() {
 											</ProfileTag>
 											{item.soldOut ? (
 												<SaleTag>
-													<LoyaltyIcon style={{fill: "#b81414"}}/>
+													<LoyaltyIcon style={{ fill: "#b81414" }} />
 												</SaleTag>
 											) : item.forSale ? (
 												<SaleTag>
-													<LoyaltyIcon style={{fill: "#206a22"}}/>
+													<LoyaltyIcon style={{ fill: "#206a22" }} />
 													<span>Price: ${item.price}</span>
 												</SaleTag>
 											) : (
 												<SaleTag>
-													<LoyaltyIcon style={{fill: "#827C76"}}/>
+													<LoyaltyIcon style={{ fill: "#827C76" }} />
 												</SaleTag>
 											)}
 										</PostingHeader>
@@ -409,9 +410,7 @@ function Home() {
 																	LikeIconClicked(event, item)
 																}
 															>
-																<FavoriteBorderIcon
-																	style={{ color: "red" }}
-																/>
+																<FavoriteBorderIcon style={{ color: "red" }} />
 															</a>
 														</>
 													) : (
