@@ -57,7 +57,7 @@ const TitleImage = styled.img`
 const Overview = styled.div`
 	display: flex;
 	justify-content: space-between;
-	background-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.textColor};
 	padding: 10px 20px;
 	border-radius: 10px;
 `;
@@ -123,7 +123,7 @@ const PostingContainer = styled.div`
 `;
 
 const Posting = styled.div`
-	border: 1px solid black;
+	border: 1px solid #ffffff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -135,7 +135,7 @@ const Posting = styled.div`
 `;
 
 const PostingCenter = styled.div`
-	border: 1px solid black;
+	border: 1px solid #FFFFFF;
 	display: flex;
 	justify-content: center;
 	align-items: center;

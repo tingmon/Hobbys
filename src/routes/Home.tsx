@@ -161,8 +161,10 @@ function Home() {
 					...doc.data(),
 				}));
 				setLikeList(likeSnapshot);
+				
 			});
-	}
+
+		}
 
 	function fetchCart() {
 		dbService

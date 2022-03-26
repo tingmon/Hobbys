@@ -117,6 +117,11 @@ export const totalInfoAtom = atom<any>({
 	default: null,
 });
 
+export const likeAtom = atom<any>({
+	key: "like",
+	default: "null",
+});
+
 // export const userObjectState = atom<IUserObject>({
 // 	key: "userObject",
 // 	default: {
