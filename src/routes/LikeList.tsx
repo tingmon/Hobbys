@@ -96,6 +96,7 @@ function LikeList({ refreshUser }) {
 	const [showRecord, setShowRecord] = useState(false);
 	const [userData, setUserData] = useState<any>(null);
 	const [photoURL, setPhotoURL] = useState("");
+	const [likes,setLikes]=useState<any>([]);
 
 	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPostingInfo, setSelectedPostingInfo] =
@@ -105,44 +106,26 @@ function LikeList({ refreshUser }) {
 	
 	async function fetchPosting(uid) {
 		dbService
-			.collection("Posting")
-			.where("forSale", "==", true)
+			.collection("Like")
+			.where("likerUid", "==", uid)
 			.onSnapshot((snapshot) => {
-				const postingSnapshot = snapshot.docs.map((doc) => ({
+				const likeSnapshot = snapshot.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
 				}));
-				setPostings(postingSnapshot);
+				setLikes(likeSnapshot);
 			});
 
 	}
 
 	useEffect(async () => {
-		if (
-			userObject?.uid === selectedPostingInfo?.creatorUid ||
-			selectedPostingInfo === null
-		) {
-			setSelectedPostingInfo(null);
-			setIsOwner(true);
-			console.log("true is running");
-		} else {
-			setIsOwner(false);
-		}
-		if (selectedPostingInfo === null) {
-			const userInfo = await dbService
-				.collection("UserInfo")
-				.where("uid", "==", userObject.uid)
-				.get();
+		fetchPosting(userObject.uid);
 
-			setUserData(userInfo);
-
-			setPhotoURL(userObject.photoURL);
-
-
-			fetchPosting(userObject.uid);
-		}
 		setIsLoading(false);
-	}, [uid]);
+		
+	}, []);
+
+	console.log(likes);
 
 	return (
 		<>
@@ -157,12 +140,12 @@ function LikeList({ refreshUser }) {
 
 						<PostingContainer>
 							<Item>
-							{postings?.map((posting, index) => (
+							{likes?.map((like, index) => (
 								<Posting key={index}>
-									<PostingPreviewImg src={posting.photoUrl[0]} />
+									<PostingPreviewImg src={like.photoUrl} />
 									<Description>
-									<Text>{posting.creatorDisplayName}</Text>
-									<Text>{posting.category}</Text>
+									<Text>{like.creatorDisplayName}</Text>
+									<Text>{like.category}</Text>
 									</Description>
 								</Posting>
 							))}
