@@ -152,7 +152,7 @@ function LikeList({ refreshUser }) {
 								</Posting>
 							))}
 							</Item>
-					
+							<div style={{ width: 300, height: 150 }}></div>
 						</PostingContainer>
 					) : (
 						<Switch>
