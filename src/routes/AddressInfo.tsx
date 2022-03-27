@@ -421,7 +421,7 @@ function AddressInfo({ fromCheckout }) {
 									required: "First Name is Required",
 									minLength: { value: 2, message: "Name is too Short" },
 								})}
-								placeholder="Enter First Name"
+								placeholder="First Name"
 							/>
 							<ErrorMessage>{errors?.firstNameShipping?.message}</ErrorMessage>
 							<InputField
@@ -430,7 +430,7 @@ function AddressInfo({ fromCheckout }) {
 									required: "Last Name is Required",
 									minLength: { value: 2, message: "Name is too Short" },
 								})}
-								placeholder="Enter Last Name"
+								placeholder="Last Name"
 							/>
 							<ErrorMessage>{errors?.lastNameShipping?.message}</ErrorMessage>
 							<InputField
@@ -442,7 +442,7 @@ function AddressInfo({ fromCheckout }) {
 										message: "Invalid Phone Number Pattern",
 									},
 								})}
-								placeholder="Enter Phone Number"
+								placeholder="Phone Number"
 							/>
 							<ErrorMessage>
 								{errors?.phoneNumberShipping?.message}
@@ -453,7 +453,7 @@ function AddressInfo({ fromCheckout }) {
 									required: "Address is Required",
 									minLength: { value: 2, message: "Address is too Short" },
 								})}
-								placeholder="Enter Address Line 1"
+								placeholder="Address Line 1"
 							/>
 							<ErrorMessage>{errors?.address1Shipping?.message}</ErrorMessage>
 							<InputField
@@ -461,7 +461,7 @@ function AddressInfo({ fromCheckout }) {
 								{...register("address2Shipping", {
 									minLength: { value: 2, message: "Address is too Short" },
 								})}
-								placeholder="Enter Address Line 2"
+								placeholder="Address Line 2"
 							/>
 							<ErrorMessage>{errors?.address2Shipping?.message}</ErrorMessage>
 							<InputField
@@ -470,7 +470,7 @@ function AddressInfo({ fromCheckout }) {
 									required: "City is Required",
 									minLength: { value: 2, message: "City is too Short" },
 								})}
-								placeholder="Enter City"
+								placeholder="City"
 							/>
 							<ErrorMessage>{errors?.cityShipping?.message}</ErrorMessage>
 							<CategorySelect {...register("provinceShipping", {})}>
@@ -498,7 +498,7 @@ function AddressInfo({ fromCheckout }) {
 										message: "Invalid Postal Code Pattern",
 									},
 								})}
-								placeholder="Enter Postal Code"
+								placeholder="Postal Code"
 							/>
 							<ErrorMessage>{errors?.postalcodeShipping?.message}</ErrorMessage>
 							<SubmitBtn
@@ -552,7 +552,7 @@ function AddressInfo({ fromCheckout }) {
 									// required: "First Name is Required",
 									// minLength: { value: 2, message: "Name is too Short" },
 								})}
-								placeholder="Enter First Name"
+								placeholder="First Name"
 							/>
 							<ErrorMessage>{errors?.firstNameBilling?.message}</ErrorMessage>
 							<InputField
@@ -562,7 +562,7 @@ function AddressInfo({ fromCheckout }) {
 									// required: "Last Name is Required",
 									// minLength: { value: 2, message: "Name is too Short" },
 								})}
-								placeholder="Enter Last Name"
+								placeholder="Last Name"
 							/>
 							<ErrorMessage>{errors?.lastNameBilling?.message}</ErrorMessage>
 							<InputField
@@ -575,7 +575,7 @@ function AddressInfo({ fromCheckout }) {
 									// 	message: "Invalid Phone Number Pattern",
 									// },
 								})}
-								placeholder="Enter Phone Number"
+								placeholder="Phone Number"
 							/>
 							<ErrorMessage>{errors?.phoneNumberBilling?.message}</ErrorMessage>
 							<InputField
@@ -585,7 +585,7 @@ function AddressInfo({ fromCheckout }) {
 									// required: "Address is Required",
 									// minLength: { value: 2, message: "Address is too Short" },
 								})}
-								placeholder="Enter Address Line 1"
+								placeholder="Address Line 1"
 							/>
 							<ErrorMessage>{errors?.address1Billing?.message}</ErrorMessage>
 							<InputField
@@ -594,7 +594,7 @@ function AddressInfo({ fromCheckout }) {
 								{...register("address2Billing", {
 									// minLength: { value: 2, message: "Address is too Short" },
 								})}
-								placeholder="Enter Address Line 2"
+								placeholder="Address Line 2"
 							/>
 							<ErrorMessage>{errors?.address2Billing?.message}</ErrorMessage>
 							<InputField
@@ -604,7 +604,7 @@ function AddressInfo({ fromCheckout }) {
 									// required: "City is Required",
 									// minLength: { value: 2, message: "City is too Short" },
 								})}
-								placeholder="Enter City"
+								placeholder="City"
 							/>
 							<ErrorMessage>{errors?.cityBilling?.message}</ErrorMessage>
 							<CategorySelect
@@ -636,7 +636,7 @@ function AddressInfo({ fromCheckout }) {
 									// 	message: "Invalid Postal Code Pattern",
 									// },
 								})}
-								placeholder="Enter Postal Code"
+								placeholder="Postal Code"
 							/>
 							<ErrorMessage>{errors?.postalcodeBilling?.message}</ErrorMessage>
 							{!isSame && (

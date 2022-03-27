@@ -189,12 +189,11 @@ function PaymentInfo({ fromCheckout }) {
 			}
 		});
 	};
-	// backup testing
 
 	return (
 		<Container>
 			{fromCheckout && <button>Back to checkout</button>}
-			<HeaderText>ENTER CARD DETAILS</HeaderText>
+			<HeaderText>ENTER PAYMENT DETAILS</HeaderText>
 			<ItemContainer>
 				<Item>
 					<PaymentForm onSubmit={handleSubmit(onValid)}>
@@ -204,7 +203,7 @@ function PaymentInfo({ fromCheckout }) {
 								required: "Owner Name is Required",
 								minLength: { value: 2, message: "Name is too Short" },
 							})}
-							placeholder="Enter Owner Name"
+							placeholder="Card Owner"
 						/>
 						<ErrorMessage>{errors?.cardOwner?.message}</ErrorMessage>
 						<InputField
@@ -213,7 +212,7 @@ function PaymentInfo({ fromCheckout }) {
 								required: "Last Name is Required",
 								// exact 12 digits
 							})}
-							placeholder="Enter Last Name"
+							placeholder="Card Number(12 digits)"
 						/>
 						<ErrorMessage>{errors?.cardNumber?.message}</ErrorMessage>
 						<InputField
@@ -222,7 +221,7 @@ function PaymentInfo({ fromCheckout }) {
 								required: "Month is Required",
 								// 01 - 12
 							})}
-							placeholder="Enter Month"
+							placeholder="Expiry Date Month(MM)"
 						/>
 						<ErrorMessage>{errors?.expiryMonth?.message}</ErrorMessage>
 						<InputField
@@ -231,7 +230,7 @@ function PaymentInfo({ fromCheckout }) {
 								required: "Year is Required",
 								// 2021 < x < 2028
 							})}
-							placeholder="Enter Year"
+							placeholder="Expiry Date Year(YY)"
 						/>
 						<ErrorMessage>{errors?.expiryYear?.message}</ErrorMessage>
 						<InputField
@@ -240,7 +239,7 @@ function PaymentInfo({ fromCheckout }) {
 								required: "CVV is Required",
 								// exact 3 digits
 							})}
-							placeholder="Enter CVV"
+							placeholder="CVV"
 						/>
 						<ErrorMessage>{errors?.cvv?.message}</ErrorMessage>
 						<SubmitBtn>Submit</SubmitBtn>
