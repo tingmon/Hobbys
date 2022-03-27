@@ -53,10 +53,11 @@ const LogoContainer = styled.div`
 
 const Hobbys = styled.h1`
 	font-family: 'M PLUS Rounded 1c', sans-serif;
-	margin: 0px 2px 5px 5px;
+	margin: 10px 1px 3px 2px;
 	font-size: 25px;
 	font-weight: bold;
-	color: #F1A909;
+	text-shadow:  1.5px 1.5px #ffffff;
+	color: #F6B324;
 `;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
@@ -64,20 +65,25 @@ function Header() {
 	return (
 		<NavContainer>
 			<LogoContainer>
-				
-				<Hobbys>HOBBY'S</Hobbys>
+				<Hobbys>H</Hobbys>
+				<Hobbys>O</Hobbys>
+				<Hobbys>B</Hobbys>
+				<Hobbys>B</Hobbys>
+				<Hobbys>Y</Hobbys>
+				<Hobbys>'</Hobbys>
+				<Hobbys>S </Hobbys>
 			</LogoContainer>
 			<NavList>
 				<NavItem>
 					<Link to="/addposting">
-						<FontAwesomeIcon icon={faPlusSquare} color={"#45615F"} size="2x" />
+						<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
 					</Link>
 				</NavItem>
 				<NavItem>
 					<Link to="/message">
 						<FontAwesomeIcon
 							icon={faFacebookMessenger}
-							color={"#45615F"}
+							color={"#E8EBED"}
 							size="2x"
 						/>
 					</Link>
