@@ -153,6 +153,7 @@ interface IForm {
 function AddressInfo({ fromCheckout }) {
 	const [isShipping, setIsShipping] = useState(true);
 	const [isBilling, setIsBilling] = useState(false);
+	const [isSame, setIsSame] = useState(false);
 	const [formName, setFormName] = useState("");
 
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
@@ -341,6 +342,10 @@ function AddressInfo({ fromCheckout }) {
 		setIsBilling((prev) => !prev);
 	};
 
+	const handleIsSame = () => {
+		setIsSame((prev) => !prev);
+	};
+
 	const onSubmitClick = (formNameValue) => {
 		setFormName(formNameValue);
 	};
@@ -372,6 +377,16 @@ function AddressInfo({ fromCheckout }) {
 		document.getElementById("provinceBilling").value = shippingAddress.province;
 		document.getElementById("postalcodeBilling").value =
 			shippingAddress.postalcode;
+		console.log("billing address edit");
+		Swal.fire({
+			title: "Your Billing Address is Updated",
+			confirmButtonText: "Got It",
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				// Swal.fire("Saved!", "", "success");
+			}
+		});
 	};
 
 	const onNotSameAddress = () => {
@@ -521,9 +536,11 @@ function AddressInfo({ fromCheckout }) {
 								if (event.target.checked) {
 									onSameAddress(addressInfo[0].shippingAddress);
 									// setIsBilling((prev) => !prev);
+									handleIsSame();
 								} else {
 									console.log("not same");
 									onNotSameAddress();
+									handleIsSame();
 								}
 							}}
 						/>
@@ -622,13 +639,15 @@ function AddressInfo({ fromCheckout }) {
 								placeholder="Enter Postal Code"
 							/>
 							<ErrorMessage>{errors?.postalcodeBilling?.message}</ErrorMessage>
-							<SubmitBtn
-								onClick={() => {
-									onSubmitClick("billing");
-								}}
-							>
-								Submit
-							</SubmitBtn>
+							{!isSame && (
+								<SubmitBtn
+									onClick={() => {
+										onSubmitClick("billing");
+									}}
+								>
+									Submit
+								</SubmitBtn>
+							)}
 						</BillingAddressForm>
 					</Item>
 					<div style={{ width: 300, height: 50 }}></div>
