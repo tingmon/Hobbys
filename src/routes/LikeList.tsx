@@ -89,6 +89,7 @@ const Description = styled.div`
 
 function LikeList({ refreshUser }) {
 	const { uid } = useParams();
+	const [postings, setPostings] = useRecoilState(postingsObject);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOwner, setIsOwner] = useState(false);
 	const [following, setFollowing] = useState(0);
@@ -97,11 +98,10 @@ function LikeList({ refreshUser }) {
 	const [userData, setUserData] = useState<any>(null);
 	const [photoURL, setPhotoURL] = useState("");
 	const [likes,setLikes]=useState<any>([]);
-
+	const selectedPosting = useRecoilValue(selectedPostingAtom);
 	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
-	const [postings, setPostings] = useRecoilState(postingsObject);
 
 
 	async function fetchPosting(uid) {
@@ -119,6 +119,11 @@ function LikeList({ refreshUser }) {
 
 	}
 
+	const PostingClicked = (postingInfo) => {
+
+		setSelectedPostingInfo(postingInfo);
+	};
+
 	useEffect(async () => {
 		fetchPosting(userObject.uid);
 
@@ -127,6 +132,7 @@ function LikeList({ refreshUser }) {
 	}, []);
 
 	console.log(likes);
+	console.log(selectedPosting);
 
 	return (
 		<>
@@ -140,15 +146,21 @@ function LikeList({ refreshUser }) {
 					{showPosting && !showRecord ? (
 
 						<PostingContainer>
-							<Item >
-								
+							<Item>
 								{likes?.map((like, index) => (
 								<Posting key={index}>
-									<PostingPreviewImg src={like.photoUrl} />
-									<Description>
-									<Text>{like.creatorDisplayName}</Text>
-									<Text>{like.category}</Text>
-									</Description>
+									<Link
+										to={`/postingDetail/${selectedPosting?.postingId}`}
+										onClick={() => PostingClicked(selectedPostingInfo)}
+										onMouseEnter={() => PostingClicked(selectedPostingInfo)}
+									>
+										<PostingPreviewImg src={like.photoUrl} />
+										<Description>
+											<Text>{like.creatorDisplayName}</Text>
+											<Text>{like.category}</Text>
+										</Description>
+									</Link>
+									
 								</Posting>
 							))}
 							</Item>

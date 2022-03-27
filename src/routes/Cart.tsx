@@ -43,6 +43,7 @@ const Description = styled.div`
 	justify-content: flex-start;
 	flex-direction: column;
 	align-items: start;
+	width:200px;
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
@@ -55,6 +56,8 @@ const PreviewImg = styled.img`
 const IconElement = styled.a`
 	margin-left: 50px;
 	margin-right: 10px;
+	display: flex;
+	align-items: center;
 `;
 
 const Text = styled.span`
@@ -103,6 +106,7 @@ const SubmitBtn = styled.button`
 	color: black;
 	font-weight: bold;
 `;
+
 
 const Value = styled.div``;
 
@@ -199,6 +203,7 @@ function Cart() {
 											<FontAwesomeIcon icon={faTrash} />
 										</IconElement>
 									</Item>
+									
 								))}
 							</ItemContainer>
 							<SubTotalShipping>
