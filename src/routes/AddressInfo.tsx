@@ -27,6 +27,7 @@ import AddressForm from "../components/AddressForm";
 import Checkbox from "@mui/material/Checkbox";
 import { pink } from "@mui/material/colors";
 import Swal from "sweetalert2";
+import { ConnectingAirportsOutlined } from "@mui/icons-material";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -345,6 +346,7 @@ function AddressInfo({ fromCheckout }) {
 	};
 
 	const onSameAddress = (shippingAddress) => {
+		console.log(shippingAddress);
 		dbService.doc(`AddressInfo/${addressInfo[0].id}`).update({
 			billingAddress: {
 				firstName: shippingAddress.firstName,
@@ -357,6 +359,7 @@ function AddressInfo({ fromCheckout }) {
 				postalcode: shippingAddress.postalcode,
 			},
 		});
+		console.log(shippingAddress);
 		console.log("same as shipping address");
 		document.getElementById("firstNameBilling").value =
 			shippingAddress.firstName;

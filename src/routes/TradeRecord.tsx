@@ -14,8 +14,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { selectedPostingAtom, userObjectAtom } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { paymentInfoAtom, selectedPostingAtom, userObjectAtom } from "../atoms";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
@@ -101,7 +101,6 @@ const RecordContainer = styled.div`
 function TradeRecord() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [userInfo, setUserInfo] = useState<any>(null);
-	const [paymentInfo, setPaymentInfo] = useState<any>(null);
 	const [sellingRecord, setSellingRecord] = useState<any>([]);
 	const [buyingRecord, setBuyingRecord] = useState<any>([]);
 	const [transactionRecord, setTransactionRecord] = useState<any>([]);
@@ -110,6 +109,7 @@ function TradeRecord() {
 
 	const userObject = useRecoilValue(userObjectAtom);
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
+	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 
 	async function fetchUserInfo(uid) {
 		dbService
@@ -120,7 +120,6 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
 				setUserInfo(recordSnapshot);
 			});
 	}
@@ -162,7 +161,6 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
 				setPaymentInfo(recordSnapshot);
 			});
 	}
@@ -182,13 +180,9 @@ function TradeRecord() {
 	}
 
 	useEffect(() => {
-		fetchAllTransactions(userObject.uid).then(
-			console.log("fetching transaction record done")
-		);
-		fetchPaymentInfo(userObject.uid).then(
-			console.log("payment info: ", paymentInfo)
-		);
-		fetchUserInfo(userObject.uid).then(console.log("user info: ", userInfo));
+		fetchAllTransactions(userObject.uid);
+		fetchPaymentInfo(userObject.uid);
+		fetchUserInfo(userObject.uid);
 
 		setIsLoading(false);
 	}, []);
@@ -208,10 +202,10 @@ function TradeRecord() {
 		}
 	};
 
-	console.log(userInfo);
+	// console.log(userInfo);
 	console.log(paymentInfo);
-	console.log(sellingRecord);
-	console.log(buyingRecord);
+	// console.log(sellingRecord);
+	// console.log(buyingRecord);
 
 	return (
 		<Container>

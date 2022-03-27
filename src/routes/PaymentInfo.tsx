@@ -193,6 +193,7 @@ function PaymentInfo({ fromCheckout }) {
 	return (
 		<Container>
 			{fromCheckout && <button>Back to checkout</button>}
+			<HeaderText>ENTER CARD DETAILS</HeaderText>
 			<ItemContainer>
 				<Item>
 					<PaymentForm onSubmit={handleSubmit(onValid)}>
