@@ -223,6 +223,9 @@ function PostingDetail() {
 		const like = {
 			likerUid: userObject.uid,
 			postingId: postingInfo.id,
+			creatorDisplayName: postingInfo.creatorDisplayName,
+			photoUrl: postingInfo.photoUrl[0],
+			category: postingInfo.category,
 			timeStamp: Date.now(),
 		};
 
