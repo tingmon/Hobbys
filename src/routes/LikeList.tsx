@@ -139,8 +139,9 @@ function LikeList({ refreshUser }) {
 					{showPosting && !showRecord ? (
 
 						<PostingContainer>
-							<Item>
-							{likes?.map((like, index) => (
+							<Item >
+								
+								{likes?.map((like, index) => (
 								<Posting key={index}>
 									<PostingPreviewImg src={like.photoUrl} />
 									<Description>
