@@ -29,6 +29,7 @@ import AddPostingDetail from "../routes/AddPostingDetail";
 import AddPostingPhoto from "../routes/AddPostingPhoto";
 import PostingDetail from "../routes/PostingDetail";
 import Checkout from "../routes/Checkout";
+import AddressInfo from "../routes/AddressInfo";
 
 function AppRouter({ refreshUser }) {
 	const isLoggedIn = useRecoilValue(isLoggedInState);

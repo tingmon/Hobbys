@@ -104,6 +104,7 @@ function TradeRecord() {
 	const [paymentInfo, setPaymentInfo] = useState<any>(null);
 	const [sellingRecord, setSellingRecord] = useState<any>([]);
 	const [buyingRecord, setBuyingRecord] = useState<any>([]);
+	const [transactionRecord, setTransactionRecord] = useState<any>([]);
 	const [showBuyingRecord, setShowBuyingRecord] = useState(false);
 	const [showSellingRecord, setShowSellingRecord] = useState(false);
 
@@ -119,8 +120,8 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot[0]);
-				setUserInfo(recordSnapshot[0]);
+				console.log(recordSnapshot);
+				setUserInfo(recordSnapshot);
 			});
 	}
 
@@ -161,8 +162,8 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot[0]);
-				setPaymentInfo(recordSnapshot[0]);
+				console.log(recordSnapshot);
+				setPaymentInfo(recordSnapshot);
 			});
 	}
 
@@ -176,7 +177,7 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				setSellingRecord(recordSnapshot);
+				setTransactionRecord(recordSnapshot);
 			});
 	}
 
@@ -192,6 +193,21 @@ function TradeRecord() {
 		setIsLoading(false);
 	}, []);
 
+	const onPaymentClick = async () => {
+		if (paymentInfo.length == 0 || paymentInfo === undefined) {
+			const paymentInfoValue = {
+				uid: userObject.uid,
+				cardNumber: "",
+				expiryMonth: "",
+				expiryYear: "",
+				cvv: "",
+				vendor: "",
+			};
+			await dbService.collection("PaymentInfo").add(paymentInfoValue);
+			console.log("new payment info");
+		}
+	};
+
 	console.log(userInfo);
 	console.log(paymentInfo);
 	console.log(sellingRecord);
@@ -203,23 +219,15 @@ function TradeRecord() {
 				"Please Wait..."
 			) : (
 				<>
-					{paymentInfo ? (
-						<>
-							<Link>
-								<GoPaymentBtn onClick={() => {}}>
-									Go to Payment Info
-								</GoPaymentBtn>
-							</Link>
-						</>
-					) : (
-						<>
-							<Link>
-								<GoPaymentBtnRed onClick={() => {}}>
-									Go to Payment Info
-								</GoPaymentBtnRed>
-							</Link>
-						</>
-					)}
+					<Link to={`/${userObject.uid}/profile/payment`}>
+						<GoPaymentBtn
+							onClick={() => {
+								onPaymentClick();
+							}}
+						>
+							Go to Payment Info
+						</GoPaymentBtn>
+					</Link>
 
 					<Tabs>
 						<Tab isActive={true}>

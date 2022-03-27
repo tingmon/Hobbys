@@ -21,6 +21,8 @@ import {
 } from "../atoms";
 import { flexbox } from "@mui/system";
 import { Prev } from "react-bootstrap/esm/PageItem";
+import AddressInfo from "./AddressInfo";
+import PaymentInfo from "./PaymentInfo";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -533,6 +535,12 @@ function Profile({ refreshUser }) {
 							</Route>
 							<Route path={`/${userObject.uid}/profile/record`}>
 								<TradeRecord uid={uid} />
+							</Route>
+							<Route path={`/${userObject.uid}/profile/address`}>
+								<AddressInfo fromCheckout={false} />
+							</Route>
+							<Route path={`/${userObject.uid}/profile/payment`}>
+								<PaymentInfo fromCheckout={false} />
 							</Route>
 						</Switch>
 					)}

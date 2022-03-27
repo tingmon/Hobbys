@@ -166,8 +166,8 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot[0]);
-				setAddressInfo(recordSnapshot[0]);
+				console.log(recordSnapshot);
+				setAddressInfo(recordSnapshot);
 			});
 	}
 
@@ -191,6 +191,36 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	const onLogOutClick = () => {
 		authService.signOut();
 		history.push("/");
+	};
+
+	const onAddressClick = async () => {
+		if (addressInfo.length == 0 || addressInfo === undefined) {
+			const addressInfoValue = {
+				uid: userObject.uid,
+				shippingAddress: {
+					firstName: "",
+					lastName: "",
+					phoneNumber: "",
+					address1: "",
+					address2: "",
+					city: "",
+					province: "",
+					postalcode: "",
+				},
+				billingAddress: {
+					firstName: "",
+					lastName: "",
+					phoneNumber: "",
+					address1: "",
+					address2: "",
+					city: "",
+					province: "",
+					postalcode: "",
+				},
+			};
+			await dbService.collection("AddressInfo").add(addressInfoValue);
+			console.log("new address info");
+		}
 	};
 
 	const onEditClick = (event) => {
@@ -327,24 +357,21 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 		};
 	};
 
+	console.log(addressInfo);
+
 	return (
 		<Container className="container">
 			<EditForm onSubmit={handleSubmit(onValid)} className="profileForm">
-				{addressInfo ? (
-					<>
-						<Link>
-							<GoAddressBtn onClick={() => {}}>Go to Address Info</GoAddressBtn>
-						</Link>
-					</>
-				) : (
-					<>
-						<Link>
-							<GoAddressBtnRed onClick={() => {}}>
-								Go to Address Info
-							</GoAddressBtnRed>
-						</Link>
-					</>
-				)}
+				<Link to={`/${userObject.uid}/profile/address`}>
+					<GoAddressBtn
+						onClick={() => {
+							onAddressClick();
+						}}
+					>
+						Go to Address Info
+					</GoAddressBtn>
+				</Link>
+
 				<label style={{ color: "#04aaff" }}>
 					<input
 						type="file"

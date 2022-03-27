@@ -11,6 +11,7 @@ import {
 	selectedPostingAtom,
 	isNewUserAtom,
 	userObjectAtom,
+	cartAtom,
 } from "../atoms";
 import {
 	authService,
@@ -34,6 +35,7 @@ import { Prev } from "react-bootstrap/esm/PageItem";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import EditPostingForm from "../components/EditPostingForm";
 import CommentList from "../components/CommentList";
+import Swal from "sweetalert2";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
@@ -42,7 +44,7 @@ const PreviewImg = styled.img`
 `;
 
 const Container = styled.div`
-	font-family: 'Noto Sans', sans-serif;
+	font-family: "Noto Sans", sans-serif;
 	max-width: 450px;
 	margin: 0 auto;
 	width: 100%;
@@ -167,8 +169,10 @@ function PostingDetail() {
 	const [isLike, setIsLike] = useState(false);
 	const [newComment, setNewComment] = useState("");
 	const [isCommenting, setIsCommenting] = useState(false);
+	const [cart, setCart] = useRecoilState(cartAtom);
 
 	useEffect(() => {
+		fetchCart();
 		if (selectedPosting.creatorUid == userObject.uid) {
 			setIsOwner(true);
 		}
@@ -299,6 +303,101 @@ function PostingDetail() {
 		}
 	};
 
+	function fetchCart() {
+		dbService
+			.collection("Cart")
+			.where("cartOwnerUid", "==", userObject.uid)
+			.onSnapshot((snapshot) => {
+				const cartSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setCart(cartSnapshot.splice(0));
+			});
+	}
+
+	const AddCartIconClicked = async (postingInfo) => {
+		// if user has no cart, create cart first.
+		// after adding item, show message box and 'go to cart' button.
+
+		if (cart.length == 0) {
+			const cart = {
+				cartOwnerUid: userObject.uid,
+				items: [
+					{
+						postingId: postingInfo.id,
+						creatorUid: postingInfo.creatorUid,
+						creatorDisplayName: postingInfo.creatorDisplayName,
+						itemPhoto: postingInfo.photoUrl[0],
+						itemName: postingInfo.itemName,
+						itemCategory: postingInfo.category,
+						itemPrice: postingInfo.price,
+					},
+				],
+			};
+			await dbService.collection("Cart").add(cart);
+			console.log("cart added");
+		} else {
+			let itemsArr = cart[0].items;
+			let alreadyIn = false;
+			console.log(itemsArr);
+			itemsArr.forEach((element) => {
+				if (element.postingId == postingInfo.id) {
+					console.log("duplicated item");
+					alreadyIn = true;
+				}
+			});
+			console.log(cart);
+			console.log("cart exsist");
+			if (!alreadyIn) {
+				dbService.doc(`Cart/${cart[0].id}`).update({
+					items: firebaseInstance.firestore.FieldValue.arrayUnion({
+						postingId: postingInfo.id,
+						creatorUid: postingInfo.creatorUid,
+						creatorDisplayName: postingInfo.creatorDisplayName,
+						itemPhoto: postingInfo.photoUrl[0],
+						itemName: postingInfo.itemName,
+						itemCategory: postingInfo.category,
+						itemPrice: postingInfo.price,
+					}),
+				});
+				// custom message box
+				Swal.fire({
+					title: "Item Added to your Cart!",
+					showDenyButton: true,
+					confirmButtonText: "Got It",
+					denyButtonText: `Go to Cart`,
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						// Swal.fire("Saved!", "", "success");
+						history.push(`/postingDetail/${selectedPosting.id}`);
+					} else if (result.isDenied) {
+						// Swal.fire("Changes are not saved", "", "info");
+						history.push("/cart");
+					}
+				});
+			} else {
+				Swal.fire({
+					title: "Item is Already in Your Cart!",
+					showDenyButton: true,
+					confirmButtonText: "Got It",
+					denyButtonText: `Go to Cart`,
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						// Swal.fire("Saved!", "", "success");
+						history.push(`/postingDetail/${selectedPosting.id}`);
+					} else if (result.isDenied) {
+						// Swal.fire("Changes are not saved", "", "info");
+						history.push("/cart");
+					}
+				});
+			}
+		}
+		fetchCart();
+	};
+
 	const toggleEditing = () => setIsEdit((prev) => !prev);
 
 	console.log(comments);
@@ -397,14 +496,14 @@ function PostingDetail() {
 
 												{selectedPosting.creatorUid !== userObject.uid &&
 													selectedPosting.forSale === true && (
-														<Link
-															to="/editposting"
+														<IconElement
+															href="#"
 															onClick={() =>
-																PostingIconClicked(selectedPosting)
+																AddCartIconClicked(selectedPosting)
 															}
 														>
 															<AddShoppingCartIcon />
-														</Link>
+														</IconElement>
 													)}
 											</div>
 											<div>
@@ -539,14 +638,14 @@ function PostingDetail() {
 
 												{selectedPosting.creatorUid !== userObject.uid &&
 													selectedPosting.forSale === true && (
-														<Link
-															to="/editposting"
+														<IconElement
+															href="#"
 															onClick={() =>
-																PostingIconClicked(selectedPosting)
+																AddCartIconClicked(selectedPosting)
 															}
 														>
 															<AddShoppingCartIcon />
-														</Link>
+														</IconElement>
 													)}
 											</div>
 										</LikeAndComment>

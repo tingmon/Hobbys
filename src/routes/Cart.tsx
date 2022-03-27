@@ -34,6 +34,7 @@ const Item = styled.div`
 	justify-content: start;
 	align-items: center;
 	margin-bottom: 10px;
+	width: 100%;
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
@@ -119,34 +120,39 @@ function Cart() {
 		console.log("useEffect");
 		let subTotalValue: number = 0;
 		let shippingValue: number = 0;
-		if (cart.length !== 0) {
-			let itemsArray = cart[0].items;
-			console.log(itemsArray);
-			if (itemsArray.length == 0 || itemsArray == undefined) {
-				setIsEmpty(true);
-			} else {
-				setIsEmpty(false);
-				itemsArray.forEach((element) => {
-					subTotalValue = subTotalValue + parseFloat(element.itemPrice);
-					shippingValue = shippingValue + 15;
-				});
-				setSubTotal(subTotalValue);
-				console.log(subTotalValue);
-				if (subTotalValue > 1000) {
-					setShipping(0);
+		if (cart !== null) {
+			if (cart.length !== 0) {
+				let itemsArray = cart[0].items;
+				console.log(itemsArray);
+				if (itemsArray.length == 0 || itemsArray == undefined) {
+					setIsEmpty(true);
 				} else {
-					setShipping(shippingValue);
+					setIsEmpty(false);
+					itemsArray.forEach((element) => {
+						subTotalValue = subTotalValue + parseFloat(element.itemPrice);
+						shippingValue = shippingValue + 15;
+					});
+					setSubTotal(subTotalValue);
+					console.log(subTotalValue);
+					if (subTotalValue > 1000) {
+						setShipping(0);
+					} else {
+						setShipping(shippingValue);
+					}
+					const totalInfo = {
+						subtotal: subTotalValue,
+						shipping: shippingValue,
+						total: subTotalValue + shippingValue,
+					};
+					console.log(totalInfo);
+					setPriceTotal(totalInfo);
 				}
-				const totalInfo = {
-					subtotal: subTotalValue,
-					shipping: shippingValue,
-					total: subTotalValue + shippingValue,
-				};
-				console.log(totalInfo);
-				setPriceTotal(totalInfo);
+				setIsLoading(false);
+				setItems(itemsArray);
+			} else {
+				setIsEmpty(true);
+				setIsLoading(false);
 			}
-			setIsLoading(false);
-			setItems(itemsArray);
 		} else {
 			setIsEmpty(true);
 			setIsLoading(false);
@@ -218,6 +224,9 @@ function Cart() {
 							>
 								<SubmitBtn>CHECKOUT</SubmitBtn>
 							</Link>
+							<ItemContainer>
+								<div style={{ width: 300, height: 100 }}></div>
+							</ItemContainer>
 						</>
 					)}
 				</>

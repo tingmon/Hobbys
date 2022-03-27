@@ -215,7 +215,6 @@ function Home() {
 		setSelectedComment(null);
 
 		if (cart.length == 0) {
-			console.log("???");
 			const cart = {
 				cartOwnerUid: userObject.uid,
 				items: [
