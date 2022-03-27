@@ -189,6 +189,7 @@ function PaymentInfo({ fromCheckout }) {
 			}
 		});
 	};
+	// backup testing
 
 	return (
 		<Container>
