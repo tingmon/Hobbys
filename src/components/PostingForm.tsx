@@ -19,8 +19,8 @@ import { v4 as uuidv4 } from "uuid";
 import { pink } from "@mui/material/colors";
 
 const SignUpForm = styled.form`
-	font-family: 'Noto Sans', sans-serif;
-	color: #000;	
+	font-family: "Noto Sans", sans-serif;
+	color: #000;
 	width: 100%;
 	max-width: 320px;
 	display: flex;
@@ -28,7 +28,7 @@ const SignUpForm = styled.form`
 `;
 
 const LoginForm = styled.form`
-	font-family: 'Noto Sans', sans-serif;
+	font-family: "Noto Sans", sans-serif;
 	color: #000;
 	width: 100%;
 	max-width: 320px;
@@ -37,12 +37,26 @@ const LoginForm = styled.form`
 `;
 
 const InputField = styled.input`
-	font-family: 'Noto Sans', sans-serif;
+	font-family: "Noto Sans", sans-serif;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
 	border-radius: 15px;
-	border-color: ${(props) => props.theme.secondColor};	
+	border-color: ${(props) => props.theme.secondColor};
+
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+`;
+
+const CategorySelect = styled.select`
+	font-family: "Noto Sans", sans-serif;
+	max-width: 295px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+	border-color: ${(props) => props.theme.secondColor};
 
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
@@ -51,13 +65,13 @@ const InputField = styled.input`
 `;
 
 const SubmitBtn = styled.button`
-	font-family: 'Hammersmith One', sans-serif;
+	font-family: "Hammersmith One", sans-serif;
 	color: #000;
 	display: block;
 	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};	
+	border-color: ${(props) => props.theme.secondColor};
 
-	background-color: ${(props) => props.theme.secondColor};	
+	background-color: ${(props) => props.theme.secondColor};
 	margin-top: 10px;
 	cursor: pointer;
 	max-width: 320px;
@@ -70,11 +84,11 @@ const SubmitBtn = styled.button`
 `;
 
 const GoBackBtn = styled.button`
-	font-family: 'Hammersmith One', sans-serif;
+	font-family: "Hammersmith One", sans-serif;
 	text-align: center;
 	margin-top: 10px;
 	cursor: pointer;
-	border-color: ${(props) => props.theme.secondColor};	
+	border-color: ${(props) => props.theme.secondColor};
 	background-color: ${(props) => props.theme.secondColor};
 	max-width: 320px;
 	width: 100%;
@@ -268,12 +282,19 @@ function PostingForm() {
 							placeholder="Enter Text"
 						/>
 						<ErrorMessage>{errors?.text?.message}</ErrorMessage>
-						<InputField
-							type="text"
+						<CategorySelect
 							{...register("category", {})}
-							placeholder="Enter Category"
-						/>
-						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
+							placeholder="*Enter Category"
+						>
+							<option value="Accessory">Accessory</option>
+							<option value="Cooking">Cooking</option>
+							<option value="Woodwork">Woodwork</option>
+							<option value="Knitting">Knitting</option>
+							<option value="Painting">Painting</option>
+							<option value="Outdoor">Outdoor</option>
+							<option value="Others">Others</option>
+							<option value="Daily Life">Daily Life</option>
+						</CategorySelect>
 						{isLoading ? (
 							<>
 								<SubmitBtn disabled style={{ cursor: "wait" }}>
@@ -301,13 +322,20 @@ function PostingForm() {
 							placeholder="*Enter Text"
 						/>
 						<ErrorMessage>{errors?.text?.message}</ErrorMessage>
-						<InputField
-							type="text"
+						<CategorySelect
 							{...register("category", {})}
 							placeholder="*Enter Category"
-						/>
+						>
+							<option value="Accessory">Accessory</option>
+							<option value="Cooking">Cooking</option>
+							<option value="Woodwork">Woodwork</option>
+							<option value="Knitting">Knitting</option>
+							<option value="Painting">Painting</option>
+							<option value="Outdoor">Outdoor</option>
+							<option value="Others">Others</option>
+							<option value="Daily Life">Daily Life</option>
+						</CategorySelect>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
-
 						<InputField
 							type="text"
 							{...register("itemName", {})}

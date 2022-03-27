@@ -110,9 +110,9 @@ function TradeRecord() {
 	const userObject = useRecoilValue(userObjectAtom);
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
 
-	async function fetchPaymentInfo(uid) {
+	async function fetchUserInfo(uid) {
 		dbService
-			.collection("PaymentInfo")
+			.collection("UserInfo")
 			.where("uid", "==", uid)
 			.onSnapshot((snapshot) => {
 				const recordSnapshot = snapshot.docs.map((doc) => ({
@@ -120,7 +120,7 @@ function TradeRecord() {
 					...doc.data(),
 				}));
 				console.log(recordSnapshot[0]);
-				setPaymentInfo(recordSnapshot[0]);
+				setUserInfo(recordSnapshot[0]);
 			});
 	}
 
@@ -152,6 +152,20 @@ function TradeRecord() {
 			});
 	}
 
+	async function fetchPaymentInfo(uid) {
+		dbService
+			.collection("PaymentInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(recordSnapshot[0]);
+				setPaymentInfo(recordSnapshot[0]);
+			});
+	}
+
 	async function fetchAllTransactions(uid) {
 		dbService
 			.collection("TransactionInfo")
@@ -163,32 +177,6 @@ function TradeRecord() {
 					...doc.data(),
 				}));
 				setSellingRecord(recordSnapshot);
-			});
-
-		dbService
-			.collection("TransactionInfo")
-			.where("buyerUid", "==", uid)
-			.orderBy("timeStamp", "desc")
-			.onSnapshot((snapshot) => {
-				const recordSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setBuyingRecord(recordSnapshot);
-			});
-	}
-
-	async function fetchUserInfo(uid) {
-		dbService
-			.collection("UserInfo")
-			.where("uid", "==", uid)
-			.onSnapshot((snapshot) => {
-				const recordSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				console.log(recordSnapshot[0]);
-				setUserInfo(recordSnapshot[0]);
 			});
 	}
 
@@ -225,7 +213,6 @@ function TradeRecord() {
 						</>
 					) : (
 						<>
-							<span>Complete payment info for your next purchase</span>
 							<Link>
 								<GoPaymentBtnRed onClick={() => {}}>
 									Go to Payment Info

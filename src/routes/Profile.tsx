@@ -411,7 +411,7 @@ function Profile({ refreshUser }) {
 
 	// console.log(followInfo);
 	// console.log(follower);
-	console.log(uid);
+	// console.log(uid);
 
 	return (
 		<>
@@ -422,7 +422,7 @@ function Profile({ refreshUser }) {
 					{isOwner ? (
 						<Header>
 							<label>
-								<TitleImage src={photoURL} alt="No Img" />
+								<TitleImage src={photoURL} alt="Profile" />
 							</label>
 							<Title>{displayName}</Title>
 						</Header>

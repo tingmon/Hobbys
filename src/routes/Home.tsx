@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Swal from "sweetalert2";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
@@ -102,11 +103,19 @@ const InputField = styled.input`
 	font-weight: bold;
 `;
 
-const PostingFooter = styled.div``;
+const PostingFooter = styled.div`
+	margin-left: 3px;
+	display: flex;
+	align-items: center;
+	a {
+		padding-left: 4px;
+	}
+`;
 
 const LikeAndComment = styled.div``;
 
 const TextBox = styled.div`
+	padding: 3px;
 	margin: 3px;
 	word-wrap: break-word;
 	overflow: auto;
@@ -178,10 +187,10 @@ function Home() {
 	}
 
 	useEffect(() => {
-		fetchHomePostings();
 		fetchLike();
 		fetchCart();
 		setIsLoading(false);
+		fetchHomePostings();
 	}, []);
 
 	function Item(props) {
@@ -224,24 +233,62 @@ function Home() {
 			await dbService.collection("Cart").add(cart);
 			console.log("cart added");
 		} else {
+			let itemsArr = cart[0].items;
+			let alreadyIn = false;
+			console.log(itemsArr);
+			itemsArr.forEach((element) => {
+				if (element.postingId == postingInfo.id) {
+					console.log("duplicated item");
+					alreadyIn = true;
+				}
+			});
 			console.log(cart);
 			console.log("cart exsist");
-			dbService.doc(`Cart/${cart[0].id}`).update({
-				items: firebaseInstance.firestore.FieldValue.arrayUnion({
-					postingId: postingInfo.id,
-					creatorUid: postingInfo.creatorUid,
-					creatorDisplayName: postingInfo.creatorDisplayName,
-					itemPhoto: postingInfo.photoUrl[0],
-					itemName: postingInfo.itemName,
-					itemCategory: postingInfo.category,
-					itemPrice: postingInfo.price,
-				}),
-			});
+			if (!alreadyIn) {
+				dbService.doc(`Cart/${cart[0].id}`).update({
+					items: firebaseInstance.firestore.FieldValue.arrayUnion({
+						postingId: postingInfo.id,
+						creatorUid: postingInfo.creatorUid,
+						creatorDisplayName: postingInfo.creatorDisplayName,
+						itemPhoto: postingInfo.photoUrl[0],
+						itemName: postingInfo.itemName,
+						itemCategory: postingInfo.category,
+						itemPrice: postingInfo.price,
+					}),
+				});
+				// custom message box
+				Swal.fire({
+					title: "Item Added to your Cart!",
+					showDenyButton: true,
+					confirmButtonText: "Got It",
+					denyButtonText: `Go to Cart`,
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						// Swal.fire("Saved!", "", "success");
+					} else if (result.isDenied) {
+						// Swal.fire("Changes are not saved", "", "info");
+						history.push("/cart");
+					}
+				});
+			} else {
+				Swal.fire({
+					title: "Item is Already in Your Cart!",
+					showDenyButton: true,
+					confirmButtonText: "Got It",
+					denyButtonText: `Go to Cart`,
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						// Swal.fire("Saved!", "", "success");
+					} else if (result.isDenied) {
+						// Swal.fire("Changes are not saved", "", "info");
+						history.push("/cart");
+					}
+				});
+			}
 		}
 		fetchCart();
-		if (window.confirm("Item Added! Go to Cart?")) {
-			history.push("/cart");
-		}
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
@@ -335,8 +382,6 @@ function Home() {
 		}
 	};
 
-	console.log(userObject);
-
 	return (
 		<div>
 			{isLoading ? (
@@ -400,41 +445,46 @@ function Home() {
 											))}
 										</Carousel>
 										<PostingFooter>
-											<LikeAndComment>
-												{likeList.length !== 0 && item.likes.likerUid ? (
-													PaintLikeIcon(item) == true ? (
-														<>
-															<a
-																href="#"
-																onClick={(event) =>
-																	LikeIconClicked(event, item)
-																}
-															>
-																<FavoriteBorderIcon style={{ color: "red" }} />
-															</a>
-														</>
+											{item.creatorUid !== userObject?.uid && (
+												<LikeAndComment>
+													{likeList.length !== 0 && item.likes.likerUid ? (
+														PaintLikeIcon(item) == true ? (
+															<>
+																<a
+																	href="#"
+																	onClick={(event) =>
+																		LikeIconClicked(event, item)
+																	}
+																>
+																	<FavoriteBorderIcon
+																		style={{ color: "red" }}
+																	/>
+																</a>
+															</>
+														) : (
+															<>
+																<a
+																	href="#"
+																	onClick={(event) =>
+																		LikeIconClicked(event, item)
+																	}
+																>
+																	<FavoriteBorderIcon />
+																</a>
+															</>
+														)
 													) : (
-														<>
-															<a
-																href="#"
-																onClick={(event) =>
-																	LikeIconClicked(event, item)
-																}
-															>
-																<FavoriteBorderIcon />
-															</a>
-														</>
-													)
-												) : (
-													<>
 														<a
 															href="#"
 															onClick={(event) => LikeIconClicked(event, item)}
 														>
 															<FavoriteBorderIcon />
 														</a>
-													</>
-												)}
+													)}
+												</LikeAndComment>
+											)}
+
+											<LikeAndComment>
 												<a
 													href="#"
 													onClick={(event) => CommentIconClicked(event, item)}
@@ -449,16 +499,20 @@ function Home() {
 														</CartIcon>
 													)}
 											</LikeAndComment>
+										</PostingFooter>
+										<PostingFooter>
 											{!isCommenting && (
 												<TextBox>
 													<span>{item.text}</span>
 												</TextBox>
 											)}
-
 											{isCommenting && item.id == selectedPosting.id && (
 												<>
-													<p>add comment</p>
-													<InputField onChange={CommentOnChange} type="text" />
+													<InputField
+														onChange={CommentOnChange}
+														type="text"
+														placeholder="enter comment"
+													/>
 													{comment && (
 														<button>
 															<Link

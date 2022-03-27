@@ -14,6 +14,9 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
+import { addressInfoAtom } from "../atoms";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -94,6 +97,44 @@ const ErrorMessage = styled.span`
 	color: red;
 `;
 
+const GoAddressBtn = styled.button`
+	text-align: center;
+	background: #04aaff;
+	color: white;
+	margin-top: 10px;
+	pointer
+	cursor: pointer;
+
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 3px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+`;
+
+const GoAddressBtnRed = styled.button`
+	text-align: center;
+	background: #EA2027;
+	color: white;
+	margin-top: 10px;
+	pointer
+	cursor: pointer;
+
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: #EA2027;
+
+	font-size: 12px;
+	color: white;
+	font-weight: bold;
+`;
+
 interface IForm {
 	userName?: string;
 	streetName?: string;
@@ -107,6 +148,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	const [newPhotoURL, setNewPhotoURL] = useState(userObject.photoURL);
 	const [previewImg, setpreviewImg] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 
 	// const userInfo = await dbService
 	// 	.collection("UserInfo")
@@ -125,12 +167,13 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					...doc.data(),
 				}));
 				console.log(recordSnapshot[0]);
-				setPaymentInfo(recordSnapshot[0]);
+				setAddressInfo(recordSnapshot[0]);
 			});
 	}
 
 	useEffect(() => {
 		fetchAddressInfo(uid);
+		setIsLoading(false);
 	}, []);
 
 	const {
@@ -287,6 +330,21 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	return (
 		<Container className="container">
 			<EditForm onSubmit={handleSubmit(onValid)} className="profileForm">
+				{addressInfo ? (
+					<>
+						<Link>
+							<GoAddressBtn onClick={() => {}}>Go to Address Info</GoAddressBtn>
+						</Link>
+					</>
+				) : (
+					<>
+						<Link>
+							<GoAddressBtnRed onClick={() => {}}>
+								Go to Address Info
+							</GoAddressBtnRed>
+						</Link>
+					</>
+				)}
 				<label style={{ color: "#04aaff" }}>
 					<input
 						type="file"
