@@ -193,7 +193,9 @@ function Search() {
 		setInput(value);
 	};
 
-	useEffect(async () => {}, []);
+	useEffect(async () => {
+		setPostings(null);
+	}, []);
 
 	return (
 		<Container>

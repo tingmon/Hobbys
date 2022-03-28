@@ -127,6 +127,11 @@ export const paymentInfoAtom = atom<any>({
 	default: null,
 });
 
+export const cartItemsAtom = atom<any>({
+	key: "cartItemsAtom",
+	default: null,
+});
+
 // export const userObjectState = atom<IUserObject>({
 // 	key: "userObject",
 // 	default: {

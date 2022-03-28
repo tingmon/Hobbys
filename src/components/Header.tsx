@@ -67,7 +67,7 @@ const ProfileImage = styled.img`
 	border-radius: 50%;
 	border: 2px solid #ffffff;
 	margin-right: 5px;
-	line-height: 60px;
+	line-height: 50px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
 `;

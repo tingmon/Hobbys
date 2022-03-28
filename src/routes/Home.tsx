@@ -40,7 +40,7 @@ const Container = styled.div`
 	max-width: 480px;
 	margin: 0 auto;
 	width: 100%;
-	height: 85vh;
+	height: 80vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
