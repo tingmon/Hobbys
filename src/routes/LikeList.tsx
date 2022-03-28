@@ -76,6 +76,7 @@ const Posting = styled.div`
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
+
 const PostingPreviewImg = styled.img`
 	width: 100px;
 	height: 100px;
