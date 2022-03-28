@@ -3,13 +3,20 @@
 // @ts-nocheck
 
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { cartAtom, priceTotalInfoAtom, totalInfoAtom } from "../atoms";
+import {
+	addressInfoAtom,
+	cartAtom,
+	paymentInfoAtom,
+	priceTotalInfoAtom,
+	totalInfoAtom,
+	userObjectAtom,
+} from "../atoms";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -90,7 +97,7 @@ const Label = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-	text-align: center;
+	text-align: rig;
 	background: #04aaff;
 	color: white;
 	margin-top: 10px;
@@ -110,8 +117,12 @@ const SubmitBtn = styled.button`
 const Value = styled.div``;
 
 function Cart() {
+	const history = useHistory();
 	const [cart, setCart] = useRecoilState(cartAtom);
 	const setPriceTotal = useSetRecoilState(priceTotalInfoAtom);
+	const userObject = useRecoilValue(userObjectAtom);
+	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
+	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEmpty, setIsEmpty] = useState(true);
@@ -119,10 +130,79 @@ function Cart() {
 	const [subTotal, setSubTotal] = useState(0);
 	const [shipping, setShipping] = useState(0);
 
+	const createPaymentInfo = async () => {
+		const paymentInfoValue = {
+			uid: userObject.uid,
+			cardNumber: "",
+			expiryMonth: "",
+			expiryYear: "",
+			cvv: "",
+			vendor: "",
+		};
+		await dbService.collection("PaymentInfo").add(paymentInfoValue);
+		console.log("new payment info");
+	};
+
+	const createAddressInfo = async () => {
+		const addressInfoValue = {
+			uid: userObject.uid,
+			shippingAddress: {
+				firstName: "",
+				lastName: "",
+				phoneNumber: "",
+				address1: "",
+				address2: "",
+				city: "",
+				province: "",
+				postalcode: "",
+			},
+			billingAddress: {
+				firstName: "",
+				lastName: "",
+				phoneNumber: "",
+				address1: "",
+				address2: "",
+				city: "",
+				province: "",
+				postalcode: "",
+			},
+		};
+		await dbService.collection("AddressInfo").add(addressInfoValue);
+		console.log("new address info");
+	};
+
+	async function fetchPaymentInfo(uid) {
+		dbService
+			.collection("PaymentInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const paymentSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setPaymentInfo(paymentSnapshot);
+			});
+	}
+
+	async function fetchAddressInfo(uid) {
+		dbService
+			.collection("AddressInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const addressSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setAddressInfo(addressSnapshot);
+			});
+	}
+
 	useEffect(() => {
 		console.log("useEffect");
 		let subTotalValue: number = 0;
 		let shippingValue: number = 0;
+		fetchAddressInfo(userObject.uid);
+		fetchPaymentInfo(userObject.uid);
 		if (cart !== null) {
 			if (cart.length !== 0) {
 				let itemsArray = cart[0].items;
@@ -177,6 +257,15 @@ function Cart() {
 		});
 	};
 
+	const onCheckoutClick = () => {
+		if (addressInfo.length == 0) {
+			createAddressInfo();
+		}
+		if (paymentInfo.length == 0) {
+			createPaymentInfo();
+		}
+	};
+
 	return (
 		<Container>
 			{isLoading ? (
@@ -220,15 +309,22 @@ function Cart() {
 									<Text>${subTotal + shipping}</Text>
 								</Label>
 							</Total>
+
 							<Link
 								to={{
 									pathname: `/cart/${cart[0].cartOwnerUid}`,
 								}}
 							>
-								<SubmitBtn>CHECKOUT</SubmitBtn>
+								<SubmitBtn
+									onClick={() => {
+										onCheckoutClick();
+									}}
+								>
+									CHECKOUT
+								</SubmitBtn>
 							</Link>
 							<ItemContainer>
-								<div style={{ width: 300, height: 100 }}></div>
+								<div style={{ width: 300, height: 90 }}></div>
 							</ItemContainer>
 						</>
 					)}

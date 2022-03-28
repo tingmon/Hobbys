@@ -48,15 +48,9 @@ function AppRouter({ refreshUser }) {
 							<Home userObject={userObject} />
 						</Route>
 
-						{selectedPostingInfo === null ? (
-							<Route path={`/:uid/profile`}>
-								<Profile userObject={userObject} refreshUser={refreshUser} />
-							</Route>
-						) : (
-							<Route path={`/:uid/profile`}>
-								<Profile userObject={userObject} refreshUser={refreshUser} />
-							</Route>
-						)}
+						<Route path={`/:uid/profile`}>
+							<Profile userObject={userObject} refreshUser={refreshUser} />
+						</Route>
 
 						<Route exact path="/search">
 							<Search />
