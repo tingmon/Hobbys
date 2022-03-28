@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // @ts-nocheck
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { Switch, Route } from "react-router";
@@ -413,6 +414,7 @@ function Profile({ refreshUser }) {
 	// console.log(followInfo);
 	// console.log(follower);
 	// console.log(uid);
+	console.log(photoURL);
 
 	return (
 		<>
@@ -423,14 +425,22 @@ function Profile({ refreshUser }) {
 					{isOwner ? (
 						<Header>
 							<label>
-								<TitleImage src={photoURL} alt="Profile" />
+								{photoURL !== null ? (
+									<TitleImage src={photoURL} alt="Profile" />
+								) : (
+									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								)}
 							</label>
 							<Title>{displayName}</Title>
 						</Header>
 					) : (
 						<Header>
 							<label>
-								<TitleImage src={photoURL} alt="No Img" />
+								{photoURL !== null ? (
+									<TitleImage src={photoURL} alt="Profile" />
+								) : (
+									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								)}
 							</label>
 							<Title>{displayName}</Title>
 						</Header>

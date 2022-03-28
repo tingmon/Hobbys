@@ -1,11 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { selectedCommentAtom, selectedPostingAtom } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+	selectedCommentAtom,
+	selectedPostingAtom,
+	uidAtom,
+	userObjectAtom,
+} from "../atoms";
 
 const NavContainer = styled.nav`
 	display: flex;
@@ -50,30 +53,72 @@ const LogoContainer = styled.div`
 //const Logo = styled.img``;
 
 const Hobbys = styled.h1`
-	font-family: 'M PLUS Rounded 1c', sans-serif;
-	margin: 10px 1px 3px 2px;
+	font-family: "M PLUS Rounded 1c", sans-serif;
+	margin: 0px 1px 3px 2px;
 	font-size: 25px;
 	font-weight: bold;
-	text-shadow:  1.5px 1.5px #ffffff;
-	color: #F6B324;
+	text-shadow: 1.5px 1.5px #ffffff;
+	color: #f6b324;
+`;
+
+const ProfileImage = styled.img`
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid #ffffff;
+	margin-right: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
 `;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
 function Header() {
+	const uid = useRecoilValue(uidAtom);
+	const userObject = useRecoilValue(userObjectAtom);
+	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
+	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
+
+	const MyProfileClicked = () => {
+		setSelectedPosting(null);
+		setSelectedComment(null);
+		console.log("nav work");
+	};
+
+	console.log(userObject);
+
 	return (
 		<NavContainer>
 			<LogoContainer>
 				<Link to="/">
-				<Hobbys>HOBBY'S</Hobbys>
+					<Hobbys>HOBBY'S</Hobbys>
 				</Link>
 			</LogoContainer>
 			<NavList>
-			<NavItem>
-					<Link to="/"
-					>
-						<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
-					</Link>
-				</NavItem>
+				{userObject ? (
+					<>
+						{userObject?.photoURL !== null ? (
+							<NavItem>
+								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
+									<ProfileImage src={userObject?.photoURL} alt="No Img" />
+									{/* <FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" /> */}
+								</Link>
+							</NavItem>
+						) : (
+							<NavItem>
+								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
+									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								</Link>
+							</NavItem>
+						)}
+					</>
+				) : (
+					<NavItem>
+						<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
+							<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+						</Link>
+					</NavItem>
+				)}
 			</NavList>
 		</NavContainer>
 	);

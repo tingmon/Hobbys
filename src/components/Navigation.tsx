@@ -10,7 +10,6 @@ import {
 	faSearch,
 	faHeart,
 	faPlusSquare,
-	
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -49,17 +48,15 @@ const NavItem = styled.li`
 	}
 `;
 
-const Navigation = ({ userObject }) => {
-	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
-	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
-	const MyProfileClicked = () => {
-		setSelectedPosting(null);
-		setSelectedComment(null);
-		console.log("nav work");
-	};
+const Navigation = () => {
 	return (
 		<NavContainer>
 			<NavList>
+				<NavItem>
+					<Link to="/addposting">
+						<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
+					</Link>
+				</NavItem>
 				<NavItem>
 					<Link to="/search">
 						<FontAwesomeIcon icon={faSearch} color={"#E8EBED"} size="2x" />
@@ -79,12 +76,8 @@ const Navigation = ({ userObject }) => {
 						/>
 					</Link>
 				</NavItem>
-				<NavItem>
-					<Link to="/addposting">
-						<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
-					</Link>
-				</NavItem>
-				<NavItem>
+
+				{/* <NavItem>
 					<Link to="/message">
 						<FontAwesomeIcon
 							icon={faFacebookMessenger}
@@ -92,15 +85,7 @@ const Navigation = ({ userObject }) => {
 							size="2x"
 						/>
 					</Link>
-				</NavItem>
-				<NavItem>
-					<Link
-						to={`/${userObject?.uid}/profile`}
-						onClick={() => MyProfileClicked()}
-					>
-						<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
-					</Link>
-				</NavItem>
+				</NavItem> */}
 			</NavList>
 		</NavContainer>
 	);
