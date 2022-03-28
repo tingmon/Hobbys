@@ -82,7 +82,17 @@ const SubmitBtn = styled.button`
 	font-size: 12px;
 	color: black;
 `;
-
+const Posting = styled.div`
+	border: 1px solid #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	a {
+		width: 100%;
+		height: 100%;
+	}
+`;
 const GoBackBtn = styled.button`
 	font-family: "Hammersmith One", sans-serif;
 	text-align: center;
@@ -292,8 +302,8 @@ function PostingForm() {
 							<option value="Knitting">Knitting</option>
 							<option value="Painting">Painting</option>
 							<option value="Outdoor">Outdoor</option>
+							<option value="Gardening">Gardening</option>
 							<option value="Others">Others</option>
-							<option value="Daily Life">Daily Life</option>
 						</CategorySelect>
 						{isLoading ? (
 							<>
@@ -332,8 +342,8 @@ function PostingForm() {
 							<option value="Knitting">Knitting</option>
 							<option value="Painting">Painting</option>
 							<option value="Outdoor">Outdoor</option>
+							<option value="Gardening">Gardening</option>
 							<option value="Others">Others</option>
-							<option value="Daily Life">Daily Life</option>
 						</CategorySelect>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
 						<InputField

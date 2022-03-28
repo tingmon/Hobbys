@@ -3,13 +3,14 @@
 // @ts-nocheck
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
 import {
 	faShoppingCart,
 	faUser,
 	faSearch,
 	faHeart,
-	faHome,
+	faPlusSquare,
+	
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -60,11 +61,6 @@ const Navigation = ({ userObject }) => {
 		<NavContainer>
 			<NavList>
 				<NavItem>
-					<Link to="/">
-						<FontAwesomeIcon icon={faHome} color={"#E8EBED"} size="2x" />
-					</Link>
-				</NavItem>
-				<NavItem>
 					<Link to="/search">
 						<FontAwesomeIcon icon={faSearch} color={"#E8EBED"} size="2x" />
 					</Link>
@@ -78,6 +74,20 @@ const Navigation = ({ userObject }) => {
 					<Link to="/cart">
 						<FontAwesomeIcon
 							icon={faShoppingCart}
+							color={"#E8EBED"}
+							size="2x"
+						/>
+					</Link>
+				</NavItem>
+				<NavItem>
+					<Link to="/addposting">
+						<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
+					</Link>
+				</NavItem>
+				<NavItem>
+					<Link to="/message">
+						<FontAwesomeIcon
+							icon={faFacebookMessenger}
 							color={"#E8EBED"}
 							size="2x"
 						/>

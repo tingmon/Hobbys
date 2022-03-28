@@ -6,7 +6,7 @@ import { RecoilRoot } from "recoil";
 import { lightTheme } from "./theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import firebase from "./fbase";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 // console.log(firebase);
 const queryClient = new QueryClient();
 

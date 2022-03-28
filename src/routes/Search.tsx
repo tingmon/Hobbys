@@ -1,5 +1,152 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// @ts-nocheck
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { authService, dbService, storageService } from "../fbase";
+import react, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import Carousel from "react-material-ui-carousel";
+import { Paper, Button } from "@mui/material";
+import carouselStyle from "../styles/Carousel.module.css";
+import {
+	postingInfoAtom,uidAtom,} from "../atoms";
+import { Link, Route, Switch } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
+import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { faChair } from '@fortawesome/free-solid-svg-icons';
+import { faMitten } from '@fortawesome/free-solid-svg-icons';
+import { faHandMiddleFinger } from '@fortawesome/free-solid-svg-icons';
+
+import SkateboardingIcon from '@mui/icons-material/Skateboarding';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+const Container = styled.div`
+	max-width: 480px;
+	margin: 0 auto;
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const Item = styled.div`
+	display: flex;
+	justify-content: flex-start;
+	align-items: start;
+	background-color: ${(props) => props.theme.postingBgColor};
+	margin: 2px;
+	width: 100%;
+	display: flex;
+`;
+const InputField = styled.input`
+	max-width: 300px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: ${(props) => props.theme.postingBgColor};
+	margin-top: 10px;
+	margin-left: 20px;
+	font-size: 12px;
+	color: black;
+	
+`;
+
+const SubmitBtn = styled.button`
+	text-align: center;
+	color: white;
+	margin-top: 10px;
+	cursor: pointer;
+	max-width: 80px;
+	width: 80px;
+	padding: 10px;
+	border-radius: 15px;
+	background-color: ${(props) => props.theme.postingBgColor};
+	margin-bottom: 10px;
+	margin-left: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+
+`;
+const IconContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 40px);
+	grid-auto-rows: 40px;
+	height:80px;
+	width:100vw;
+	border:2px solid #000;
+`
+const Icons = styled.button`
+	border: 1px solid #ffffff;
+	display: flex;
+	cursor: pointer;
+
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	a {
+		width: 100%;
+		height: 100%;
+	}
+`
+const PostingContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 100px);
+	grid-auto-rows: 100px;
+`;
+const Posting = styled.div`
+	border: 1px solid #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	a {
+		width: 100%;
+		height: 100%;
+	}
+`;
+const Text = styled.span`
+	margin: 5px 5px;
+	font-weight: bold;
+
+`;
 function Search() {
-	return "Search";
+	return (
+		<Container>
+
+			<Item >
+				<InputField type="text" placeholder="Enter User Name"/>
+				<SubmitBtn>Enter</SubmitBtn>
+				
+			</Item>
+			<Item>
+				<IconContainer>
+					<Icons><FontAwesomeIcon icon={faUtensils} size="2x"/> <Text> Cooking </Text> </Icons>
+					<Icons><FontAwesomeIcon icon={faChair} size="2x" /> <Text> Woodwork</Text> </Icons>
+					<Icons><SkateboardingIcon  fontSize="large"/> <Text> Outdoor</Text> </Icons>
+					<Icons><ColorLensIcon fontSize="large"/><Text>Painting</Text> </Icons>
+					<Icons><FontAwesomeIcon icon={faMitten} size="2x"/><Text> Knitting </Text> </Icons>
+					<Icons><LocalFloristIcon fontSize="large"/><Text>  Gardening</Text> </Icons>
+					<Icons><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /><Text>  Accessory</Text> </Icons>
+					<Icons><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /> <Text> Others</Text> </Icons>
+				</IconContainer>
+			</Item>
+			<Item>
+				<PostingContainer>
+					<Posting>
+
+					</Posting>
+				</PostingContainer>
+			</Item>
+
+		</Container>
+	);
 }
 
 export default Search;

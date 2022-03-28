@@ -95,7 +95,7 @@ const SubmitBtn = styled.button`
 	color: white;
 	margin-top: 10px;
 	cursor: pointer;
-
+	display: flex;
 	max-width: 320px;
 	width: 300px;
 	padding: 10px;
