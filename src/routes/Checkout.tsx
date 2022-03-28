@@ -156,7 +156,7 @@ function Checkout() {
 			});
 	}
 
-	const createPaymentInfo = () => {
+	const createPaymentInfo = async() => {
 		const paymentInfoValue = {
 			uid: userObject.uid,
 			cardNumber: "",
@@ -169,7 +169,7 @@ function Checkout() {
 		console.log("new payment info");
 	};
 
-	const createAddressInfo = () => {
+	const createAddressInfo = async() => {
 		const addressInfoValue = {
 			uid: userObject.uid,
 			shippingAddress: {

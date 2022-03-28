@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService, dbService, storageService } from "../fbase";
-import react, { useEffect, useState } from "react";
+import React,{useState,useEffect,useCallback,useMemo} from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,8 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
 import {
-	postingInfoAtom,uidAtom,} from "../atoms";
+	postingInfoAtom,uidAtom,postingsObject,selectedPostingAtom
+} from "../atoms";
 import { Link, Route, Switch } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -23,6 +24,23 @@ import { faHandMiddleFinger } from '@fortawesome/free-solid-svg-icons';
 import SkateboardingIcon from '@mui/icons-material/Skateboarding';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+
+
+
+const PostingCenter = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	height: 100%;
+`;
+
+const PostingPreviewImg = styled.img`
+	min-width: 100%;
+	min-height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+`;	
 const Container = styled.div`
 	max-width: 480px;
 	margin: 0 auto;
@@ -99,7 +117,17 @@ const PostingContainer = styled.div`
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 100px);
 	grid-auto-rows: 100px;
+	width:100vw;
+
 `;
+
+const CategoryContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 100px);
+	grid-auto-rows: 100px;
+`;
+
 const Posting = styled.div`
 	border: 1px solid #ffffff;
 	display: flex;
@@ -114,34 +142,93 @@ const Posting = styled.div`
 const Text = styled.span`
 	margin: 5px 5px;
 	font-weight: bold;
-
 `;
+
+
 function Search() {
+	
+	const [postings, setPostings] = useRecoilState(postingsObject);
+	const [selectedPosting, setSelectedPosting] =
+		useRecoilState(selectedPostingAtom);
+		const [selectedPostingInfo, setSelectedPostingInfo] =
+		useRecoilState(selectedPostingAtom);	
+
+	const [input, setInput] = useState("");
+	async function fetchPosting(event) {
+	
+		dbService
+			.collection("Posting")
+			.where("category", "==", event)
+			.onSnapshot((snapshot) => {
+				console.log(snapshot);
+				const postingSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(postingSnapshot);
+				setPostings(postingSnapshot);
+			});
+	}
+	
+	const Clicked = async (event) => {
+		
+		fetchPosting(event);
+		setSelectedPostingInfo(event);
+		console.log(event);
+	
+	};
+	
+	const SubmitClicked = async (event) => {
+		InputOnChange();
+		console.log(InputOnChange())
+
+	};
+
+	const InputOnChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setInput(value);
+	};
+
+	useEffect(async () => {
+	}, []);
+
 	return (
 		<Container>
 
 			<Item >
-				<InputField type="text" placeholder="Enter User Name"/>
-				<SubmitBtn>Enter</SubmitBtn>
+				<InputField onChange={InputOnChange} type="text" placeholder="enter user name"/>
+				<SubmitBtn onClick={() => SubmitClicked(InputField.text)}>Enter</SubmitBtn>
 				
 			</Item>
 			<Item>
 				<IconContainer>
-					<Icons><FontAwesomeIcon icon={faUtensils} size="2x"/> <Text> Cooking </Text> </Icons>
-					<Icons><FontAwesomeIcon icon={faChair} size="2x" /> <Text> Woodwork</Text> </Icons>
-					<Icons><SkateboardingIcon  fontSize="large"/> <Text> Outdoor</Text> </Icons>
-					<Icons><ColorLensIcon fontSize="large"/><Text>Painting</Text> </Icons>
-					<Icons><FontAwesomeIcon icon={faMitten} size="2x"/><Text> Knitting </Text> </Icons>
-					<Icons><LocalFloristIcon fontSize="large"/><Text>  Gardening</Text> </Icons>
-					<Icons><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /><Text>  Accessory</Text> </Icons>
-					<Icons><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /> <Text> Others</Text> </Icons>
+					<Icons onClick={() => Clicked("Cooking")} ><FontAwesomeIcon icon={faUtensils} size="2x" /> <Text> Cooking </Text> </Icons>
+					<Icons onClick={() => Clicked("Woodwork")}><FontAwesomeIcon icon={faChair} size="2x" /> <Text> Woodwork</Text> </Icons>
+					<Icons onClick={() => Clicked("Outdoor")}><SkateboardingIcon  fontSize="large"/> <Text> Outdoor</Text> </Icons>
+					<Icons onClick={() => Clicked("Painting")}><ColorLensIcon fontSize="large"/><Text>Painting</Text> </Icons>
+					<Icons onClick={() => Clicked("Knitting")}><FontAwesomeIcon icon={faMitten} size="2x"/><Text> Knitting </Text> </Icons>
+					<Icons onClick={() => Clicked("Gardening")}><LocalFloristIcon fontSize="large"/><Text>  Gardening</Text> </Icons>
+					<Icons onClick={() => Clicked("Accessory")}  ><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /><Text>  Accessory</Text> </Icons>
+					<Icons onClick={() => Clicked("Others")}><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /> <Text> Others</Text> </Icons>
+				
 				</IconContainer>
 			</Item>
 			<Item>
 				<PostingContainer>
-					<Posting>
-
-					</Posting>
+					{postings?.map((posting, index) => (
+								<Posting key={index}>
+									<Link
+										to={`/postingDetail/${posting?.id}`}
+										onClick={() => Clicked(posting)}
+									>
+										<PostingCenter>
+											<PostingPreviewImg src={posting.photoUrl[0]} />
+										</PostingCenter>
+									</Link>
+								</Posting>
+							))}
 				</PostingContainer>
 			</Item>
 
