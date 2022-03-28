@@ -1,13 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
 import {
-	faShoppingCart,
-	faPlusSquare,
-	faStar,
-	faTools,
+	faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { selectedCommentAtom, selectedPostingAtom } from "../atoms";
 
 const NavContainer = styled.nav`
 	display: flex;
@@ -65,27 +63,15 @@ function Header() {
 	return (
 		<NavContainer>
 			<LogoContainer>
-				<Hobbys>H</Hobbys>
-				<Hobbys>O</Hobbys>
-				<Hobbys>B</Hobbys>
-				<Hobbys>B</Hobbys>
-				<Hobbys>Y</Hobbys>
-				<Hobbys>'</Hobbys>
-				<Hobbys>S </Hobbys>
+				<Link to="/">
+				<Hobbys>HOBBY'S</Hobbys>
+				</Link>
 			</LogoContainer>
 			<NavList>
-				<NavItem>
-					<Link to="/addposting">
-						<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
-					</Link>
-				</NavItem>
-				<NavItem>
-					<Link to="/message">
-						<FontAwesomeIcon
-							icon={faFacebookMessenger}
-							color={"#E8EBED"}
-							size="2x"
-						/>
+			<NavItem>
+					<Link to="/"
+					>
+						<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
 					</Link>
 				</NavItem>
 			</NavList>
