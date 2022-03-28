@@ -111,46 +111,33 @@ function TradeRecord() {
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 
-	async function fetchUserInfo(uid) {
-		dbService
-			.collection("UserInfo")
-			.where("uid", "==", uid)
-			.onSnapshot((snapshot) => {
-				const recordSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setUserInfo(recordSnapshot);
-			});
-	}
+	// async function fetchSellTransactions(uid) {
+	// 	dbService
+	// 		.collection("TransactionInfo")
+	// 		.where("sellerUid", "==", uid)
+	// 		.orderBy("timeStamp", "desc")
+	// 		.onSnapshot((snapshot) => {
+	// 			const recordSnapshot = snapshot.docs.map((doc) => ({
+	// 				id: doc.id,
+	// 				...doc.data(),
+	// 			}));
+	// 			setSellingRecord(recordSnapshot);
+	// 		});
+	// }
 
-	async function fetchSellTransactions(uid) {
-		dbService
-			.collection("TransactionInfo")
-			.where("sellerUid", "==", uid)
-			.orderBy("timeStamp", "desc")
-			.onSnapshot((snapshot) => {
-				const recordSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setSellingRecord(recordSnapshot);
-			});
-	}
-
-	async function fetchBuyTransactions(uid) {
-		dbService
-			.collection("TransactionInfo")
-			.where("buyerUid", "==", uid)
-			.orderBy("timeStamp", "desc")
-			.onSnapshot((snapshot) => {
-				const recordSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setBuyingRecord(recordSnapshot);
-			});
-	}
+	// async function fetchBuyTransactions(uid) {
+	// 	dbService
+	// 		.collection("TransactionInfo")
+	// 		.where("buyerUid", "==", uid)
+	// 		.orderBy("timeStamp", "desc")
+	// 		.onSnapshot((snapshot) => {
+	// 			const recordSnapshot = snapshot.docs.map((doc) => ({
+	// 				id: doc.id,
+	// 				...doc.data(),
+	// 			}));
+	// 			setBuyingRecord(recordSnapshot);
+	// 		});
+	// }
 
 	async function fetchPaymentInfo(uid) {
 		dbService
@@ -182,7 +169,6 @@ function TradeRecord() {
 	useEffect(() => {
 		fetchAllTransactions(userObject.uid);
 		fetchPaymentInfo(userObject.uid);
-		fetchUserInfo(userObject.uid);
 
 		setIsLoading(false);
 	}, []);
@@ -223,38 +209,12 @@ function TradeRecord() {
 						</GoPaymentBtn>
 					</Link>
 
-					<Tabs>
-						<Tab isActive={true}>
-							<Link
-								onClick={() => {
-									setShowBuyingRecord(true);
-									setShowSellingRecord(false);
-								}}
-								to={`/${userObject.uid}/profile/record/buy`}
-							>
-								Buy
-							</Link>
-						</Tab>
-						<Tab isActive={true}>
-							<Link
-								onClick={() => {
-									setShowBuyingRecord(false);
-									setShowSellingRecord(true);
-								}}
-								to={`/${userObject.uid}/profile/record/sell`}
-							>
-								Sell
-							</Link>
-						</Tab>
-					</Tabs>
-
 					{sellingRecord.length == 0 && buyingRecord.length == 0 ? (
 						<>"You have no transaction record"</>
 					) : (
 						<>
 							"There are some transaction record"
-							{showBuyingRecord && <RecordContainer>buy</RecordContainer>}
-							{showSellingRecord && <RecordContainer>sell</RecordContainer>}
+							<RecordContainer></RecordContainer>
 						</>
 					)}
 				</>

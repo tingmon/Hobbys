@@ -49,7 +49,7 @@ const Item = styled.div`
 	display: flex;
 	justify-content: flex-start;
 	flex-direction: column;
-	align-items: start;
+	align-items: center;
 	min-height: 100px;
 	background-color: ${(props) => props.theme.postingBgColor};
 	margin: 5px 5px;
@@ -77,6 +77,24 @@ const PaymentForm = styled.form`
 const InputField = styled.input`
 	max-width: 295px;
 	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+`;
+
+const DateContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	z-index: 0;
+`;
+
+const ExpiryDateInputField = styled.input`
+	max-width: 295px;
+	width: 20%;
 	padding: 10px;
 	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
@@ -157,20 +175,23 @@ function PaymentInfo({ fromCheckout }) {
 		let cardVendor = "";
 		if (/^3[47][0-9]{13}$/.test(data.cardNumber)) {
 			cardVendor = "Amex";
-		}
-		if (/^3[47][0-9]{13}$/.test(data.cardNumber)) {
+		} else if (
+			/^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/.test(
+				data.cardNumber
+			)
+		) {
 			cardVendor = "Master";
-		}
-		if (/^(62[0-9]{14,17})$/.test(data.cardNumber)) {
+		} else if (/^4[0-9]{12}(?:[0-9]{3})?$/.test(data.cardNumber)) {
 			cardVendor = "Visa";
-		}
-		if (/^3[47][0-9]{13}$/.test(data.cardNumber)) {
+		} else if (/^(62[0-9]{14,17})$/.test(data.cardNumber)) {
 			cardVendor = "UnionPay";
-		}
-		if (/^3[47][0-9]{13}$/.test(data.cardNumber)) {
+		} else if (/^(?:2131|1800|35\d{3})\d{11}$/.test(data.cardNumber)) {
 			cardVendor = "JCB";
+		} else {
+			cardVendor = "Other";
 		}
 		console.log(data, " onShippingValid");
+		console.log(cardVendor);
 		dbService.doc(`PaymentInfo/${paymentInfo[0].id}`).update({
 			cardOwner: data.cardOwner,
 			cardNumber: data.cardNumber,
@@ -193,9 +214,10 @@ function PaymentInfo({ fromCheckout }) {
 	return (
 		<Container>
 			{fromCheckout && <button>Back to checkout</button>}
-			<HeaderText>ENTER PAYMENT DETAILS</HeaderText>
+
 			<ItemContainer>
 				<Item>
+					<HeaderText>ENTER PAYMENT DETAILS</HeaderText>
 					<PaymentForm onSubmit={handleSubmit(onValid)}>
 						<InputField
 							type="text"
@@ -209,37 +231,75 @@ function PaymentInfo({ fromCheckout }) {
 						<InputField
 							type="text"
 							{...register("cardNumber", {
-								required: "Last Name is Required",
-								// exact 12 digits
+								required: "Card Number is Required",
+								// exact 16 digits
+								pattern: {
+									value: /^\b\d{4}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4}\b$/,
+									message: "Invalid Card Number Pattern",
+								},
 							})}
-							placeholder="Card Number(12 digits)"
+							placeholder="Card Number(16 digits)"
 						/>
 						<ErrorMessage>{errors?.cardNumber?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("expiryMonth", {
-								required: "Month is Required",
-								// 01 - 12
-							})}
-							placeholder="Expiry Date Month(MM)"
-						/>
+						<DateContainer>
+							<Text>Expiry Date(MM/YY)</Text>
+							<ExpiryDateInputField
+								type="text"
+								{...register("expiryMonth", {
+									required: "Month is Required",
+									// 01 - 12
+									pattern: {
+										value: /^\b\d{2}\b$/,
+										message: "Invalid Month Pattern",
+									},
+									min: {
+										value: 1,
+										message: "Month must be bigger than 0",
+									},
+									max: {
+										value: 12,
+										message: "Month must be less than 13",
+									},
+								})}
+								placeholder="MM"
+							/>
+							<Text>/</Text>
+							<ExpiryDateInputField
+								type="text"
+								{...register("expiryYear", {
+									required: "Year is Required",
+									// 21 < x < 28
+									pattern: {
+										value: /^\b\d{2}\b$/,
+										message: "Invalid Year Pattern",
+									},
+									min: {
+										value: 22,
+										message: "Year must be later than 2021",
+									},
+									max: {
+										value: 30,
+										message: "Year must be before than 2030",
+									},
+								})}
+								placeholder="YY"
+							/>
+						</DateContainer>
+
 						<ErrorMessage>{errors?.expiryMonth?.message}</ErrorMessage>
-						<InputField
-							type="text"
-							{...register("expiryYear", {
-								required: "Year is Required",
-								// 2021 < x < 2028
-							})}
-							placeholder="Expiry Date Year(YY)"
-						/>
+
 						<ErrorMessage>{errors?.expiryYear?.message}</ErrorMessage>
 						<InputField
 							type="text"
 							{...register("cvv", {
 								required: "CVV is Required",
 								// exact 3 digits
+								pattern: {
+									value: /^\b\d{3}\b$/,
+									message: "Invalid CVV Pattern",
+								},
 							})}
-							placeholder="CVV"
+							placeholder="CVV(3 digits)"
 						/>
 						<ErrorMessage>{errors?.cvv?.message}</ErrorMessage>
 						<SubmitBtn>Submit</SubmitBtn>
