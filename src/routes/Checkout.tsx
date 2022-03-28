@@ -4,11 +4,19 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { cartAtom, priceTotalInfoAtom, totalInfoAtom } from "../atoms";
+import {
+	addressInfoAtom,
+	cartAtom,
+	paymentInfoAtom,
+	priceTotalInfoAtom,
+	totalInfoAtom,
+	userObjectAtom,
+} from "../atoms";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
 import { Link } from "react-router-dom";
+import { Collapse, FormControlLabel, Switch } from "@mui/material";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -100,59 +108,177 @@ const SubmitBtn = styled.button`
 
 function Checkout() {
 	const [isLoading, setIsLoading] = useState(true);
-	const totalInfo = useRecoilValue(priceTotalInfoAtom);
+	const [userInfo, setUserInfo] = useState<any>(null);
+	const [isShipping, setIsShipping] = useState(true);
+	const [isBilling, setIsBilling] = useState(false);
 
-	console.log(totalInfo);
+	const userObject = useRecoilValue(userObjectAtom);
+	const totalInfo = useRecoilValue(priceTotalInfoAtom);
+	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
+	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
+
+	async function fetchUserInfo(uid) {
+		dbService
+			.collection("UserInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setUserInfo(recordSnapshot[0]);
+			});
+	}
+
+	async function fetchPaymentInfo(uid) {
+		dbService
+			.collection("PaymentInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const paymentSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setPaymentInfo(paymentSnapshot[0]);
+			});
+	}
+
+	async function fetchAddressInfo(uid) {
+		dbService
+			.collection("AddressInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const addressSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setAddressInfo(addressSnapshot[0]);
+			});
+	}
+
+	const createPaymentInfo = () => {
+		const paymentInfoValue = {
+			uid: userObject.uid,
+			cardNumber: "",
+			expiryMonth: "",
+			expiryYear: "",
+			cvv: "",
+			vendor: "",
+		};
+		await dbService.collection("PaymentInfo").add(paymentInfoValue);
+		console.log("new payment info");
+	};
+
+	const createAddressInfo = () => {
+		const addressInfoValue = {
+			uid: userObject.uid,
+			shippingAddress: {
+				firstName: "",
+				lastName: "",
+				phoneNumber: "",
+				address1: "",
+				address2: "",
+				city: "",
+				province: "",
+				postalcode: "",
+			},
+			billingAddress: {
+				firstName: "",
+				lastName: "",
+				phoneNumber: "",
+				address1: "",
+				address2: "",
+				city: "",
+				province: "",
+				postalcode: "",
+			},
+		};
+		await dbService.collection("AddressInfo").add(addressInfoValue);
+		console.log("new address info");
+	};
+
+	const handleIsShipping = () => {
+		setIsShipping((prev) => !prev);
+	};
+	const handleIsBilling = () => {
+		setIsBilling((prev) => !prev);
+	};
 
 	//
-	useEffect(() => {}, []);
+	useEffect(() => {
+		fetchUserInfo(userObject.uid);
+		fetchPaymentInfo(userObject.uid);
+		fetchAddressInfo(userObject.uid);
+		setIsLoading(false);
+	}, []);
 
+	// make new transaction record / userinfo -> update buyer point, seller point, rank
 	const onSubmitClick = () => {};
 
+	console.log("userInfo: ", userInfo);
+	console.log("paymentInfo: ", paymentInfo);
+	console.log("addressInfo: ", addressInfo);
+
 	return (
-		<Container>
-			<Shipto>
-				<HeaderText>SHIP TO</HeaderText>
-				<Text>recipient</Text>
-				<Text>address1(street)</Text>
-				<Text>address2(addtional)</Text>
-				<Text>city</Text>
-				<Text>postalcode</Text>
-			</Shipto>
-			<PaymentDetails>
-				<HeaderText>CREDIT CARD DETAILS</HeaderText>
-				<Text>Visa **** 7209</Text>
-			</PaymentDetails>
-			<BillingAddress>
-				<HeaderText>BILLING ADDRESS</HeaderText>
-				<Text>recipient</Text>
-				<Text>address1(street)</Text>
-				<Text>address2(addtional)</Text>
-				<Text>city</Text>
-				<Text>postalcode</Text>
-			</BillingAddress>
-			<Total>
-				<Label>
-					<Text>Subtotal: </Text>
-					<Text>${totalInfo.subtotal}</Text>
-				</Label>
-				<Label>
-					<Text>Shipping: </Text>
-					<Text>${totalInfo.shipping}</Text>
-				</Label>
-				<Label>
-					<TotalText>Total: </TotalText>
-					<TotalText>${totalInfo.total}</TotalText>
-				</Label>
-			</Total>
-			<Link
-				to={{
-					pathname: `/`,
-				}}
-			>
-				<SubmitBtn>PLACE ORDER</SubmitBtn>
-			</Link>
-		</Container>
+		<>
+			{isLoading ? (
+				"Please Wait..."
+			) : (
+				<>
+					{/* {paymentInfo == null && createPaymentInfo() : <></>} */}
+					<Container>
+						<FormControlLabel
+							control={
+								<Switch checked={isShipping} onChange={handleIsShipping} />
+							}
+							label="SHIPPING ADDRESS"
+						/>
+						<Collapse></Collapse>
+						<Shipto>
+							<HeaderText>SHIP TO</HeaderText>
+							<Text>recipient</Text>
+							<Text>address1(street)</Text>
+							<Text>address2(addtional)</Text>
+							<Text>city</Text>
+							<Text>postalcode</Text>
+						</Shipto>
+						<PaymentDetails>
+							<HeaderText>CREDIT CARD DETAILS</HeaderText>
+							<Text>Visa **** 7209</Text>
+						</PaymentDetails>
+						<BillingAddress>
+							<HeaderText>BILLING ADDRESS</HeaderText>
+							<Text>recipient</Text>
+							<Text>address1(street)</Text>
+							<Text>address2(addtional)</Text>
+							<Text>city</Text>
+							<Text>postalcode</Text>
+						</BillingAddress>
+						<Total>
+							<Label>
+								<Text>Subtotal: </Text>
+								<Text>${totalInfo.subtotal}</Text>
+							</Label>
+							<Label>
+								<Text>Shipping: </Text>
+								<Text>${totalInfo.shipping}</Text>
+							</Label>
+							<Label>
+								<TotalText>Total: </TotalText>
+								<TotalText>${totalInfo.total}</TotalText>
+							</Label>
+						</Total>
+						<Link
+							to={{
+								pathname: `/`,
+							}}
+						>
+							<SubmitBtn>PLACE ORDER</SubmitBtn>
+						</Link>
+					</Container>
+				</>
+			)}
+		</>
 	);
 }
 

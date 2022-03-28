@@ -9,8 +9,13 @@ import { authService, dbService, storageService } from "../fbase";
 import { useEffect, useState } from "react";
 import EditProfile from "./EditProfile";
 import TradeRecord from "./TradeRecord";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedPostingAtom, userObjectAtom, postingsObject } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+	selectedPostingAtom,
+	userObjectAtom,
+	postingsObject,
+	selectedCommentAtom,
+} from "../atoms";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -36,7 +41,7 @@ const Title = styled.h1`
 `;
 
 const Item = styled.div`
-margin: 0;
+	margin: 0;
 `;
 const Overview = styled.div`
 	display: flex;
@@ -46,7 +51,6 @@ const Overview = styled.div`
 	border-radius: 10px;
 `;
 const OverviewItem = styled.div`
-
 	flex-direction: column;
 	align-items: center;
 	span:first-child {
@@ -62,7 +66,6 @@ const PostingContainer = styled.div`
 	grid-template-rows: repeat(1, 100px);
 	grid-auto-rows: 100px;
 	z-index: 0;
-
 `;
 
 const Posting = styled.div`
@@ -75,36 +78,29 @@ const Posting = styled.div`
 
 const PostingPreviewImg = styled.img`
 	width: 100px;
-	height: 100px; 
-	margin-left:0px;
+	height: 100px;
+	margin-left: 0px;
 `;
 const Description = styled.div`
 	display: flex;
 	justify-content: flex-start;
 	flex-direction: column;
 	align-items: start;
-	margin-left:3px;
+	margin-left: 3px;
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
-function LikeList({ refreshUser }) {
-	const { uid } = useParams();
-	const [postings, setPostings] = useRecoilState(postingsObject);
+function LikeList() {
+	const [postingArr, setPostingArr] = useState<any>([]);
+
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOwner, setIsOwner] = useState(false);
-	const [following, setFollowing] = useState(0);
-	const [showPosting, setShowPosting] = useState(true);
-	const [showRecord, setShowRecord] = useState(false);
-	const [userData, setUserData] = useState<any>(null);
-	const [photoURL, setPhotoURL] = useState("");
-	const [likes,setLikes]=useState<any>([]);
-	const selectedPosting = useRecoilValue(selectedPostingAtom);
+	const [likes, setLikes] = useState<any>([]);
 	const userObject = useRecoilValue(userObjectAtom);
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
+	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 
-
-	async function fetchPosting(uid) {
+	async function fetchLikes(uid) {
 		dbService
 			.collection("Like")
 			.where("likerUid", "==", uid)
@@ -116,23 +112,39 @@ function LikeList({ refreshUser }) {
 				}));
 				setLikes(likeSnapshot);
 			});
+	}
 
+	async function fetchLikePostings(uid) {
+		dbService
+			.collection("Posting")
+			.where("likes.likerUid", "array-contains", uid)
+			.orderBy("createdAt", "desc")
+			.onSnapshot((snapshot) => {
+				const postingSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setPostingArr(postingSnapshot);
+			});
 	}
 
 	const PostingClicked = (postingInfo) => {
-
+		console.log(postingInfo);
 		setSelectedPostingInfo(postingInfo);
+		setSelectedComment(null);
 	};
 
 	useEffect(async () => {
-		fetchPosting(userObject.uid);
+		fetchLikes(userObject.uid).then(() => {
+			fetchLikePostings(userObject.uid);
+		});
 
 		setIsLoading(false);
-		
 	}, []);
 
 	console.log(likes);
-	console.log(selectedPosting);
+	// console.log(selectedPostingInfo);
+	console.log(postingArr);
 
 	return (
 		<>
@@ -140,37 +152,28 @@ function LikeList({ refreshUser }) {
 				"Loading..."
 			) : (
 				<Container>
-					<Header>
-						Like List
-					</Header>
-					{showPosting && !showRecord ? (
+					<Header>Like List</Header>
 
-						<PostingContainer>
-							<Item>
-								{likes?.map((like, index) => (
+					<PostingContainer>
+						<Item>
+							{postingArr?.map((posting, index) => (
 								<Posting key={index}>
 									<Link
-										to={`/postingDetail/${selectedPosting?.postingId}`}
-										onClick={() => PostingClicked(selectedPostingInfo)}
-										onMouseEnter={() => PostingClicked(selectedPostingInfo)}
+										to={`/postingDetail/${posting?.id}`}
+										onClick={() => PostingClicked(posting)}
+										onMouseEnter={() => PostingClicked(posting)}
 									>
-										<PostingPreviewImg src={like.photoUrl} />
+										<PostingPreviewImg src={posting.photoUrl[0]} />
 										<Description>
-											<Text>{like.creatorDisplayName}</Text>
-											<Text>{like.category}</Text>
+											<Text>{posting.creatorDisplayName}</Text>
+											<Text>{posting.category}</Text>
 										</Description>
 									</Link>
-									
 								</Posting>
 							))}
-							</Item>
-							<div style={{ width: 300, height: 150 }}></div>
-						</PostingContainer>
-					) : (
-						<Switch>
-				
-						</Switch>
-					)}
+						</Item>
+						<div style={{ width: 300, height: 150 }}></div>
+					</PostingContainer>
 				</Container>
 			)}
 		</>

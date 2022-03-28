@@ -43,7 +43,7 @@ const Description = styled.div`
 	justify-content: flex-start;
 	flex-direction: column;
 	align-items: start;
-	width:200px;
+	width: 200px;
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
@@ -107,7 +107,6 @@ const SubmitBtn = styled.button`
 	font-weight: bold;
 `;
 
-
 const Value = styled.div``;
 
 function Cart() {
@@ -138,7 +137,7 @@ function Cart() {
 					});
 					setSubTotal(subTotalValue);
 					console.log(subTotalValue);
-					if (subTotalValue > 1000) {
+					if (subTotalValue > 300) {
 						setShipping(0);
 					} else {
 						setShipping(shippingValue);
@@ -203,7 +202,6 @@ function Cart() {
 											<FontAwesomeIcon icon={faTrash} />
 										</IconElement>
 									</Item>
-									
 								))}
 							</ItemContainer>
 							<SubTotalShipping>
