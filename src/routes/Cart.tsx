@@ -8,6 +8,7 @@ import styled from "styled-components";
 import {
 	addressInfoAtom,
 	cartAtom,
+	cartItemsAtom,
 	paymentInfoAtom,
 	priceTotalInfoAtom,
 	totalInfoAtom,
@@ -123,10 +124,11 @@ function Cart() {
 	const userObject = useRecoilValue(userObjectAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
+	const [cartItems, setCartItems] = useRecoilState(cartItemsAtom);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEmpty, setIsEmpty] = useState(true);
-	const [items, setItems] = useState<any>([]);
+	// const [items, setItems] = useState<any>([]);
 	const [subTotal, setSubTotal] = useState(0);
 	const [shipping, setShipping] = useState(0);
 
@@ -231,7 +233,7 @@ function Cart() {
 					setPriceTotal(totalInfo);
 				}
 				setIsLoading(false);
-				setItems(itemsArray);
+				setCartItems(itemsArray);
 			} else {
 				setIsEmpty(true);
 				setIsLoading(false);
@@ -278,7 +280,7 @@ function Cart() {
 						<>
 							<h1>Your Cart</h1>
 							<ItemContainer>
-								{items?.map((item, index) => (
+								{cartItems?.map((item, index) => (
 									<Item key={index}>
 										<PreviewImg src={item.itemPhoto}></PreviewImg>
 										<Description>

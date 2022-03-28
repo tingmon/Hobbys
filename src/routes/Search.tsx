@@ -27,10 +27,10 @@ import { faHandMiddleFinger } from "@fortawesome/free-solid-svg-icons";
 import SkateboardingIcon from "@mui/icons-material/Skateboarding";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
-import { IoMdCellular ,IoMdFlower } from 'react-icons/io';
-import { IoPaw } from 'react-icons/io5';
+import { IoMdCellular, IoMdFlower } from "react-icons/io";
+import { IoPaw } from "react-icons/io5";
 
-import { GiDropEarrings,GiWinterGloves } from "react-icons/gi";
+import { GiDropEarrings, GiWinterGloves } from "react-icons/gi";
 
 const PostingCenter = styled.div`
 	display: flex;
@@ -199,7 +199,6 @@ function Search() {
 
 	useEffect(async () => {
 		setPostings(null);
-
 	}, []);
 
 	return (
@@ -228,27 +227,26 @@ function Search() {
 						<FontAwesomeIcon icon={faChair} size="1x" /> <Text> Woodwork</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Outdoor")}>
-						<SkateboardingIcon   /> <Text> Outdoor</Text>{" "}
+						<SkateboardingIcon /> <Text> Outdoor</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Painting")}>
 						<ColorLensIcon font-size="samll" />
 						<Text>Painting</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Knitting")}>
-						<FontAwesomeIcon icon={faMitten}   size="1x"  />
+						<FontAwesomeIcon icon={faMitten} size="1x" />
 						<Text> Knitting </Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Gardening")}>
-						<IoMdFlower  size="2x" />
+						<IoMdFlower size="2x" />
 						<Text> Gardening</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Accessory")}>
-						<GiDropEarrings  size="1x"  />
+						<GiDropEarrings size="1x" />
 						<Text> Accessory</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Others")}>
-						<IoMdCellular  font-size="samll" />{" "}
-						<Text> Others</Text>{" "}
+						<IoMdCellular font-size="samll" /> <Text> Others</Text>{" "}
 					</Icons>
 				</IconContainer>
 			</Item>

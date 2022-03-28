@@ -7,6 +7,7 @@ import styled from "styled-components";
 import {
 	addressInfoAtom,
 	cartAtom,
+	cartItemsAtom,
 	paymentInfoAtom,
 	priceTotalInfoAtom,
 	totalInfoAtom,
@@ -131,10 +132,12 @@ function Checkout() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [userInfo, setUserInfo] = useState<any>([]);
 	const [isReady, setIsReady] = useState(false);
+	const [sellerArr, setSellerArr] = useState<any>([]);
 
 	const uid = useRecoilValue(uidAtom);
+	const cartItems = useRecoilValue(cartItemsAtom);
 	const userObject = useRecoilValue(userObjectAtom);
-	const totalInfo = useRecoilValue(priceTotalInfoAtom);
+	const priceTotalInfo = useRecoilValue(priceTotalInfoAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 
@@ -199,6 +202,8 @@ function Checkout() {
 		setIsLoading(false);
 	}, []);
 
+	console.log(cartItems);
+
 	// make new transaction record / userinfo -> update buyer point, seller point, rank
 	const onSubmitClick = async () => {
 		Swal.fire({
@@ -209,8 +214,41 @@ function Checkout() {
 			/* Read more about isConfirmed, isDenied below */
 			if (result.isConfirmed) {
 				// Swal.fire("Saved!", "", "success");
+				// to get every transaction record
+				let combinedUid = uid;
+				let sellers = [];
+				console.log(cartItems);
+				cartItems.map((element) => {
+					combinedUid = combinedUid + element.creatorUid;
+					const seller = {
+						uid: element.creatorUid,
+						postingId: element.postingId,
+						price: element.itemPrice,
+					};
+					sellers.push(seller);
+				});
+				console.log(sellers);
+				console.log(combinedUid);
 
-				const transactionRecord = {};
+				const transactionRecord = {
+					buyerUid: userObject.uid,
+					addressInfo: addressInfo,
+					paymentInfo: paymentInfo,
+					priceTotalInfo: priceTotalInfo,
+					items: cartItems,
+					combinedUid: combinedUid,
+					sellers: sellers,
+					timeStamp: Date.now(),
+				};
+
+				// apply buyer point and seller point
+				// add transaction record
+				// combine buyer and seller point for user rank
+				// one buyer point for cash back
+				// one buyer point for user rank
+				// one seller point for user rank
+
+				console.log(transactionRecord);
 
 				history.push(`/`);
 			}
@@ -282,15 +320,15 @@ function Checkout() {
 							<Total>
 								<Label>
 									<Text>Subtotal: </Text>
-									<Text>${totalInfo.subtotal}</Text>
+									<Text>${priceTotalInfo.subtotal}</Text>
 								</Label>
 								<Label>
 									<Text>Shipping: </Text>
-									<Text>${totalInfo.shipping}</Text>
+									<Text>${priceTotalInfo.shipping}</Text>
 								</Label>
 								<Label>
 									<TotalText>Total: </TotalText>
-									<TotalText>${totalInfo.total}</TotalText>
+									<TotalText>${priceTotalInfo.total}</TotalText>
 								</Label>
 							</Total>
 							<a>
