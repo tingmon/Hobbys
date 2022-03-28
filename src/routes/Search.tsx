@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService, dbService, storageService } from "../fbase";
-import React,{useState,useEffect,useCallback,useMemo} from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
@@ -11,21 +11,22 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
 import {
-	postingInfoAtom,uidAtom,postingsObject,selectedPostingAtom
+	postingInfoAtom,
+	uidAtom,
+	postingsObject,
+	selectedPostingAtom,
 } from "../atoms";
 import { Link, Route, Switch } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { faUtensils } from '@fortawesome/free-solid-svg-icons';
-import { faChair } from '@fortawesome/free-solid-svg-icons';
-import { faMitten } from '@fortawesome/free-solid-svg-icons';
-import { faHandMiddleFinger } from '@fortawesome/free-solid-svg-icons';
+import { faUtensils } from "@fortawesome/free-solid-svg-icons";
+import { faChair } from "@fortawesome/free-solid-svg-icons";
+import { faMitten } from "@fortawesome/free-solid-svg-icons";
+import { faHandMiddleFinger } from "@fortawesome/free-solid-svg-icons";
 
-import SkateboardingIcon from '@mui/icons-material/Skateboarding';
-import ColorLensIcon from '@mui/icons-material/ColorLens';
-import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
-
-
+import SkateboardingIcon from "@mui/icons-material/Skateboarding";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 
 const PostingCenter = styled.div`
 	display: flex;
@@ -40,7 +41,7 @@ const PostingPreviewImg = styled.img`
 	min-height: 100%;
 	max-width: 100%;
 	max-height: 100%;
-`;	
+`;
 const Container = styled.div`
 	max-width: 480px;
 	margin: 0 auto;
@@ -70,7 +71,6 @@ const InputField = styled.input`
 	margin-left: 20px;
 	font-size: 12px;
 	color: black;
-	
 `;
 
 const SubmitBtn = styled.button`
@@ -88,17 +88,16 @@ const SubmitBtn = styled.button`
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
-
 `;
 const IconContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(4, 40px);
 	grid-auto-rows: 40px;
-	height:80px;
-	width:100vw;
-	border:2px solid #000;
-`
+	height: 80px;
+	width: 100vw;
+	border: 2px solid #000;
+`;
 const Icons = styled.button`
 	border: 1px solid #ffffff;
 	display: flex;
@@ -111,14 +110,13 @@ const Icons = styled.button`
 		width: 100%;
 		height: 100%;
 	}
-`
+`;
 const PostingContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 100px);
 	grid-auto-rows: 100px;
-	width:100vw;
-
+	width: 100vw;
 `;
 
 const CategoryContainer = styled.div`
@@ -144,18 +142,15 @@ const Text = styled.span`
 	font-weight: bold;
 `;
 
-
 function Search() {
-	
 	const [postings, setPostings] = useRecoilState(postingsObject);
 	const [selectedPosting, setSelectedPosting] =
 		useRecoilState(selectedPostingAtom);
-		const [selectedPostingInfo, setSelectedPostingInfo] =
-		useRecoilState(selectedPostingAtom);	
+	const [selectedPostingInfo, setSelectedPostingInfo] =
+		useRecoilState(selectedPostingAtom);
 
 	const [input, setInput] = useState("");
 	async function fetchPosting(event) {
-	
 		dbService
 			.collection("Posting")
 			.where("category", "==", event)
@@ -169,19 +164,26 @@ function Search() {
 				setPostings(postingSnapshot);
 			});
 	}
-	
+
 	const Clicked = async (event) => {
-		
 		fetchPosting(event);
 		setSelectedPostingInfo(event);
 		console.log(event);
-	
 	};
-	
-	const SubmitClicked = async (event) => {
-		InputOnChange();
-		console.log(InputOnChange())
 
+	const SubmitClicked = async (text) => {
+		console.log(text);
+		dbService
+			.collection("Posting")
+			.where("creatorDisplayName", "array-contains", text)
+			.onSnapshot((snapshot) => {
+				const postingSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(postingSnapshot);
+				setPostings(postingSnapshot);
+			});
 	};
 
 	const InputOnChange = (event) => {
@@ -191,47 +193,74 @@ function Search() {
 		setInput(value);
 	};
 
-	useEffect(async () => {
-	}, []);
+	useEffect(async () => {}, []);
 
 	return (
 		<Container>
-
-			<Item >
-				<InputField onChange={InputOnChange} type="text" placeholder="enter user name"/>
-				<SubmitBtn onClick={() => SubmitClicked(InputField.text)}>Enter</SubmitBtn>
-				
+			<Item>
+				<InputField
+					onChange={InputOnChange}
+					type="text"
+					placeholder="enter user name"
+				/>
+				<SubmitBtn
+					onClick={() => {
+						SubmitClicked(input);
+					}}
+				>
+					Enter
+				</SubmitBtn>
 			</Item>
 			<Item>
 				<IconContainer>
-					<Icons onClick={() => Clicked("Cooking")} ><FontAwesomeIcon icon={faUtensils} size="2x" /> <Text> Cooking </Text> </Icons>
-					<Icons onClick={() => Clicked("Woodwork")}><FontAwesomeIcon icon={faChair} size="2x" /> <Text> Woodwork</Text> </Icons>
-					<Icons onClick={() => Clicked("Outdoor")}><SkateboardingIcon  fontSize="large"/> <Text> Outdoor</Text> </Icons>
-					<Icons onClick={() => Clicked("Painting")}><ColorLensIcon fontSize="large"/><Text>Painting</Text> </Icons>
-					<Icons onClick={() => Clicked("Knitting")}><FontAwesomeIcon icon={faMitten} size="2x"/><Text> Knitting </Text> </Icons>
-					<Icons onClick={() => Clicked("Gardening")}><LocalFloristIcon fontSize="large"/><Text>  Gardening</Text> </Icons>
-					<Icons onClick={() => Clicked("Accessory")}  ><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /><Text>  Accessory</Text> </Icons>
-					<Icons onClick={() => Clicked("Others")}><FontAwesomeIcon icon={faHandMiddleFinger}  size="2x" /> <Text> Others</Text> </Icons>
-				
+					<Icons onClick={() => Clicked("Cooking")}>
+						<FontAwesomeIcon icon={faUtensils} size="2x" />{" "}
+						<Text> Cooking </Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Woodwork")}>
+						<FontAwesomeIcon icon={faChair} size="2x" /> <Text> Woodwork</Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Outdoor")}>
+						<SkateboardingIcon fontSize="large" /> <Text> Outdoor</Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Painting")}>
+						<ColorLensIcon fontSize="large" />
+						<Text>Painting</Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Knitting")}>
+						<FontAwesomeIcon icon={faMitten} size="2x" />
+						<Text> Knitting </Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Gardening")}>
+						<LocalFloristIcon fontSize="large" />
+						<Text> Gardening</Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Accessory")}>
+						<FontAwesomeIcon icon={faHandMiddleFinger} size="2x" />
+						<Text> Accessory</Text>{" "}
+					</Icons>
+					<Icons onClick={() => Clicked("Others")}>
+						<FontAwesomeIcon icon={faHandMiddleFinger} size="2x" />{" "}
+						<Text> Others</Text>{" "}
+					</Icons>
 				</IconContainer>
 			</Item>
 			<Item>
 				<PostingContainer>
 					{postings?.map((posting, index) => (
-								<Posting key={index}>
-									<Link
-										to={`/postingDetail/${posting?.id}`}
-										onClick={() => Clicked(posting)}
-									>
-										<PostingCenter>
-											<PostingPreviewImg src={posting.photoUrl[0]} />
-										</PostingCenter>
-									</Link>
-								</Posting>
-							))}
+						<Posting key={index}>
+							<Link
+								to={`/postingDetail/${posting?.id}`}
+								onClick={() => Clicked(posting)}
+							>
+								<PostingCenter>
+									<PostingPreviewImg src={posting.photoUrl[0]} />
+								</PostingCenter>
+							</Link>
+						</Posting>
+					))}
 				</PostingContainer>
 			</Item>
-
 		</Container>
 	);
 }
