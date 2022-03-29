@@ -40,8 +40,10 @@ interface IAdditionalUserInfo {
 	postalCode?: string;
 	sellerPoint: number;
 	buyerPoint: number;
+	cashback: number;
 	rank: Ranks;
 	photoURL?: string;
+	isPromoted: boolean;
 }
 
 function SocialLogin() {
@@ -69,6 +71,8 @@ function SocialLogin() {
 				displayName: data.user?.displayName || undefined,
 				sellerPoint: 0,
 				buyerPoint: 0,
+				cashback: 0,
+				isPromoted: false,
 				rank: Ranks.Bronze,
 				photoURL: data.user?.photoURL || undefined,
 			};

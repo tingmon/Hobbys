@@ -131,8 +131,9 @@ function Checkout() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
 	const [userInfo, setUserInfo] = useState<any>([]);
+	const [sellerInfo, setSellerInfo] = useState<any>([]);
 	const [isReady, setIsReady] = useState(false);
-	const [sellerArr, setSellerArr] = useState<any>([]);
+	// const [sellerArr, setSellerArr] = useState<any>([]);
 
 	const uid = useRecoilValue(uidAtom);
 	const cartItems = useRecoilValue(cartItemsAtom);
@@ -141,6 +142,7 @@ function Checkout() {
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 
+	// UserInfo of buyer
 	async function fetchUserInfo(uid) {
 		dbService
 			.collection("UserInfo")
@@ -153,6 +155,35 @@ function Checkout() {
 				console.log(recordSnapshot);
 				setUserInfo(recordSnapshot);
 			});
+	}
+
+	// UserInfo of sellers
+	async function fetchSellerUserInfo() {
+		let sellers = [];
+		cartItems.map(async (element) => {
+			let sellerInfo = await dbService
+				.collection("UserInfo")
+				.where("uid", "==", element.creatorUid)
+				.get();
+			let sellerUserInfoId = sellerInfo.docs.map((doc) => doc.id);
+			let sellerPoint = sellerInfo.docs[0].data().sellerPoint;
+			let sellerBuyerPoint = sellerInfo.docs[0].data().buyerPoint;
+			let sellerRank = sellerInfo.docs[0].data().rank;
+			let sellerIsPromoted = sellerInfo.docs[0].data().isPromoted;
+			const seller = {
+				sellerUserInfoId: sellerUserInfoId,
+				sellerPoint: sellerPoint,
+				sellerRank: sellerRank,
+				sellerIsPromoted: sellerIsPromoted,
+				sellerBuyerPoint: sellerBuyerPoint,
+				uid: element.creatorUid,
+				postingId: element.postingId,
+				price: element.itemPrice,
+			};
+			sellers.push(seller);
+		});
+		console.log(sellers);
+		setSellerInfo(sellers);
 	}
 
 	async function fetchPaymentInfo(uid) {
@@ -196,13 +227,97 @@ function Checkout() {
 
 	//
 	useEffect(() => {
+		fetchSellerUserInfo();
 		fetchPaymentInfo(uid);
 		fetchAddressInfo(uid);
 		fetchUserInfo(uid);
 		setIsLoading(false);
 	}, []);
 
-	console.log(cartItems);
+	console.log(sellerInfo);
+
+	const calculateSellerPoint = (seller) => {
+		let bonus: number = parseFloat(100);
+		let sellerBuyerPoint: number = parseFloat(seller.sellerBuyerPoint);
+		let sellerPoint: number = parseFloat(seller.sellerPoint);
+		let newPoints: number =
+			parseFloat(sellerPoint) + parseFloat(seller.price) + parseFloat(bonus);
+		let newRank = "";
+		let isPromoted = false;
+		if (newPoints + sellerBuyerPoint >= 100) {
+			newRank = "Silver";
+			isPromoted = true;
+		}
+		if (newPoints + sellerBuyerPoint >= 500) {
+			newRank = "Gold";
+			isPromoted = true;
+		}
+		if (newPoints + sellerBuyerPoint >= 1500) {
+			newRank = "Platinum";
+			isPromoted = true;
+		}
+		if (newPoints + sellerBuyerPoint >= 3500) {
+			newRank = "Master";
+			isPromoted = true;
+		}
+		if (newPoints + sellerBuyerPoint >= 8000) {
+			newRank = "HallofFamer";
+			isPromoted = true;
+		}
+		dbService.doc(`UserInfo/${seller.sellerUserInfoId}`).update({
+			sellerPoint: newPoints,
+			isPromoted: isPromoted,
+		});
+	};
+
+	const calculateBuyerPoint = (buyer) => {
+		let buyerPoint: number = parseFloat(buyer.buyerPoint);
+		let sellerPoint: number = parseFloat(buyer.sellerPoint);
+		let cashback: number = parseFloat(buyer.cashback);
+		let newRank = "";
+		let isPromoted = false;
+		let newBuyerPoint: number =
+			parseFloat(buyerPoint) + parseFloat(priceTotalInfo.total);
+		console.log(buyerPoint);
+		console.log(sellerPoint);
+		console.log(buyer.cashback);
+		console.log(newBuyerPoint);
+		console.log("cashback1: ", cashback);
+		cashback =
+			parseFloat(cashback) -
+			parseFloat(priceTotalInfo.cashback) +
+			parseFloat(priceTotalInfo.total) / 20;
+
+		console.log("cashback2: ", cashback);
+
+		if (newBuyerPoint + sellerPoint >= 100) {
+			newRank = "Silver";
+			isPromoted = true;
+		}
+		if (newBuyerPoint + sellerPoint >= 500) {
+			newRank = "Gold";
+			isPromoted = true;
+		}
+		if (newBuyerPoint + sellerPoint >= 1500) {
+			newRank = "Platinum";
+			isPromoted = true;
+		}
+		if (newBuyerPoint + sellerPoint >= 3500) {
+			newRank = "Master";
+			isPromoted = true;
+		}
+		if (newBuyerPoint + sellerPoint >= 8000) {
+			newRank = "HallofFamer";
+			isPromoted = true;
+		}
+
+		dbService.doc(`UserInfo/${buyer.id}`).update({
+			buyerPoint: newBuyerPoint,
+			cashback: cashback,
+			rank: newRank,
+			isPromoted: isPromoted,
+		});
+	};
 
 	// make new transaction record / userinfo -> update buyer point, seller point, rank
 	const onSubmitClick = async () => {
@@ -210,36 +325,35 @@ function Checkout() {
 			title: "Your Order is Placed!",
 			// showDenyButton: true,
 			confirmButtonText: "Got It",
-		}).then((result) => {
+		}).then(async (result) => {
 			/* Read more about isConfirmed, isDenied below */
 			if (result.isConfirmed) {
 				// Swal.fire("Saved!", "", "success");
 				// to get every transaction record
 				let combinedUid = uid;
-				let sellers = [];
-				console.log(cartItems);
-				cartItems.map((element) => {
+
+				cartItems.map(async (element) => {
 					combinedUid = combinedUid + element.creatorUid;
-					const seller = {
-						uid: element.creatorUid,
-						postingId: element.postingId,
-						price: element.itemPrice,
-					};
-					sellers.push(seller);
 				});
-				console.log(sellers);
-				console.log(combinedUid);
+
+				console.log(sellerInfo);
+				sellerInfo.forEach((element) => {
+					calculateSellerPoint(element);
+				});
+				calculateBuyerPoint(userInfo[0]);
 
 				const transactionRecord = {
 					buyerUid: userObject.uid,
-					addressInfo: addressInfo,
-					paymentInfo: paymentInfo,
+					addressInfo: addressInfo[0],
+					paymentInfo: paymentInfo[0],
 					priceTotalInfo: priceTotalInfo,
 					items: cartItems,
 					combinedUid: combinedUid,
-					sellers: sellers,
+					sellers: sellerInfo,
 					timeStamp: Date.now(),
 				};
+
+				await dbService.collection("Transaction").add(transactionRecord);
 
 				// apply buyer point and seller point
 				// add transaction record
@@ -252,16 +366,12 @@ function Checkout() {
 
 				history.push(`/`);
 			}
-			//  else if (result.isDenied) {
-			// 	Swal.fire("Changes are not saved", "", "info");
-			// 	// history.push("/cart");
-			// }
 		});
 	};
 
-	console.log("userInfo: ", userInfo);
-	console.log("paymentInfo: ", paymentInfo);
-	console.log("addressInfo: ", addressInfo);
+	// console.log("userInfo: ", userInfo);
+	// console.log("paymentInfo: ", paymentInfo);
+	// console.log("addressInfo: ", addressInfo);
 
 	return (
 		<>
@@ -325,6 +435,10 @@ function Checkout() {
 								<Label>
 									<Text>Shipping: </Text>
 									<Text>${priceTotalInfo.shipping}</Text>
+								</Label>
+								<Label>
+									<Text>Cashback: </Text>
+									<Text>- ${priceTotalInfo.cashback}</Text>
 								</Label>
 								<Label>
 									<TotalText>Total: </TotalText>
