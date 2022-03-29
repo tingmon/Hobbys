@@ -73,8 +73,10 @@ interface IAdditionalUserInfo {
 	postalCode?: string;
 	sellerPoint: number;
 	buyerPoint: number;
+	cashback: number;
 	rank: Ranks;
 	photoURL?: string;
+	isPromoted: boolean;
 }
 
 interface IForm {
@@ -135,8 +137,10 @@ function AuthForm() {
 					displayName: data.userName,
 					sellerPoint: 0,
 					buyerPoint: 0,
+					cashback: 0,
 					rank: Ranks.Bronze,
 					photoURL: "",
+					isPromoted: false,
 				};
 				console.log(userInfo);
 				await dbService.collection("UserInfo").add(userInfo);

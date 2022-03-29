@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&family=Noto+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&family=Noto+Sans&display=swap");
 
 .carousel {
 	width: 350px;
@@ -38,4 +38,9 @@
 		width: auto;
 		height: auto;
 	}
+}
+
+.collapsekDiv {
+	display: flex;
+	justify-content: space-between;
 }

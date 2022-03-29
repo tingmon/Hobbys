@@ -18,6 +18,9 @@ import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
 import { Link, useHistory } from "react-router-dom";
+import { Collapse, FormControlLabel, Switch } from "@mui/material";
+import carouselStyle from "../styles/Carousel.module.css";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -40,6 +43,25 @@ const ItemContainer = styled.div`
 const Item = styled.div`
 	display: flex;
 	justify-content: start;
+	align-items: center;
+	margin-bottom: 10px;
+	width: 100%;
+	background-color: ${(props) => props.theme.postingBgColor};
+`;
+
+const CashBackContainer = styled.div`
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-bottom: 10px;
+	width: 100%;
+	background-color: ${(props) => props.theme.postingBgColor};
+	flex-direction: column;
+`;
+
+const CashBack = styled.div`
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
@@ -82,7 +104,7 @@ const SubTotalShipping = styled.div`
 `;
 
 const Total = styled.div`
-	margin-top: 50px;
+	margin-top: 15px;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -98,14 +120,47 @@ const Label = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-	text-align: rig;
-	background: #04aaff;
-	color: white;
-	margin-top: 10px;
+	font-family: "Hammersmith One", sans-serif;
+	color: #000;
+	display: block;
+	text-align: center;
+	border-color: ${(props) => props.theme.secondColor};
+
+	background-color: ${(props) => props.theme.secondColor};
+
 	cursor: pointer;
-	display: flex;
 	max-width: 320px;
-	width: 300px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+
+	font-size: 12px;
+	color: black;
+`;
+
+const CashbackSubmitBtn = styled.button`
+	font-family: "Hammersmith One", sans-serif;
+	color: #000;
+	display: block;
+	text-align: center;
+	border-color: ${(props) => props.theme.secondColor};
+
+	// background-color: ${(props) => props.theme.secondColor};
+
+	cursor: pointer;
+	max-width: 320px;
+	width: 30%;
+	padding: 10px;
+	border-radius: 15px;
+
+	font-size: 12px;
+	color: black;
+	display: inline;
+`;
+
+const ExpiryDateInputField = styled.input`
+	max-width: 295px;
+	width: 50%;
 	padding: 10px;
 	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
@@ -120,17 +175,23 @@ const Value = styled.div``;
 function Cart() {
 	const history = useHistory();
 	const [cart, setCart] = useRecoilState(cartAtom);
-	const setPriceTotal = useSetRecoilState(priceTotalInfoAtom);
+	const [priceTotal, setPriceTotal] = useRecoilState(priceTotalInfoAtom);
 	const userObject = useRecoilValue(userObjectAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 	const [cartItems, setCartItems] = useRecoilState(cartItemsAtom);
 
+	const [checked, setChecked] = useState(false);
+	const [isApplied, setIsApplied] = useState(false);
+	const [userInfo, setUserInfo] = useState<any>([]);
+	const [isDiscount, setIsDiscount] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEmpty, setIsEmpty] = useState(true);
 	// const [items, setItems] = useState<any>([]);
 	const [subTotal, setSubTotal] = useState(0);
 	const [shipping, setShipping] = useState(0);
+	const [cashback, setCashback] = useState(0);
+	const [validCashback, setValidCashback] = useState(0);
 
 	const createPaymentInfo = async () => {
 		const paymentInfoValue = {
@@ -199,12 +260,27 @@ function Cart() {
 			});
 	}
 
+	async function fetchUserInfo(uid) {
+		dbService
+			.collection("UserInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(recordSnapshot);
+				setUserInfo(recordSnapshot);
+			});
+	}
+
 	useEffect(() => {
 		console.log("useEffect");
 		let subTotalValue: number = 0;
 		let shippingValue: number = 0;
 		fetchAddressInfo(userObject.uid);
 		fetchPaymentInfo(userObject.uid);
+		fetchUserInfo(userObject.uid);
 		if (cart !== null) {
 			if (cart.length !== 0) {
 				let itemsArray = cart[0].items;
@@ -215,22 +291,36 @@ function Cart() {
 					setIsEmpty(false);
 					itemsArray.forEach((element) => {
 						subTotalValue = subTotalValue + parseFloat(element.itemPrice);
-						shippingValue = shippingValue + 15;
+						shippingValue = shippingValue + 10;
 					});
+
+					// setCashback(priceTotal.cashback);
+
 					setSubTotal(subTotalValue);
 					console.log(subTotalValue);
+					console.log(shippingValue);
+					console.log(shippingValue + subTotalValue);
 					if (subTotalValue > 300) {
 						setShipping(0);
+						const totalInfo = {
+							subtotal: subTotalValue,
+							shipping: 0,
+							total: subTotalValue + 0 - cashback,
+							cashback: cashback,
+						};
+						console.log(totalInfo);
+						setPriceTotal(totalInfo);
 					} else {
 						setShipping(shippingValue);
+						const totalInfo = {
+							subtotal: subTotalValue,
+							shipping: shippingValue,
+							total: subTotalValue + shippingValue - cashback,
+							cashback: cashback,
+						};
+						console.log(totalInfo);
+						setPriceTotal(totalInfo);
 					}
-					const totalInfo = {
-						subtotal: subTotalValue,
-						shipping: shippingValue,
-						total: subTotalValue + shippingValue,
-					};
-					console.log(totalInfo);
-					setPriceTotal(totalInfo);
 				}
 				setIsLoading(false);
 				setCartItems(itemsArray);
@@ -239,10 +329,20 @@ function Cart() {
 				setIsLoading(false);
 			}
 		} else {
-			setIsEmpty(true);
-			setIsLoading(false);
+			// setIsEmpty(true);
+			// setIsLoading(false);
+			dbService
+				.collection("Cart")
+				.where("cartOwnerUid", "==", userObject.uid)
+				.onSnapshot((snapshot) => {
+					const cartSnapshot = snapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					}));
+					setCart(cartSnapshot.splice(0));
+				});
 		}
-	}, [cart]);
+	}, [cart, isApplied]);
 
 	const onDeleteClick = (item) => {
 		setIsLoading(true);
@@ -268,6 +368,77 @@ function Cart() {
 		}
 	};
 
+	const handleChange = () => {
+		setChecked((prev) => !prev);
+	};
+
+	const cashbackOnChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setCashback(value);
+	};
+
+	const cashbackOnSubmit = (cashback) => {
+		// if()
+		console.log(cashback);
+		if (cashback < 10) {
+			Swal.fire({
+				title: "Sorry, Minimum 10 points is required",
+				confirmButtonText: "Got It",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					setCashback(validCashback);
+				}
+			});
+		} else if (cashback > subTotal + shipping) {
+			Swal.fire({
+				title: `Do you want to use $${cashback} cashback points?`,
+				showDenyButton: true,
+				confirmButtonText: "Yes",
+				denyButtonText: `No`,
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire("Cashback points is bigger than total!", "", "error");
+					setCashback(validCashback);
+				} else if (result.isDenied) {
+					setCashback(validCashback);
+				}
+			});
+		} else if (cashback > userInfo[0].cashback) {
+			Swal.fire({
+				title: `Do you want to use $${cashback} cashback points?`,
+				showDenyButton: true,
+				confirmButtonText: "Yes",
+				denyButtonText: `No`,
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire("You exceeded your available points!", "", "error");
+					setCashback(validCashback);
+				} else if (result.isDenied) {
+					setCashback(validCashback);
+				}
+			});
+		} else {
+			Swal.fire({
+				title: `Do you want to use $${cashback} cashback points?`,
+				showDenyButton: true,
+				confirmButtonText: "Yes",
+				denyButtonText: `No`,
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire("Applied!", "", "success");
+					setCashback(cashback);
+					setValidCashback(cashback);
+					setIsApplied((prev) => !prev);
+				} else if (result.isDenied) {
+				}
+			});
+		}
+	};
+
+	console.log(userInfo);
+
 	return (
 		<Container>
 			{isLoading ? (
@@ -278,7 +449,36 @@ function Cart() {
 						"Your Cart is Empty!"
 					) : (
 						<>
-							<h1>Your Cart</h1>
+							<CashBackContainer>
+								<CashBack>
+									<Text>You have $ {userInfo[0].cashback} cashback points</Text>
+									<FormControlLabel
+										control={
+											<Switch checked={checked} onChange={handleChange} />
+										}
+										label="Use Points"
+									/>
+								</CashBack>
+								<Collapse in={checked} className={carouselStyle.collapsekDiv}>
+									<ExpiryDateInputField
+										type="number"
+										placeholder="Minimum 50"
+										onChange={(event) => {
+											cashbackOnChange(event);
+										}}
+										value={cashback}
+									/>
+
+									<CashbackSubmitBtn
+										onClick={() => {
+											cashbackOnSubmit(cashback);
+										}}
+									>
+										APPLY
+									</CashbackSubmitBtn>
+								</Collapse>
+							</CashBackContainer>
+
 							<ItemContainer>
 								{cartItems?.map((item, index) => (
 									<Item key={index}>
@@ -304,17 +504,22 @@ function Cart() {
 									<Text>Shipping: </Text>
 									<Text>${shipping}</Text>
 								</Label>
+								<Label>
+									<Text>Cashback: </Text>
+									<Text>- ${cashback}</Text>
+								</Label>
 							</SubTotalShipping>
 							<Total>
 								<Label>
 									<Text>Total: </Text>
-									<Text>${subTotal + shipping}</Text>
+									<Text>${subTotal + shipping - cashback}</Text>
 								</Label>
 							</Total>
 
 							<Link
 								to={{
 									pathname: `/cart/${cart[0].cartOwnerUid}`,
+									state: { isDiscount: isDiscount, userInfo: userInfo },
 								}}
 							>
 								<SubmitBtn

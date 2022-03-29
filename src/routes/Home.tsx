@@ -133,6 +133,7 @@ const CartIcon = styled.a`
 function Home() {
 	const history = useHistory();
 	const [likeList, setLikeList] = useState<any>([]);
+	const [userInfo, setUserInfo] = useState<any>([]);
 	const [comment, setComment] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const [isCommenting, setIsCommenting] = useState(false);
@@ -186,11 +187,44 @@ function Home() {
 			});
 	}
 
+	async function fetchUserInfo(uid) {
+		dbService
+			.collection("UserInfo")
+			.where("uid", "==", uid)
+			.onSnapshot((snapshot) => {
+				const recordSnapshot = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log(recordSnapshot);
+				if (recordSnapshot[0].isPromoted) {
+					Swal.fire(
+						{
+							title: "Congratulation! \n You are promoted!",
+							confirmButtonText: "Got It",
+						},
+						"",
+						"success"
+					).then((result) => {
+						/* Read more about isConfirmed, isDenied below */
+						if (result.isConfirmed) {
+							Swal.fire("Your Rank is " + recordSnapshot[0].rank, "", "info");
+						} else if (result.isDenied) {
+							// Swal.fire("Changes are not saved", "", "info");
+							history.push("/cart");
+						}
+					});
+				}
+				setUserInfo(recordSnapshot);
+			});
+	}
+
 	useEffect(() => {
 		fetchLike();
 		fetchCart();
 		setIsLoading(false);
 		fetchHomePostings();
+		fetchUserInfo(userObject.uid);
 	}, []);
 
 	function Item(props) {
