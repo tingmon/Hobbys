@@ -31,6 +31,7 @@ import { IoMdCellular, IoMdFlower } from "react-icons/io";
 import { IoPaw } from "react-icons/io5";
 
 import { GiDropEarrings, GiWinterGloves } from "react-icons/gi";
+import { text } from "stream/consumers";
 
 const PostingCenter = styled.div`
 	display: flex;
@@ -141,9 +142,22 @@ const Posting = styled.div`
 		height: 100%;
 	}
 `;
+
 const Text = styled.span`
 	margin: 5px 5px;
 	font-weight: bold;
+`;
+
+const NameText = styled.span`
+	max-width: 300px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: ${(props) => props.theme.postingBgColor};
+	margin-top: 10px;
+	margin-left: 20px;
+	font-size: 12px;
+	color: black;
 `;
 
 function Search() {
@@ -177,17 +191,34 @@ function Search() {
 
 	const SubmitClicked = async (text) => {
 		console.log(text);
+		// dbService
+		// 	.collection("Posting")
+		// 	.where("creatorDisplayName", "array-contains", text)
+		// 	.onSnapshot((snapshot) => {
+		// 		const postingSnapshot = snapshot.docs.map((doc) => ({
+		// 			id: doc.id,
+		// 			...doc.data(),
+		// 		}));
+		// 		console.log(postingSnapshot);
+		// 		setPostings(postingSnapshot);
+		// 	});
+		setPostings(null);
 		dbService
 			.collection("Posting")
-			.where("creatorDisplayName", "array-contains", text)
+			.where("creatorDisplayName" ,"==",  text)
 			.onSnapshot((snapshot) => {
-				const postingSnapshot = snapshot.docs.map((doc) => ({
+				const creatorSnapshot = snapshot.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(postingSnapshot);
-				setPostings(postingSnapshot);
+				console.log(creatorSnapshot);
+				setPostings(creatorSnapshot);
+
+			
 			});
+
+			console.log(postings);
+
 	};
 
 	const InputOnChange = (event) => {
@@ -201,20 +232,22 @@ function Search() {
 		setPostings(null);
 	}, []);
 
+	console.log(postings);
+
 	return (
 		<Container>
 			<Item>
 				<InputField
 					onChange={InputOnChange}
 					type="text"
-					placeholder="enter user name"
+					placeholder="Enter user name"
 				/>
 				<SubmitBtn
 					onClick={() => {
 						SubmitClicked(input);
 					}}
 				>
-					Enter
+					Submit
 				</SubmitBtn>
 			</Item>
 			<Item>
@@ -229,9 +262,9 @@ function Search() {
 					<Icons onClick={() => Clicked("Outdoor")}>
 						<SkateboardingIcon /> <Text> Outdoor</Text>{" "}
 					</Icons>
-					<Icons onClick={() => Clicked("Painting")}>
-						<ColorLensIcon font-size="samll" />
-						<Text>Painting</Text>{" "}
+					<Icons onClick={() => Clicked("Art")}>
+						<ColorLensIcon fontSize="samll" />
+						<Text>Art</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Knitting")}>
 						<FontAwesomeIcon icon={faMitten} size="1x" />
@@ -246,26 +279,37 @@ function Search() {
 						<Text> Accessory</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Others")}>
-						<IoMdCellular font-size="samll" /> <Text> Others</Text>{" "}
+						<IoMdCellular fontSize="samll" /> <Text> Others</Text>{" "}
 					</Icons>
 				</IconContainer>
 			</Item>
 			<Item>
 				<PostingContainer>
-					{postings?.map((posting, index) => (
-						<Posting key={index}>
-							<Link
-								to={`/postingDetail/${posting?.id}`}
-								onClick={() => Clicked(posting)}
-							>
-								<PostingCenter>
-									<PostingPreviewImg src={posting.photoUrl[0]} />
-								</PostingCenter>
-							</Link>
-						</Posting>
-					))}
+
+				{postings !== null && (
+						 <>
+						
+						 {postings?.map((posting, index) => (
+							<Posting key={index}>
+									
+								<Link
+									to={`/postingDetail/${posting?.id}`}
+									onClick={() => Clicked(posting)}
+								>
+									<PostingCenter>
+										<PostingPreviewImg src={posting.photoUrl[0]} />
+									</PostingCenter>
+								</Link>
+							</Posting>
+						))} 
+						</>
+					) 
+					}	
+
+					
 				</PostingContainer>
 			</Item>
+			<div style={{ width: 300, height: 150 }}></div>
 		</Container>
 	);
 }

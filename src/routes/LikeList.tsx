@@ -18,81 +18,58 @@ import {
 } from "../atoms";
 
 const Container = styled.div`
-	padding: 0px 20px;
-	max-width: 450px;
-	width: 450px;
-	height: 90vh;
-`;
-const Text = styled.span`
-	margin: 2px 5px;
-`;
-const Header = styled.header`
-	height: 10vh;
+	max-width: 480px;
+	margin: 0 auto;
+	width: 100%;
+	height: 80vh;
 	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	margin: 0px 10px 10px 10px;
-`;
-
-const Title = styled.h1`
-	font-size: 30px;
-	color: ${(props) => props.theme.textColor};
-	margin-left: 20px;
-`;
-
-const Item = styled.div`
-	margin: 0;
-`;
-const Overview = styled.div`
-	display: flex;
-	justify-content: space-between;
-	background-color: ${(props) => props.theme.secondColor};
-	padding: 10px 20px;
-	border-radius: 10px;
-`;
-const OverviewItem = styled.div`
 	flex-direction: column;
 	align-items: center;
-	span:first-child {
-		font-size: 10px;
-		font-weight: 400;
-		text-transform: uppercase;
-		margin-bottom: 5px;
-	}
 `;
+
+// const Item = styled.div`
+// 	display: flex;
+// 	justify-content: start;
+// 	align-items: center;
+// 	margin-bottom: 10px;
+// 	width: 100%;
+// 	background-color: ${(props) => props.theme.postingBgColor};
+	
+// `;
 
 const PostingContainer = styled.div`
-	grid-template-columns: repeat(1, 1fr);
-	grid-template-rows: repeat(1, 100px);
-	grid-auto-rows: 100px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(1, 250px);
+	grid-auto-rows: 250px;
 	z-index: 0;
+	
 `;
-
 const Posting = styled.div`
+	border: 1px solid #ffffff;
 	display: flex;
-	justify-content: start;
+	justify-content: center;
 	align-items: center;
-	margin-bottom: 10px;
-	background-color: ${(props) => props.theme.postingBgColor};
-`;
+	flex-direction: column;
 
+	// overflow: hidden;
+	// a {
+	// 	width: 100%;
+	// 	height: 100%;
+	// }
+	
+`;
 
 const PostingPreviewImg = styled.img`
-	width: 100px;
-	height: 100px;
-	margin-left: 0px;
+	width: 150px;
+	height:180px;
 `;
-const Description = styled.div`
-	display: flex;
-	justify-content: flex-start;
-	flex-direction: column;
-	align-items: start;
-	margin-left: 3px;
-	background-color: ${(props) => props.theme.postingBgColor};
+const Text = styled.span`
+	
 `;
-
 function LikeList() {
 	const [postingArr, setPostingArr] = useState<any>([]);
+	const [isEmpty, setIsEmpty] = useState(true);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [likes, setLikes] = useState<any>([]);
@@ -111,7 +88,12 @@ function LikeList() {
 					id: doc.id,
 					...doc.data(),
 				}));
+				console.log(likeSnapshot);
+				if(likeSnapshot.length !== 0){
+					setIsEmpty(false);
+				}
 				setLikes(likeSnapshot);
+
 			});
 	}
 
@@ -136,48 +118,54 @@ function LikeList() {
 	};
 
 	useEffect(async () => {
+		console.log(likes.length);
+
 		fetchLikes(userObject.uid).then(() => {
 			fetchLikePostings(userObject.uid);
 		});
 
 		setIsLoading(false);
+
 	}, []);
 
-	console.log(likes);
-	// console.log(selectedPostingInfo);
-	console.log(postingArr);
+	console.log(isEmpty);
+
 
 	return (
-		<>
-			{isLoading ? (
+		<Container>
+		{isLoading ? (
 				"Loading..."
 			) : (
-				<Container>
-					<Header>Like List</Header>
-
+				<>
+				{isEmpty ? (
+					"Your Like List is Empty!"
+				) : (
 					<PostingContainer>
-						<Item>
-							{postingArr?.map((posting, index) => (
-								<Posting key={index}>
-									<Link
-										to={`/postingDetail/${posting?.id}`}
-										onClick={() => PostingClicked(posting)}
-										onMouseEnter={() => PostingClicked(posting)}
-									>
-										<PostingPreviewImg src={posting.photoUrl[0]} />
-										<Description>
-											<Text>{posting.creatorDisplayName}</Text>
-											<Text>{posting.category}</Text>
-										</Description>
-									</Link>
-								</Posting>
-							))}
-						</Item>
-						<div style={{ width: 300, height: 150 }}></div>
+						{postingArr?.map((posting, index) => (
+							<Posting key={index}>
+								<Link
+									to={`/postingDetail/${posting?.id}`}
+									onClick={() => PostingClicked(posting)}
+									onMouseEnter={() => PostingClicked(posting)}
+								>
+								<PostingPreviewImg src={posting.photoUrl[0]} />
+								
+								</Link>
+
+								<Text >{posting.creatorDisplayName}</Text>
+								<Text>{posting.category}</Text>
+								{posting.forSale ? <Text>for sale</Text> : <Text>not for sale</Text>}
+							</Posting>
+
+						))}
+							
 					</PostingContainer>
-				</Container>
+					
+				)}
+				</>
 			)}
-		</>
+			<div style={{ width: 300, height: 150 }}></div>
+		</Container>
 	);
 }
 
