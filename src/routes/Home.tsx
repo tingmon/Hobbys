@@ -59,10 +59,10 @@ const Posting = styled.div`
 	font-size: 15px;
 	margin: 2px;
 	// max-width: 475px;
-	max-hight: 490px;
-	width:100%
+	max-height: 490px;
+	width: 100%;
 	background-color: ${(props) => props.theme.postingBgColor};
-	border-bottom: 0.2px solid #c9cdd2 ;
+	border-bottom: 0.2px solid #c9cdd2;
 `;
 
 const PostingHeader = styled.div`
