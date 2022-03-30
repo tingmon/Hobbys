@@ -155,13 +155,14 @@ function TradeRecord() {
 	async function fetchAllTransactions(uid) {
 		dbService
 			.collection("TransactionInfo")
-			.where("combinedUid", "array-contains", uid)
+			.where("uidInTransaction", "array-contains", uid)
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
 				const recordSnapshot = snapshot.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
 				}));
+				console.log(recordSnapshot);
 				setTransactionRecord(recordSnapshot);
 			});
 	}
@@ -189,7 +190,7 @@ function TradeRecord() {
 	};
 
 	// console.log(userInfo);
-	console.log(paymentInfo);
+	// console.log(paymentInfo);
 	// console.log(sellingRecord);
 	// console.log(buyingRecord);
 

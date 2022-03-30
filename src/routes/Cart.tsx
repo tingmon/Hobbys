@@ -269,7 +269,7 @@ function Cart() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
+				// console.log(recordSnapshot);
 				setUserInfo(recordSnapshot);
 			});
 	}
@@ -451,7 +451,9 @@ function Cart() {
 						<>
 							<CashBackContainer>
 								<CashBack>
-									<Text>You have $ {userInfo[0].cashback} cashback points</Text>
+									<Text>
+										You have $ {userInfo[0]?.cashback} cashback points
+									</Text>
 									<FormControlLabel
 										control={
 											<Switch checked={checked} onChange={handleChange} />

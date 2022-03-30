@@ -196,8 +196,11 @@ function Home() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
-				if (recordSnapshot[0].isPromoted) {
+				// console.log(recordSnapshot);
+				if (recordSnapshot[0].isPromoted === true) {
+					dbService.doc(`UserInfo/${recordSnapshot[0].id}`).update({
+						isPromoted: false,
+					});
 					Swal.fire(
 						{
 							title: "Congratulation! \n You are promoted!",
@@ -209,9 +212,6 @@ function Home() {
 						/* Read more about isConfirmed, isDenied below */
 						if (result.isConfirmed) {
 							Swal.fire("Your Rank is " + recordSnapshot[0].rank, "", "info");
-						} else if (result.isDenied) {
-							// Swal.fire("Changes are not saved", "", "info");
-							history.push("/cart");
 						}
 					});
 				}
@@ -265,6 +265,20 @@ function Home() {
 			};
 			await dbService.collection("Cart").add(cart);
 			console.log("cart added");
+			Swal.fire({
+				title: "Item Added to your Cart!",
+				showDenyButton: true,
+				confirmButtonText: "Got It",
+				denyButtonText: `Go to Cart`,
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					// Swal.fire("Saved!", "", "success");
+				} else if (result.isDenied) {
+					// Swal.fire("Changes are not saved", "", "info");
+					history.push("/cart");
+				}
+			});
 		} else {
 			let itemsArr = cart[0].items;
 			let alreadyIn = false;
