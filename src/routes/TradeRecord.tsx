@@ -15,7 +15,12 @@ import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { paymentInfoAtom, selectedPostingAtom, userObjectAtom } from "../atoms";
+import {
+	paymentInfoAtom,
+	selectedPostingAtom,
+	transactionAtom,
+	userObjectAtom,
+} from "../atoms";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
@@ -47,58 +52,52 @@ const GoPaymentBtn = styled.button`
 	font-weight: bold;
 `;
 
-const GoPaymentBtnRed = styled.button`
-	text-align: center;
-	background: #EA2027;
-	color: white;
-	margin-top: 10px;
-	pointer
-	cursor: pointer;
-
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 30px;
-	background-color: #EA2027;
-
-	font-size: 12px;
-	color: white;
+const HeaderText = styled.span`
+	margin: 2px 5px;
 	font-weight: bold;
 `;
 
-const Tabs = styled.div`
-	display: grid;
-	width: 80%;
-	justify-content: center;
-	grid-template-columns: repeat(2, 1fr);
-	margin: 5px 0px;
-	gap: 10px;
-`;
-
-const Tab = styled.span<{ isActive: boolean }>`
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: 400;
-	background-color: ${(props) => props.theme.textColor};
-	padding: 7px 7px;
-	border-radius: 10px;
-	color: ${(props) =>
-			props.isActive ? props.theme.secondColor : props.theme.textColor}
-		a {
-		display: block;
-	}
+const Text = styled.span`
+	margin: 2px 5px;
 `;
 
 const RecordContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
-	grid-template-rows: repeat(1, 200px);
-	grid-auto-rows: 200px;
+	grid-template-rows: repeat(1, 100px);
+	grid-auto-rows: 100px;
 	z-index: 0;
+	background-color: ${(props) => props.theme.postingBgColor};
+`;
+
+const RowDiv = styled.div`
+	display: flex;
+	justify-content: start;
+`;
+
+const LinkDiv = styled.div`
+	display: flex;
+	justify-content: end;
+	min-width: 400px;
+	&:last-child {
+		float: right;
+	}
+`;
+
+const Record = styled.div`
+	display: flex;
+	justify-content: start;
+	align-items: start;
+	margin-bottom: 10px;
+	width: 100%;
+	min-width: 400px;
+	flex-direction: column;
+	border: 1px solid black;
+	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
 function TradeRecord() {
+	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
 	const [userInfo, setUserInfo] = useState<any>(null);
 	const [sellingRecord, setSellingRecord] = useState<any>([]);
@@ -110,6 +109,7 @@ function TradeRecord() {
 	const userObject = useRecoilValue(userObjectAtom);
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
+	const setTransaction = useSetRecoilState(transactionAtom);
 
 	// async function fetchSellTransactions(uid) {
 	// 	dbService
@@ -154,7 +154,7 @@ function TradeRecord() {
 
 	async function fetchAllTransactions(uid) {
 		dbService
-			.collection("TransactionInfo")
+			.collection("Transaction")
 			.where("uidInTransaction", "array-contains", uid)
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
@@ -164,8 +164,19 @@ function TradeRecord() {
 				}));
 				console.log(recordSnapshot);
 				setTransactionRecord(recordSnapshot);
+				console.log(recordSnapshot[0].timeStamp);
+				const date = Date.parse(recordSnapshot[0].timeStamp);
+				console.log(date);
 			});
 	}
+
+	const onReceiptClick = (transaction) => {
+		console.log(transaction);
+		setTransaction(transaction);
+		// history.push(`/${userObject.uid}/profile/address`);
+		// history.push(`/${userObject.uid}/profile/payment`);
+		history.push(`/${userObject.uid}/profile/receipt`);
+	};
 
 	useEffect(() => {
 		fetchAllTransactions(userObject.uid);
@@ -210,12 +221,58 @@ function TradeRecord() {
 						</GoPaymentBtn>
 					</Link>
 
-					{sellingRecord.length == 0 && buyingRecord.length == 0 ? (
+					{transactionRecord.length == 0 ? (
 						<>"You have no transaction record"</>
 					) : (
 						<>
-							"There are some transaction record"
-							<RecordContainer></RecordContainer>
+							<RecordContainer>
+								{transactionRecord.map((transaction, index) => (
+									<>
+										<Record key={index}>
+											<RowDiv>
+												<HeaderText>Buyer: </HeaderText>
+												<Text>{transaction.buyerDispalyName}</Text>
+											</RowDiv>
+											<RowDiv>
+												<HeaderText>Seller: </HeaderText>
+												{transaction.sellerDisplayNames.length > 3 ? (
+													<>
+														{transaction.sellerDisplayNames
+															.slice(0, 2)
+															.map((name, index) => (
+																<Text key={index}>{name},</Text>
+															))}
+														<Text>...</Text>
+													</>
+												) : (
+													<>
+														{transaction.sellerDisplayNames.map(
+															(name, index) => (
+																<Text key={index}>{name},</Text>
+															)
+														)}
+													</>
+												)}
+											</RowDiv>
+											<RowDiv>
+												<HeaderText>Date: </HeaderText>
+												<Text>{transaction.timeString}</Text>
+											</RowDiv>
+											<LinkDiv>
+												<a
+													href="#"
+													onClick={() => {
+														onReceiptClick(transaction);
+													}}
+												>
+													Go to Receipt
+												</a>
+											</LinkDiv>
+											{/* {transaction.timeStamp} */}
+										</Record>
+									</>
+								))}
+							</RecordContainer>
 						</>
 					)}
 				</>

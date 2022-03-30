@@ -260,6 +260,7 @@ function Home() {
 						itemName: postingInfo.itemName,
 						itemCategory: postingInfo.category,
 						itemPrice: postingInfo.price,
+						// soldOut: postingInfo.soldOut,
 					},
 				],
 			};
@@ -301,6 +302,7 @@ function Home() {
 						itemName: postingInfo.itemName,
 						itemCategory: postingInfo.category,
 						itemPrice: postingInfo.price,
+						// soldOut: postingInfo.soldOut,
 					}),
 				});
 				// custom message box
@@ -425,6 +427,7 @@ function Home() {
 				postingId: postingInfo.id,
 				text: comment,
 				timeStamp: Date.now(),
+				reply: [],
 			};
 			await dbService.collection("Comment").add(newComment);
 		} else {

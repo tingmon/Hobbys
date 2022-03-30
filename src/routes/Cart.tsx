@@ -355,6 +355,7 @@ function Cart() {
 				itemName: item.itemName,
 				itemCategory: item.itemCategory,
 				itemPrice: item.itemPrice,
+				// soldOut: item.soldOut,
 			}),
 		});
 	};

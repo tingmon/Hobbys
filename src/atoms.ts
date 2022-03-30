@@ -132,6 +132,10 @@ export const cartItemsAtom = atom<any>({
 	default: null,
 });
 
+export const transactionAtom = atom<any>({
+	key: "transactionAtom",
+	default: null,
+});
 // export const userObjectState = atom<IUserObject>({
 // 	key: "userObject",
 // 	default: {
