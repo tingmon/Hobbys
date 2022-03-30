@@ -24,6 +24,7 @@ import { flexbox } from "@mui/system";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import AddressInfo from "./AddressInfo";
 import PaymentInfo from "./PaymentInfo";
+import Receipt from "./Receipt";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -414,7 +415,7 @@ function Profile({ refreshUser }) {
 	// console.log(followInfo);
 	// console.log(follower);
 	// console.log(uid);
-	console.log(photoURL);
+	// console.log(photoURL);
 
 	return (
 		<>
@@ -550,6 +551,9 @@ function Profile({ refreshUser }) {
 							</Route>
 							<Route path={`/${userObject.uid}/profile/payment`}>
 								<PaymentInfo fromCheckout={false} />
+							</Route>
+							<Route path={`/${userObject.uid}/profile/receipt`}>
+								<Receipt fromCheckout={false} />
 							</Route>
 						</Switch>
 					)}

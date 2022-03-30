@@ -138,10 +138,15 @@ function Checkout() {
 
 	const uid = useRecoilValue(uidAtom);
 	const cartItems = useRecoilValue(cartItemsAtom);
+	const cart = useRecoilValue(cartAtom);
 	const userObject = useRecoilValue(userObjectAtom);
 	const priceTotalInfo = useRecoilValue(priceTotalInfoAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
+
+	const [address, setAddress] = useState<any>(null);
+	const [payment, setPayment] = useState<any>(null);
+	const [priceTotal, setPriceTotal] = useState<any>(null);
 
 	// UserInfo of buyer
 	async function fetchUserInfo(uid) {
@@ -161,7 +166,7 @@ function Checkout() {
 	// UserInfo of sellers
 	async function fetchSellerUserInfo() {
 		let sellers = [];
-		cartItems.map(async (element) => {
+		cartItems?.map(async (element) => {
 			let sellerInfo = await dbService
 				.collection("UserInfo")
 				.where("uid", "==", element.creatorUid)
@@ -203,6 +208,7 @@ function Checkout() {
 				} else {
 					setIsReady(true);
 				}
+				setPayment(paymentSnapshot);
 				setPaymentInfo(paymentSnapshot);
 			});
 	}
@@ -226,21 +232,33 @@ function Checkout() {
 				} else {
 					setIsReady(true);
 				}
+				setAddress(addressSnapshot);
 				setAddressInfo(addressSnapshot);
 			});
 	}
 
 	//
 	useEffect(() => {
-		fetchSellerUserInfo();
-		fetchPaymentInfo(uid);
-		fetchAddressInfo(uid);
-		fetchUserInfo(uid);
-		setIsLoading(false);
+		if (address == null || payment == null || priceTotal == null) {
+			console.log("something is null");
+			fetchSellerUserInfo();
+			fetchPaymentInfo(uid);
+			fetchAddressInfo(uid);
+			fetchUserInfo(uid);
+			setIsLoading(false);
+			setPriceTotal(priceTotalInfo);
+		} else {
+			console.log("all good");
+			setAddress(addressInfo);
+			setPayment(paymentInfo);
+			setPriceTotal(priceTotalInfo);
+		}
 	}, []);
 
-	console.log(sellerInfo);
-	console.log(hasIssue);
+	// console.log(sellerInfo);
+	// console.log(hasIssue);
+	// console.log(priceTotal);
+	console.log(cart);
 
 	const calculateSellerPoint = (seller) => {
 		let bonus: number = parseFloat(100);
@@ -361,14 +379,22 @@ function Checkout() {
 				// Swal.fire("Saved!", "", "success");
 				// to get every transaction record
 				let uidInTransaction = [];
+				let sellerDisplayNames = [];
 				uidInTransaction.push(uid);
-				let combinedUid = uid;
+
+				let timeString = new Date();
+				timeString = timeString.toISOString().slice(0, 10);
+				console.log(timeString);
 
 				cartItems.map(async (element) => {
-					combinedUid = combinedUid + element.creatorUid;
 					if (uidInTransaction.includes(element.creatorUid) === false) {
 						uidInTransaction.push(element.creatorUid);
+						sellerDisplayNames.push(element.creatorDisplayName);
 					}
+					//*****************THIS CODE IS COMMENTED OUT FOR TEST */
+					// dbService.doc(`Posting/${element.postingId}`).update({
+					// 	soldOut: true,
+					// });
 				});
 
 				console.log(sellerInfo);
@@ -379,13 +405,15 @@ function Checkout() {
 
 				const transactionRecord = {
 					buyerUid: userObject.uid,
+					buyerDispalyName: userObject.displayName,
 					addressInfo: addressInfo[0],
 					paymentInfo: paymentInfo[0],
 					priceTotalInfo: priceTotalInfo,
 					items: cartItems,
-					combinedUid: combinedUid,
 					uidInTransaction: uidInTransaction,
 					timeStamp: Date.now(),
+					timeString: timeString,
+					sellerDisplayNames: sellerDisplayNames,
 				};
 
 				await dbService.collection("Transaction").add(transactionRecord);
@@ -398,6 +426,10 @@ function Checkout() {
 				// one seller point for user rank
 
 				console.log(transactionRecord);
+
+				dbService.doc(`Cart/${cart[0].id}`).update({
+					items: [],
+				});
 
 				history.push(`/`);
 			}
@@ -414,7 +446,7 @@ function Checkout() {
 				"Please Wait..."
 			) : (
 				<>
-					{addressInfo[0] && paymentInfo[0] && (
+					{address !== null && payment !== null && (
 						<Container>
 							{/* <div>
 								{addressInfo[0]?.billingAddress.postalcode == "" &&
@@ -436,48 +468,48 @@ function Checkout() {
 							<Shipto>
 								<HeaderText>SHIP TO</HeaderText>
 								<Text>
-									{addressInfo[0]?.shippingAddress.firstName}{" "}
-									{addressInfo[0]?.shippingAddress.lastName}
+									{address[0]?.shippingAddress.firstName}{" "}
+									{address[0]?.shippingAddress.lastName}
 								</Text>
-								<Text>{addressInfo[0]?.shippingAddress.address1}</Text>
-								<Text>{addressInfo[0]?.shippingAddress.address2}</Text>
-								<Text>{addressInfo[0]?.shippingAddress.city}</Text>
-								<Text>{addressInfo[0]?.shippingAddress.postalcode}</Text>
+								<Text>{address[0]?.shippingAddress.address1}</Text>
+								<Text>{address[0]?.shippingAddress.address2}</Text>
+								<Text>{address[0]?.shippingAddress.city}</Text>
+								<Text>{address[0]?.shippingAddress.postalcode}</Text>
 							</Shipto>
 							<PaymentDetails>
 								<HeaderText>CREDIT CARD</HeaderText>
 								<Text>
-									{paymentInfo[0]?.vendor} {" **** "}{" "}
-									{paymentInfo[0]?.cardNumber.slice(12)}
+									{payment[0]?.vendor} {" **** "}{" "}
+									{payment[0]?.cardNumber.slice(12)}
 								</Text>
 							</PaymentDetails>
 							<BillingAddress>
 								<HeaderText>BILLING ADDRESS</HeaderText>
 								<Text>
-									{addressInfo[0]?.billingAddress.firstName}{" "}
-									{addressInfo[0]?.billingAddress.lastName}
+									{address[0]?.billingAddress.firstName}{" "}
+									{address[0]?.billingAddress.lastName}
 								</Text>
-								<Text>{addressInfo[0]?.billingAddress.address1}</Text>
-								<Text>{addressInfo[0]?.billingAddress.address2}</Text>
-								<Text>{addressInfo[0]?.billingAddress.city}</Text>
-								<Text>{addressInfo[0]?.billingAddress.postalcode}</Text>
+								<Text>{address[0]?.billingAddress.address1}</Text>
+								<Text>{address[0]?.billingAddress.address2}</Text>
+								<Text>{address[0]?.billingAddress.city}</Text>
+								<Text>{address[0]?.billingAddress.postalcode}</Text>
 							</BillingAddress>
 							<Total>
 								<Label>
 									<Text>Subtotal: </Text>
-									<Text>${priceTotalInfo.subtotal}</Text>
+									<Text>${priceTotal?.subtotal}</Text>
 								</Label>
 								<Label>
 									<Text>Shipping: </Text>
-									<Text>${priceTotalInfo.shipping}</Text>
+									<Text>${priceTotal?.shipping}</Text>
 								</Label>
 								<Label>
 									<Text>Cashback: </Text>
-									<Text>- ${priceTotalInfo.cashback}</Text>
+									<Text>- ${priceTotal?.cashback}</Text>
 								</Label>
 								<Label>
 									<TotalText>Total: </TotalText>
-									<TotalText>${priceTotalInfo.total}</TotalText>
+									<TotalText>${priceTotal?.total}</TotalText>
 								</Label>
 							</Total>
 							<a>
