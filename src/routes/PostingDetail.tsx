@@ -156,6 +156,8 @@ const CommentListContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: space-between;
+	font-family: 'Sniglet', cursive;
+
 `;
 
 

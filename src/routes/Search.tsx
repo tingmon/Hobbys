@@ -101,7 +101,6 @@ const IconContainer = styled.div`
 	grid-auto-rows: 40px;
 	height: 80px;
 	width: 100vw;
-	border: 2px solid #000;
 `;
 const Icons = styled.button`
 	border: 1px solid #ffffff;

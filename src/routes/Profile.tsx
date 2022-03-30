@@ -58,7 +58,7 @@ const TitleImage = styled.img`
 	line-height: 60px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
-	border: 3px solid ${(props) => props.theme.mainColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
 	box-shadow: 0 1px 1px 1px #868e96;
 `;
 
@@ -81,9 +81,6 @@ const OverviewItem = styled.div`
 		text-transform: uppercase;
 		margin-bottom: 5px;
 	}
-`;
-const Description = styled.p`
-	margin: 20px 0px;
 `;
 
 const Tabs = styled.div`

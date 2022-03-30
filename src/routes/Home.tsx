@@ -46,7 +46,7 @@ const Container = styled.div`
 
 const PostingContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(1, 400px);
+	grid-template-columns: repeat(1, 450px);
 	grid-template-rows: repeat(1, 600px);
 	grid-auto-rows: 600px;
 	z-index: 0;
@@ -56,12 +56,12 @@ const PostingContainer = styled.div`
 const Posting = styled.div`
 	font-size: 15px;
 	margin: 2px;
-	//max-width: 475px;
-	//max-hight: 490px;
 	width:100%;
 	background-color: ${(props) => props.theme.postingBgColor};
 	border-bottom: 0.2px solid #c9cdd2 ;
 	box-shadow: 0 2px 2px -2px #000;
+	//max-width: 475px;
+	//max-hight: 490px;
 `;
 
 const PostingHeader = styled.div`
@@ -71,6 +71,7 @@ const PostingHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin: 2px;
+	width:100%;
 `;
 
 const SaleTag = styled.div`
@@ -78,6 +79,7 @@ const SaleTag = styled.div`
 	font-weight: normal ;
 	display: flex;
 	align-items: center;
+	margin-right: 10px;
 	span {
 		margin-left: 2px;
 		margin-top: 2px;
