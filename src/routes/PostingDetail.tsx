@@ -162,46 +162,52 @@ function PostingDetail() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOwner, setIsOwner] = useState(false);
-	const selectedPosting = useRecoilValue(selectedPostingAtom);
-	const userObject = useRecoilValue(userObjectAtom);
+
 	const [isEdit, setIsEdit] = useState(false);
 	const [comments, setComments] = useState([]);
 	const [isLike, setIsLike] = useState(false);
 	const [newComment, setNewComment] = useState("");
 	const [isCommenting, setIsCommenting] = useState(false);
+	const [posting, setPosting] = useState<any>(null);
+
 	const [cart, setCart] = useRecoilState(cartAtom);
+	const selectedPosting = useRecoilValue(selectedPostingAtom);
+	const userObject = useRecoilValue(userObjectAtom);
 
 	useEffect(() => {
 		fetchCart();
-		if (selectedPosting.creatorUid == userObject.uid) {
-			setIsOwner(true);
+		setPosting(selectedPosting);
+		if (posting !== null) {
+			if (selectedPosting.creatorUid == userObject.uid) {
+				setIsOwner(true);
+			}
+			console.log(userObject);
+			console.log(selectedPosting);
+			console.log(selectedPosting.likes?.likerUid);
+			if (selectedPosting.likes.likerUid?.includes(userObject.uid)) {
+				console.log("like true");
+				setIsLike(true);
+			}
+			dbService
+				.collection("Comment")
+				.where("postingId", "==", selectedPosting.id)
+				.orderBy("timeStamp", "desc")
+				.onSnapshot((snapshot) => {
+					// console.log(snapshot);
+					const commentSnapshot = snapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					}));
+					setComments(commentSnapshot);
+				});
+			console.log(comments);
+			setIsLoading(false);
 		}
-		console.log(userObject);
-		console.log(selectedPosting);
-		console.log(selectedPosting.likes?.likerUid);
-		if (selectedPosting.likes.likerUid?.includes(userObject.uid)) {
-			console.log("like true");
-			setIsLike(true);
-		}
-		dbService
-			.collection("Comment")
-			.where("postingId", "==", selectedPosting.id)
-			.orderBy("timeStamp", "desc")
-			.onSnapshot((snapshot) => {
-				// console.log(snapshot);
-				const commentSnapshot = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setComments(commentSnapshot);
-			});
-		console.log(comments);
-		setIsLoading(false);
 
 		//posting
 		//comment
 		//like
-	}, []);
+	}, [posting]);
 
 	function Item(props) {
 		// console.log(props);
@@ -227,6 +233,7 @@ function PostingDetail() {
 			photoUrl: postingInfo.photoUrl[0],
 			category: postingInfo.category,
 			timeStamp: Date.now(),
+			reply: [],
 		};
 
 		const checkCancel = await dbService
@@ -289,6 +296,7 @@ function PostingDetail() {
 		await dbService.collection("Comment").add(addComment);
 		console.log(addComment);
 		// setComments((prev) => [...prev, addComment]);
+		setIsCommenting(false);
 	};
 
 	const onDeleteClick = async () => {
@@ -403,7 +411,7 @@ function PostingDetail() {
 
 	const toggleEditing = () => setIsEdit((prev) => !prev);
 
-	console.log(comments);
+	// console.log(comments);
 
 	return (
 		<>
@@ -419,23 +427,21 @@ function PostingDetail() {
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
-											<Link to={`/${selectedPosting?.creatorUid}/profile`}>
-												<PreviewImg
-													src={selectedPosting.creatorImgUrl}
-												></PreviewImg>
+											<Link to={`/${posting?.creatorUid}/profile`}>
+												<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
 											</Link>
-											{selectedPosting.creatorDisplayName}
+											{posting?.creatorDisplayName}
 										</ProfileTag>
-										{selectedPosting.soldOut ? (
+										{posting?.soldOut ? (
 											<SaleTag>
 												<LoyaltyIcon />
 												<span>Sold out</span>
 											</SaleTag>
-										) : selectedPosting.forSale ? (
+										) : posting?.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon />
 												<span>For Sale / </span>
-												<span>Price: ${selectedPosting.price}</span>
+												<span>Price: ${posting?.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
@@ -450,7 +456,7 @@ function PostingDetail() {
 										navButtonsAlwaysVisible={false}
 										autoPlay={false}
 									>
-										{selectedPosting.photoUrl.map((photo) => (
+										{posting?.photoUrl.map((photo) => (
 											<Item item={photo}></Item>
 										))}
 									</Carousel>
@@ -497,8 +503,8 @@ function PostingDetail() {
 													<CommentIcon />
 												</IconElement>
 
-												{selectedPosting.creatorUid !== userObject.uid &&
-													selectedPosting.forSale === true && (
+												{posting?.creatorUid !== userObject.uid &&
+													posting?.forSale === true && (
 														<IconElement
 															href="#"
 															onClick={() =>
@@ -519,13 +525,13 @@ function PostingDetail() {
 											</div>
 										</LikeAndComment>
 										<TextBox>
-											<span>Item Name: {selectedPosting.itemName}</span>
+											<span>Item Name: {posting?.itemName}</span>
 										</TextBox>
 										<TextBox>
-											<span>Category: {selectedPosting.category}</span>
+											<span>Category: {posting?.category}</span>
 										</TextBox>
 										<TextBox>
-											<span>Text: {selectedPosting.text}</span>
+											<span>Text: {posting?.text}</span>
 										</TextBox>
 
 										{isCommenting && (
@@ -567,22 +573,20 @@ function PostingDetail() {
 									<PostingHeader>
 										<ProfileTag>
 											<Link to={`/${selectedPosting?.creatorUid}/profile`}>
-												<PreviewImg
-													src={selectedPosting.creatorImgUrl}
-												></PreviewImg>
+												<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
 											</Link>
-											{selectedPosting.creatorDisplayName}
+											{posting?.creatorDisplayName}
 										</ProfileTag>
-										{selectedPosting.soldOut ? (
+										{posting?.soldOut ? (
 											<SaleTag>
 												<LoyaltyIcon />
 												<span>Sold out</span>
 											</SaleTag>
-										) : selectedPosting.forSale ? (
+										) : posting?.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon />
 												<span>On Sale / </span>
-												<span>Price: ${selectedPosting.price}</span>
+												<span>Price: ${posting?.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
@@ -597,7 +601,7 @@ function PostingDetail() {
 										navButtonsAlwaysVisible={false}
 										autoPlay={false}
 									>
-										{selectedPosting.photoUrl.map((photo) => (
+										{posting?.photoUrl.map((photo) => (
 											<Item item={photo}></Item>
 										))}
 									</Carousel>
@@ -639,8 +643,8 @@ function PostingDetail() {
 													<CommentIcon />
 												</IconElement>
 
-												{selectedPosting.creatorUid !== userObject.uid &&
-													selectedPosting.forSale === true && (
+												{posting?.creatorUid !== userObject.uid &&
+													posting?.forSale === true && (
 														<IconElement
 															href="#"
 															onClick={() =>
@@ -653,13 +657,13 @@ function PostingDetail() {
 											</div>
 										</LikeAndComment>
 										<TextBox>
-											<span>Item Name: {selectedPosting.itemName}</span>
+											<span>Item Name: {posting?.itemName}</span>
 										</TextBox>
 										<TextBox>
-											<span>Category: {selectedPosting.category}</span>
+											<span>Category: {posting?.category}</span>
 										</TextBox>
 										<TextBox>
-											<span>Text: {selectedPosting.text}</span>
+											<span>Text: {posting?.text}</span>
 										</TextBox>
 										{isCommenting && (
 											<>
