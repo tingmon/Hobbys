@@ -133,6 +133,7 @@ function Checkout() {
 	const [userInfo, setUserInfo] = useState<any>([]);
 	const [sellerInfo, setSellerInfo] = useState<any>([]);
 	const [isReady, setIsReady] = useState(false);
+	const [hasIssue, setHasIssue] = useState(false);
 	// const [sellerArr, setSellerArr] = useState<any>([]);
 
 	const uid = useRecoilValue(uidAtom);
@@ -152,7 +153,7 @@ function Checkout() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
+				// console.log(recordSnapshot);
 				setUserInfo(recordSnapshot);
 			});
 	}
@@ -196,7 +197,9 @@ function Checkout() {
 					...doc.data(),
 				}));
 				if (paymentSnapshot[0].vendor == "") {
+					console.log("asdf");
 					setIsReady(false);
+					setHasIssue(true);
 				} else {
 					setIsReady(true);
 				}
@@ -217,7 +220,9 @@ function Checkout() {
 					addressSnapshot[0].shippingAddress.postalcode == "" ||
 					addressSnapshot[0].billingAddress.postalcode == ""
 				) {
+					console.log("zxvv");
 					setIsReady(false);
+					setHasIssue(true);
 				} else {
 					setIsReady(true);
 				}
@@ -235,6 +240,7 @@ function Checkout() {
 	}, []);
 
 	console.log(sellerInfo);
+	console.log(hasIssue);
 
 	const calculateSellerPoint = (seller) => {
 		let bonus: number = parseFloat(100);
@@ -242,31 +248,32 @@ function Checkout() {
 		let sellerPoint: number = parseFloat(seller.sellerPoint);
 		let newPoints: number =
 			parseFloat(sellerPoint) + parseFloat(seller.price) + parseFloat(bonus);
-		let newRank = "";
+		let rank = seller.sellerRank;
 		let isPromoted = false;
 		if (newPoints + sellerBuyerPoint >= 100) {
-			newRank = "Silver";
+			rank = "Silver";
 			isPromoted = true;
 		}
 		if (newPoints + sellerBuyerPoint >= 500) {
-			newRank = "Gold";
+			rank = "Gold";
 			isPromoted = true;
 		}
 		if (newPoints + sellerBuyerPoint >= 1500) {
-			newRank = "Platinum";
+			rank = "Platinum";
 			isPromoted = true;
 		}
 		if (newPoints + sellerBuyerPoint >= 3500) {
-			newRank = "Master";
+			rank = "Master";
 			isPromoted = true;
 		}
 		if (newPoints + sellerBuyerPoint >= 8000) {
-			newRank = "HallofFamer";
+			rank = "HallofFamer";
 			isPromoted = true;
 		}
 		dbService.doc(`UserInfo/${seller.sellerUserInfoId}`).update({
 			sellerPoint: newPoints,
 			isPromoted: isPromoted,
+			rank: rank,
 		});
 	};
 
@@ -274,47 +281,70 @@ function Checkout() {
 		let buyerPoint: number = parseFloat(buyer.buyerPoint);
 		let sellerPoint: number = parseFloat(buyer.sellerPoint);
 		let cashback: number = parseFloat(buyer.cashback);
-		let newRank = "";
+		let rank = buyer.rank;
 		let isPromoted = false;
 		let newBuyerPoint: number =
 			parseFloat(buyerPoint) + parseFloat(priceTotalInfo.total);
-		console.log(buyerPoint);
-		console.log(sellerPoint);
-		console.log(buyer.cashback);
-		console.log(newBuyerPoint);
+
 		console.log("cashback1: ", cashback);
 		cashback =
 			parseFloat(cashback) -
 			parseFloat(priceTotalInfo.cashback) +
 			parseFloat(priceTotalInfo.total) / 20;
 
-		console.log("cashback2: ", cashback);
+		cashback = Math.round(cashback);
 
-		if (newBuyerPoint + sellerPoint >= 100) {
-			newRank = "Silver";
+		console.log("cashback3: ", cashback);
+		console.log("newBuyerPoint: ", newBuyerPoint);
+		console.log("rank: ", rank);
+
+		if (
+			newBuyerPoint + sellerPoint >= 100 &&
+			rank === "Bronze" &&
+			!isPromoted
+		) {
+			rank = "Silver";
 			isPromoted = true;
-		}
-		if (newBuyerPoint + sellerPoint >= 500) {
-			newRank = "Gold";
+			console.log("promoted1");
+		} else if (
+			newBuyerPoint + sellerPoint >= 500 &&
+			rank === "Silver" &&
+			!isPromoted
+		) {
+			rank = "Gold";
 			isPromoted = true;
-		}
-		if (newBuyerPoint + sellerPoint >= 1500) {
-			newRank = "Platinum";
+			console.log("promoted2");
+		} else if (
+			newBuyerPoint + sellerPoint >= 1500 &&
+			rank === "Gold" &&
+			!isPromoted
+		) {
+			rank = "Platinum";
 			isPromoted = true;
-		}
-		if (newBuyerPoint + sellerPoint >= 3500) {
-			newRank = "Master";
+
+			console.log("promoted3");
+		} else if (
+			newBuyerPoint + sellerPoint >= 3500 &&
+			rank === "Platinum" &&
+			!isPromoted
+		) {
+			rank = "Master";
 			isPromoted = true;
-		}
-		if (newBuyerPoint + sellerPoint >= 8000) {
-			newRank = "HallofFamer";
+			console.log("promoted4");
+		} else if (
+			newBuyerPoint + sellerPoint >= 8000 &&
+			rank === "Master" &&
+			!isPromoted
+		) {
+			rank = "HallofFamer";
 			isPromoted = true;
+			console.log("promoted5");
 		}
 
 		dbService.doc(`UserInfo/${buyer.id}`).update({
 			buyerPoint: newBuyerPoint,
 			cashback: cashback,
-			rank: newRank,
+			rank: rank,
 			isPromoted: isPromoted,
 		});
 	};
@@ -330,10 +360,15 @@ function Checkout() {
 			if (result.isConfirmed) {
 				// Swal.fire("Saved!", "", "success");
 				// to get every transaction record
+				let uidInTransaction = [];
+				uidInTransaction.push(uid);
 				let combinedUid = uid;
 
 				cartItems.map(async (element) => {
 					combinedUid = combinedUid + element.creatorUid;
+					if (uidInTransaction.includes(element.creatorUid) === false) {
+						uidInTransaction.push(element.creatorUid);
+					}
 				});
 
 				console.log(sellerInfo);
@@ -349,7 +384,7 @@ function Checkout() {
 					priceTotalInfo: priceTotalInfo,
 					items: cartItems,
 					combinedUid: combinedUid,
-					sellers: sellerInfo,
+					uidInTransaction: uidInTransaction,
 					timeStamp: Date.now(),
 				};
 
@@ -446,7 +481,7 @@ function Checkout() {
 								</Label>
 							</Total>
 							<a>
-								{!isReady ? (
+								{!isReady || hasIssue == true ? (
 									<DisabledBtn disabled>COMPLETE INFO FIRST</DisabledBtn>
 								) : (
 									<SubmitBtn
