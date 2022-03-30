@@ -23,13 +23,10 @@ import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
-import EditIcon from "@mui/icons-material/Edit";
+import LoyaltyIcon from "@mui/icons-material/PaidRounded";
 import FavoriteBorderIcon from "@mui/icons-material/Favorite";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
-import CommentIcon from "@mui/icons-material/Comment";
+import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
@@ -79,6 +76,7 @@ const PostingHeader = styled.div`
 `;
 
 const SaleTag = styled.div`
+	font-family: 'Sniglet', cursive;
 	display: flex;
 	align-items: center;
 	span {
@@ -87,6 +85,9 @@ const SaleTag = styled.div`
 `;
 
 const ProfileTag = styled.div`
+	font-family: 'Sniglet', cursive;
+	font-weight: normal ;
+	font-size: 20px;	
 	display: flex;
 	align-items: center;
 	img {
@@ -115,9 +116,9 @@ const LikeAndComment = styled.div`
 `;
 
 const TextBox = styled.div`
-	word-wrap: break-word;
-	overflow: auto;
-	max-height: 50px;
+    word-wrap: break-word;
+    overflow: auto;
+    max-height: 50px;
 `;
 
 const IconElement = styled.a`
@@ -125,6 +126,7 @@ const IconElement = styled.a`
 `;
 
 const GoBackBtn = styled.button`
+
 	text-align: center;
 	background: #04aaff;
 	color: white;
@@ -139,6 +141,7 @@ const GoBackBtn = styled.button`
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
+
 `;
 
 const FormContainer = styled.div`
@@ -154,7 +157,10 @@ const CommentListContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: space-between;
+	font-family: 'Sniglet', cursive;
+
 `;
+
 
 function PostingDetail() {
 	const history = useHistory();
@@ -420,8 +426,6 @@ function PostingDetail() {
 					{isOwner ? (
 						<>
 							<Container>
-								<GoBackBtn onClick={onGoBackClicked}>Back to Home</GoBackBtn>
-
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
@@ -432,18 +436,18 @@ function PostingDetail() {
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#b81414" }} />
 												<span>Sold out</span>
 											</SaleTag>
 										) : posting?.forSale ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#206a22" }} />
 												<span>For Sale / </span>
 												<span>Price: ${posting?.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#827C76" }} />
 												<span>Not for Sale</span>
 											</SaleTag>
 										)}
@@ -565,8 +569,6 @@ function PostingDetail() {
 					) : (
 						<>
 							<Container>
-								<GoBackBtn onClick={onGoBackClicked}>Back to Home</GoBackBtn>
-
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
@@ -577,22 +579,23 @@ function PostingDetail() {
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#b81414" }}/>
 												<span>Sold out</span>
 											</SaleTag>
 										) : posting?.forSale ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#206a22" }} />
 												<span>On Sale / </span>
 												<span>Price: ${posting?.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#827C76" }}  />
 												<span>Not for Sale</span>
 											</SaleTag>
 										)}
 									</PostingHeader>
+							
 
 									<Carousel
 										className={carouselStyle.detailCarousel}

@@ -17,21 +17,24 @@ const NavContainer = styled.nav`
 	position: fixed; /* Set the navbar to fixed position */
 	top: 0; /* Position the navbar at the top of the page */
 	width: 100%; /* Full width */
-	background-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.mainColor};
 	max-width: 450px;
+	max-height:55px;
 	z-index: 1;
+	box-shadow: 0 4px 4px -4px #000;
+
 `;
 
 const NavList = styled.ul`
 	display: flex;
 	width: 100%;
 	justify-content: flex-end;
-	background-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.mainColor};
 `;
 
 const NavItem = styled.li`
 	font-size: 15px;
-	margin: 0px 2px 0px 5px;
+	margin: -3px 2px 0px 5px;
 	a {
 		padding: 10px 5px 10px 5px;
 		transition: color 0.2s ease-in;
@@ -48,28 +51,30 @@ const LogoContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin-left: 15px;
+	
 `;
 
 //const Logo = styled.img``;
 
 const Hobbys = styled.h1`
-	font-family: "M PLUS Rounded 1c", sans-serif;
+	font-family: 'Sniglet', cursive;
 	margin: 0px 1px 3px 2px;
-	font-size: 25px;
+	font-size: 35px;
 	font-weight: bold;
-	text-shadow: 1.5px 1.5px #ffffff;
-	color: #f6b324;
+	text-shadow: 1px 1px 3px red;
+
+	color: ${(props) => props.theme.logoColor};
 `;
 
 const ProfileImage = styled.img`
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	border: 2px solid #ffffff;
 	margin-right: 5px;
 	line-height: 50px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
+	box-shadow: 0px 0px 1px 1px #FFFFFF;
 `;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
@@ -91,7 +96,7 @@ function Header() {
 		<NavContainer>
 			<LogoContainer>
 				<Link to="/">
-					<Hobbys>HOBBY'S</Hobbys>
+					<Hobbys>HOBBY's</Hobbys>
 				</Link>
 			</LogoContainer>
 			<NavList>
