@@ -102,7 +102,7 @@ const GoAddressBtn = styled.button`
 	background: #04aaff;
 	color: white;
 	margin-top: 10px;
-	pointer
+	
 	cursor: pointer;
 
 	max-width: 320px;
@@ -121,7 +121,6 @@ const GoAddressBtnRed = styled.button`
 	background: #EA2027;
 	color: white;
 	margin-top: 10px;
-	pointer
 	cursor: pointer;
 
 	max-width: 320px;

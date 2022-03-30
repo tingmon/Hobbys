@@ -69,7 +69,7 @@ const NavList = styled.ul`
 	background-color: ${(props) => props.theme.mainColor};
 `;
 const NavList2 = styled.div`
-display: flex;
+	display: flex;
 	width: 100%;
 	justify-content: space-around;
 `;
@@ -121,14 +121,14 @@ const Navigation = () => {
 				{open ? (
 						<FormControlLabel
 						control={<ToggleButton checked={open} onChange={handleOpen}>
-							<FontAwesomeIcon icon={faChevronDown} color={"#000"} size="2x" />
+							<FontAwesomeIcon icon={faChevronDown} color={"#fab73d"} size="2x" />
 						</ToggleButton>}
 						label=""
 					/>
 				) : (
 					<FormControlLabel
 					control={<ToggleButton checked={open} onChange={handleOpen}>
-						<FontAwesomeIcon icon={faChevronUp} color={"#000"} size="2x" />
+						<FontAwesomeIcon icon={faChevronUp} color={"#fab73d"} size="2x" />
 					</ToggleButton>}
 					label=""
 				/>

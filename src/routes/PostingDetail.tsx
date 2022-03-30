@@ -76,6 +76,7 @@ const PostingHeader = styled.div`
 `;
 
 const SaleTag = styled.div`
+	font-family: 'Sniglet', cursive;
 	display: flex;
 	align-items: center;
 	span {
@@ -84,6 +85,9 @@ const SaleTag = styled.div`
 `;
 
 const ProfileTag = styled.div`
+	font-family: 'Sniglet', cursive;
+	font-weight: normal ;
+	font-size: 20px;	
 	display: flex;
 	align-items: center;
 	img {
@@ -112,17 +116,9 @@ const LikeAndComment = styled.div`
 `;
 
 const TextBox = styled.div`
-	word-wrap: break-word;
-	max-height: 70px;
-	margin: 5px;
-`;
-
-const Overflow = styled.div`		
-	word-wrap: break-word;
-	max-height: 100px;
-	margin: 5px;
-	overflow: auto;
-
+    word-wrap: break-word;
+    overflow: auto;
+    max-height: 50px;
 `;
 
 const IconElement = styled.a`
@@ -134,7 +130,6 @@ text-align: center;
 background: #04aaff;
 color: white;
 margin-top: 10px;
-pointer
 cursor: pointer;
 
 max-width: 320px;
@@ -428,8 +423,6 @@ function PostingDetail() {
 					{isOwner ? (
 						<>
 							<Container>
-								<GoBackBtn onClick={onGoBackClicked}>Back to Home</GoBackBtn>
-
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
@@ -438,12 +431,7 @@ function PostingDetail() {
 											</Link>
 											{posting?.creatorDisplayName}
 										</ProfileTag>
-<<<<<<< HEAD
-
-										{selectedPosting.soldOut ? (
-=======
 										{posting?.soldOut ? (
->>>>>>> 0939228c6c6246ccaba4eb30b5c90d852781d6ef
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#b81414" }} />
 												<span>Sold out</span>
@@ -541,15 +529,9 @@ function PostingDetail() {
 										<TextBox>
 											<span>Category: {posting?.category}</span>
 										</TextBox>
-<<<<<<< HEAD
-										<Overflow>
-											<span> {selectedPosting.text}</span>
-										</Overflow>
-=======
 										<TextBox>
 											<span>Text: {posting?.text}</span>
 										</TextBox>
->>>>>>> 0939228c6c6246ccaba4eb30b5c90d852781d6ef
 
 										{isCommenting && (
 											<>
@@ -584,8 +566,6 @@ function PostingDetail() {
 					) : (
 						<>
 							<Container>
-								<GoBackBtn onClick={onGoBackClicked}>Back to Home</GoBackBtn>
-
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
@@ -596,22 +576,23 @@ function PostingDetail() {
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#b81414" }}/>
 												<span>Sold out</span>
 											</SaleTag>
 										) : posting?.forSale ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#206a22" }} />
 												<span>On Sale / </span>
 												<span>Price: ${posting?.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#827C76" }}  />
 												<span>Not for Sale</span>
 											</SaleTag>
 										)}
 									</PostingHeader>
+							
 
 									<Carousel
 										className={carouselStyle.detailCarousel}
