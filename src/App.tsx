@@ -33,7 +33,8 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 main, menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-  margin: 0;
+	font-family: 'Lato', sans-serif;
+	margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%;
@@ -43,16 +44,19 @@ time, mark, audio, video {
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, main, menu, nav, section {
-  display: block;
+	font-family: 'Lato', sans-serif;
+	display: block;
 }
 /* HTML5 hidden-attribute fix for newer browsers */
 *[hidden] {
     display: none;
 }
 body {
-  line-height: 1;
+	font-family: 'Lato', sans-serif;
+	line-height: 1;
 }
 menu, ol, ul {
+	
   list-style: none;
 }
 blockquote, q {
@@ -103,7 +107,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-	font-family: 'Noto Sans', sans-serif;
+	color: #343a40;
 	width: 450px;
 	height: 100vh;
 	min-height: 100%;

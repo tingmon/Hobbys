@@ -16,6 +16,7 @@ import {
 	postingsObject,
 	selectedCommentAtom,
 } from "../atoms";
+import LoyaltyIcon from "@mui/icons-material/PaidRounded";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -25,6 +26,8 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	font-family: 'Lato', sans-serif;
+
 `;
 
 // const Item = styled.div`
@@ -49,8 +52,8 @@ const Posting = styled.div`
 	border: 1px solid #ffffff;
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	flex-direction: column;
+	align-items: left;
 
 	// overflow: hidden;
 	// a {
@@ -59,13 +62,23 @@ const Posting = styled.div`
 	// }
 	
 `;
+const InfoBox = styled.div`
+	display: flex;
+	margin-left: 5px;
 
+	span {
+		margin-left: 1px;
+		margin-top: 1px;
+	}
+`;
 const PostingPreviewImg = styled.img`
 	width: 150px;
 	height:180px;
 `;
 const Text = styled.span`
-	
+	margin-bottom:5px;
+	font-size:17px;
+
 `;
 function LikeList() {
 	const [postingArr, setPostingArr] = useState<any>([]);
@@ -150,11 +163,24 @@ function LikeList() {
 								>
 								<PostingPreviewImg src={posting.photoUrl[0]} />
 								
-								</Link>
+							
+								<InfoBox>
+								<Text>{posting.itemName}</Text> 
 
-								<Text >{posting.creatorDisplayName}</Text>
-								<Text>{posting.category}</Text>
-								{posting.forSale ? <Text>for sale</Text> : <Text>not for sale</Text>}
+								</InfoBox>
+								{posting.forSale ? 	(
+									<InfoBox>
+									<LoyaltyIcon style={{ fill: "#206a22" } } fontSize="small"/> 
+									<Text>{posting.price}</Text>
+									</InfoBox>
+								):(
+									<InfoBox>
+										<LoyaltyIcon style={{ fill: "#827C76" } } fontSize="small"/> 
+										<Text>Not for Sale</Text>
+									</InfoBox>
+									
+								)}
+								</Link>
 							</Posting>
 
 						))}

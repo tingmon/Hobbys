@@ -23,13 +23,10 @@ import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
-import EditIcon from "@mui/icons-material/Edit";
+import LoyaltyIcon from "@mui/icons-material/PaidRounded";
 import FavoriteBorderIcon from "@mui/icons-material/Favorite";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
-import CommentIcon from "@mui/icons-material/Comment";
+import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
@@ -116,8 +113,16 @@ const LikeAndComment = styled.div`
 
 const TextBox = styled.div`
 	word-wrap: break-word;
+	max-height: 70px;
+	margin: 5px;
+`;
+
+const Overflow = styled.div`		
+	word-wrap: break-word;
+	max-height: 100px;
+	margin: 5px;
 	overflow: auto;
-	max-height: 50px;
+
 `;
 
 const IconElement = styled.a`
@@ -157,6 +162,7 @@ const CommentListContainer = styled.div`
 	align-items: flex-start;
 	justify-content: space-between;
 `;
+
 
 function PostingDetail() {
 	const history = useHistory();
@@ -426,20 +432,21 @@ function PostingDetail() {
 											</Link>
 											{selectedPosting.creatorDisplayName}
 										</ProfileTag>
+
 										{selectedPosting.soldOut ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#b81414" }} />
 												<span>Sold out</span>
 											</SaleTag>
 										) : selectedPosting.forSale ? (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#206a22" }} />
 												<span>For Sale / </span>
 												<span>Price: ${selectedPosting.price}</span>
 											</SaleTag>
 										) : (
 											<SaleTag>
-												<LoyaltyIcon />
+												<LoyaltyIcon style={{ fill: "#827C76" }} />
 												<span>Not for Sale</span>
 											</SaleTag>
 										)}
@@ -524,9 +531,9 @@ function PostingDetail() {
 										<TextBox>
 											<span>Category: {selectedPosting.category}</span>
 										</TextBox>
-										<TextBox>
-											<span>Text: {selectedPosting.text}</span>
-										</TextBox>
+										<Overflow>
+											<span> {selectedPosting.text}</span>
+										</Overflow>
 
 										{isCommenting && (
 											<>

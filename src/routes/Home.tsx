@@ -21,11 +21,7 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@mui/material";
 import carouselStyle from "../styles/Carousel.module.css";
 import LoyaltyIcon from "@mui/icons-material/PaidRounded";
-import EditIcon from "@mui/icons-material/Edit";
 import FavoriteBorderIcon from "@mui/icons-material/Favorite";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
 import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Swal from "sweetalert2";
@@ -34,6 +30,7 @@ const PreviewImg = styled.img`
 	border-radius: 50%;
 	width: 50px;
 	height: 50px;
+	
 `;
 
 const Container = styled.div`
@@ -44,6 +41,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	
 `;
 
 const PostingContainer = styled.div`
@@ -63,6 +61,7 @@ const Posting = styled.div`
 	width:100%
 	background-color: ${(props) => props.theme.postingBgColor};
 	border-bottom: 0.2px solid #c9cdd2 ;
+	box-shadow: 0 2px 2px -2px #000;
 `;
 
 const PostingHeader = styled.div`
@@ -75,6 +74,8 @@ const PostingHeader = styled.div`
 `;
 
 const SaleTag = styled.div`
+	font-family: 'Sniglet', cursive;
+	font-weight: normal ;
 	display: flex;
 	align-items: center;
 	span {
@@ -86,6 +87,7 @@ const SaleTag = styled.div`
 const ProfileTag = styled.div`
 	display: flex;
 	align-items: center;
+	
 	img {
 		margin-right: 7px;
 	}
@@ -130,6 +132,16 @@ const CartIcon = styled.a`
 	cursor: pointer;
 `;
 
+const Price =styled.div`
+	font-size: 18px;
+	margin-right: 10px;
+`
+
+const UserName =styled.div`
+	font-family: 'Sniglet', cursive;
+	font-weight: normal ;
+	font-size: 20px;
+`
 function Home() {
 	const history = useHistory();
 	const [likeList, setLikeList] = useState<any>([]);
@@ -454,12 +466,16 @@ function Home() {
 														src={item.creatorImgUrl}
 													></PreviewImg>
 												</Link>
-												<Link
+												<UserName>
+												<Link  
 													to={`/${item?.creatorUid}/profile`}
 													onClick={() => PostingIconClicked(item)}
 												>
 													{item.creatorDisplayName}
 												</Link>
+
+												</UserName>
+
 											</ProfileTag>
 											{item.soldOut ? (
 												<SaleTag>
@@ -468,11 +484,12 @@ function Home() {
 											) : item.forSale ? (
 												<SaleTag>
 													<LoyaltyIcon style={{ fill: "#206a22" }} />
-													<span>Price: ${item.price}</span>
+													<Price> {item.price}</Price>
 												</SaleTag>
 											) : (
 												<SaleTag>
 													<LoyaltyIcon style={{ fill: "#827C76" }} />
+													Not for Sale
 												</SaleTag>
 											)}
 										</PostingHeader>
