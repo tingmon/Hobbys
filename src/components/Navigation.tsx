@@ -142,24 +142,24 @@ const Navigation = () => {
 				<NavList>
 					<NavItem>
 						<Link to="/addposting">
-							<FontAwesomeIcon icon={faPlusSquare} color={"#E8EBED"} size="2x" />
+							<FontAwesomeIcon icon={faPlusSquare} color={"#edece8"} size="2x" />
 						</Link>
 					</NavItem>
 					<NavItem>
 						<Link to="/search">
-							<FontAwesomeIcon icon={faSearch} color={"#E8EBED"} size="2x" />
+							<FontAwesomeIcon icon={faSearch} color={"#edece8"} size="2x" />
 						</Link>
 					</NavItem>
 					<NavItem>
 						<Link to="/likelist">
-							<FontAwesomeIcon icon={faHeart} color={"#E8EBED"} size="2x" />
+							<FontAwesomeIcon icon={faHeart} color={"#edece8"} size="2x" />
 						</Link>
 					</NavItem>
 					<NavItem>
 						<Link to="/cart">
 							<FontAwesomeIcon
 								icon={faShoppingCart}
-								color={"#E8EBED"}
+								color={"#edece8"}
 								size="2x"
 							/>
 						</Link>
