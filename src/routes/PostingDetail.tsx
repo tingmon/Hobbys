@@ -126,21 +126,22 @@ const IconElement = styled.a`
 `;
 
 const GoBackBtn = styled.button`
-text-align: center;
-background: #04aaff;
-color: white;
-margin-top: 10px;
-cursor: pointer;
 
-max-width: 320px;
-width: 100%;
-padding: 10px;
-border-radius: 30px;
-background-color: rgba(255, 255, 255, 1);
-margin-bottom: 10px;
-font-size: 12px;
-color: black;
-font-weight: bold;
+	text-align: center;
+	background: #04aaff;
+	color: white;
+	margin-top: 10px;
+	cursor: pointer;
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+
 `;
 
 const FormContainer = styled.div`
