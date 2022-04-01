@@ -43,9 +43,11 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
+	font-family: 'Sniglet', cursive;
+	font-weight: normal ;
 	font-size: 30px;
 	color: ${(props) => props.theme.displayNameColor};
-	margin-left: 20px;
+	margin-left: 15px;
 `;
 
 const TitleImage = styled.img`
@@ -56,6 +58,8 @@ const TitleImage = styled.img`
 	line-height: 60px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
 `;
 
 const Overview = styled.div`
@@ -64,6 +68,8 @@ const Overview = styled.div`
 	background-color: ${(props) => props.theme.textColor};
 	padding: 10px 20px;
 	border-radius: 10px;
+	box-shadow: 0 1px 1px 1px ${(props) => props.theme.secondColor};
+
 `;
 const OverviewItem = styled.div`
 	display: flex;
@@ -76,15 +82,13 @@ const OverviewItem = styled.div`
 		margin-bottom: 5px;
 	}
 `;
-const Description = styled.p`
-	margin: 20px 0px;
-`;
 
 const Tabs = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	margin: 15px 0px;
 	gap: 10px;
+	
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
@@ -100,6 +104,8 @@ const Tab = styled.span<{ isActive: boolean }>`
 		a {
 		display: block;
 	}
+	box-shadow: 0 1px 1px 1px  ${(props) => props.theme.secondColor};
+
 `;
 
 const GoHome = styled.span`
