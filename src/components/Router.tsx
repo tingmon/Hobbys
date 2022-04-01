@@ -37,6 +37,8 @@ function AppRouter({ refreshUser }) {
 	const userObject = useRecoilValue(userObjectAtom);
 	const selectedPostingInfo = useRecoilValue(selectedPostingAtom);
 
+	console.log("router");
+
 	return (
 		<Router>
 			<Header userObject={userObject} />
@@ -44,7 +46,7 @@ function AppRouter({ refreshUser }) {
 			<Switch>
 				{isLoggedIn ? (
 					<>
-						<Route exact path="/">
+						<Route exact path="/Hobbys/">
 							<Home userObject={userObject} />
 						</Route>
 
@@ -86,7 +88,7 @@ function AppRouter({ refreshUser }) {
 						</Route>
 					</>
 				) : (
-					<Route exact path="/">
+					<Route exact path="/Hobbys/">
 						<Auth />
 					</Route>
 				)}

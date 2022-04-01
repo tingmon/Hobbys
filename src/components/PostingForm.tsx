@@ -233,7 +233,7 @@ function PostingForm() {
 			}
 			setPhotoURLAtom("");
 			alert("Posting Uploaded!");
-			history.push("/");
+			history.push("/Hobbys/");
 			// console.log(user);
 		} catch (error) {
 			console.log(error);

@@ -90,7 +90,7 @@ function Header() {
 	return (
 		<NavContainer>
 			<LogoContainer>
-				<Link to="/">
+				<Link to="/Hobbys/">
 					<Hobbys>HOBBY'S</Hobbys>
 				</Link>
 			</LogoContainer>

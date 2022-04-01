@@ -217,7 +217,7 @@ function PostingDetail() {
 	}
 
 	const onGoBackClicked = () => {
-		history.push("/");
+		history.push("/Hobbys/");
 	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
@@ -305,9 +305,9 @@ function PostingDetail() {
 			await dbService.doc(`Posting/${selectedPosting.id}`).delete();
 			if (selectedPosting.photoUrl !== "") {
 				await storageService.refFromURL(selectedPosting.photoUrl).delete();
-				history.push("/");
+				history.push("/Hobbys/");
 			}
-			history.push("/");
+			history.push("/Hobbys/");
 			alert("Posting Deleted");
 		}
 	};

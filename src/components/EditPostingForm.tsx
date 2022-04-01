@@ -70,12 +70,7 @@ const SubmitBtn = styled.button`
 
 const GoBackBtn = styled.button`
 	text-align: center;
-	background: #04aaff;
-	color: white;
-	margin-top: 10px;
-	pointer
 	cursor: pointer;
-
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
@@ -192,7 +187,7 @@ function EditPostingForm() {
 				console.log("not forSale success");
 			}
 			alert("Posting Edited!");
-			history.push("/");
+			history.push("/Hobbys");
 			// console.log(user);
 		} catch (error) {
 			console.log(error);
