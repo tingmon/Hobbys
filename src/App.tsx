@@ -92,7 +92,6 @@ html, body{
 
 const Title = styled.h1`
 	color: ${(props) => props.theme.textColor};
-  };
 `;
 
 const Wrapper = styled.div`
@@ -107,7 +106,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-	color: #343a40;
+	font-family: "Noto Sans", sans-serif;
 	width: 450px;
 	height: 100vh;
 	min-height: 100%;

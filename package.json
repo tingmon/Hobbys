@@ -79,5 +79,6 @@
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.21"
-  }
+  },
+  "homepage": "https://tingmon.github.io/Hobbys"
 }

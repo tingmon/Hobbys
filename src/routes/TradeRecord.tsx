@@ -38,7 +38,6 @@ const GoPaymentBtn = styled.button`
 	background: #04aaff;
 	color: white;
 	margin-top: 10px;
-	pointer
 	cursor: pointer;
 
 	max-width: 320px;

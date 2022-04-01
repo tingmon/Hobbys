@@ -19,10 +19,9 @@ const NavContainer = styled.nav`
 	width: 100%; /* Full width */
 	background-color: ${(props) => props.theme.mainColor};
 	max-width: 450px;
-	max-height:55px;
+	max-height: 55px;
 	z-index: 1;
 	box-shadow: 0 4px 4px -4px #000;
-
 `;
 
 const NavList = styled.ul`
@@ -51,13 +50,12 @@ const LogoContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin-left: 15px;
-	
 `;
 
 //const Logo = styled.img``;
 
 const Hobbys = styled.h1`
-	font-family: 'Sniglet', cursive;
+	font-family: "Sniglet", cursive;
 	margin: 0px 1px 3px 2px;
 	font-size: 35px;
 	font-weight: bold;
@@ -74,7 +72,7 @@ const ProfileImage = styled.img`
 	line-height: 50px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
-	box-shadow: 0px 0px 1px 1px #FFFFFF;
+	box-shadow: 0px 0px 1px 1px #ffffff;
 `;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
@@ -95,8 +93,8 @@ function Header() {
 	return (
 		<NavContainer>
 			<LogoContainer>
-				<Link to="/">
-					<Hobbys>HOBBY's</Hobbys>
+				<Link to="/Hobbys/">
+					<Hobbys>HOBBY'S</Hobbys>
 				</Link>
 			</LogoContainer>
 			<NavList>

@@ -445,7 +445,7 @@ function Home() {
 			};
 			await dbService.collection("Comment").add(newComment);
 		} else {
-			history.push("/");
+			history.push("/Hobbys/");
 		}
 	};
 

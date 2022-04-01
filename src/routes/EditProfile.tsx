@@ -102,7 +102,6 @@ const GoAddressBtn = styled.button`
 	background: #04aaff;
 	color: white;
 	margin-top: 10px;
-	
 	cursor: pointer;
 
 	max-width: 320px;
@@ -118,7 +117,7 @@ const GoAddressBtn = styled.button`
 
 const GoAddressBtnRed = styled.button`
 	text-align: center;
-	background: #EA2027;
+	background: #ea2027;
 	color: white;
 	margin-top: 10px;
 	cursor: pointer;
@@ -127,7 +126,7 @@ const GoAddressBtnRed = styled.button`
 	width: 100%;
 	padding: 10px;
 	border-radius: 30px;
-	background-color: #EA2027;
+	background-color: #ea2027;
 
 	font-size: 12px;
 	color: white;
@@ -189,7 +188,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 
 	const onLogOutClick = () => {
 		authService.signOut();
-		history.push("/");
+		history.push("/Hobbys/");
 	};
 
 	const onAddressClick = async () => {
@@ -336,7 +335,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 			}
 		}
 		alert("Profile Updated!");
-		history.push("/");
+		history.push("/Hobbys/");
 	};
 
 	const onFileChange = (event) => {

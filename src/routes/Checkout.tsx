@@ -431,7 +431,7 @@ function Checkout() {
 					items: [],
 				});
 
-				history.push(`/`);
+				history.push(`/Hobbys/`);
 			}
 		});
 	};
