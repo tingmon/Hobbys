@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { pink } from "@mui/material/colors";
+import Swal from "sweetalert2";
 
 const SignUpForm = styled.form`
 	font-family: "Noto Sans", sans-serif;
@@ -232,7 +233,15 @@ function PostingForm() {
 				console.log("not forSale success");
 			}
 			setPhotoURLAtom("");
-			alert("Posting Uploaded!");
+			Swal.fire({
+				title: "Your Posting is Uploaded!",
+				confirmButtonText: "Got It",
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					// Swal.fire("Saved!", "", "success");
+				}
+			});
 			history.push("/Hobbys/");
 			// console.log(user);
 		} catch (error) {
@@ -338,7 +347,7 @@ function PostingForm() {
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
 						<InputField
 							type="text"
-							{...register("itemName", {})}
+							{...register("itemName", { required: "Item Name is Required" })}
 							placeholder="*Enter Item Name"
 						/>
 						<ErrorMessage>{errors?.itemName?.message}</ErrorMessage>
