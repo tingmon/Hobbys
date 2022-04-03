@@ -30,7 +30,6 @@ const PreviewImg = styled.img`
 	border-radius: 50%;
 	width: 50px;
 	height: 50px;
-	
 `;
 
 const Container = styled.div`
@@ -41,24 +40,25 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	
 `;
 
 const PostingContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(1, 450px);
+	grid-template-columns: repeat(1, 1fr);
 	grid-template-rows: repeat(1, 600px);
 	grid-auto-rows: 600px;
 	z-index: 0;
+	max-width: 400px;
 	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
 const Posting = styled.div`
 	font-size: 15px;
 	margin: 2px;
-	width:100%;
+	width: 100%;
+	max-width: 350px;
 	background-color: ${(props) => props.theme.postingBgColor};
-	border-bottom: 0.2px solid #c9cdd2 ;
+	border-bottom: 0.2px solid #c9cdd2;
 	box-shadow: 0 2px 2px -2px #000;
 	//max-width: 475px;
 	//max-hight: 490px;
@@ -71,12 +71,12 @@ const PostingHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin: 2px;
-	width:100%;
+	width: 100%;
 `;
 
 const SaleTag = styled.div`
-	font-family: 'Sniglet', cursive;
-	font-weight: normal ;
+	font-family: "Sniglet", cursive;
+	font-weight: normal;
 	display: flex;
 	align-items: center;
 	margin-right: 10px;
@@ -89,7 +89,7 @@ const SaleTag = styled.div`
 const ProfileTag = styled.div`
 	display: flex;
 	align-items: center;
-	
+
 	img {
 		margin-right: 7px;
 	}
@@ -134,16 +134,16 @@ const CartIcon = styled.a`
 	cursor: pointer;
 `;
 
-const Price =styled.div`
+const Price = styled.div`
 	font-size: 18px;
 	margin-right: 10px;
-`
+`;
 
-const UserName =styled.div`
-	font-family: 'Sniglet', cursive;
-	font-weight: normal ;
+const UserName = styled.div`
+	font-family: "Sniglet", cursive;
+	font-weight: normal;
 	font-size: 20px;
-`
+`;
 function Home() {
 	const history = useHistory();
 	const [likeList, setLikeList] = useState<any>([]);
@@ -245,7 +245,7 @@ function Home() {
 		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 430, width: 430 }} src={props.item} />
+				<img style={{ height: 350, width: 350 }} src={props.item} />
 			</Paper>
 		);
 	}
@@ -472,15 +472,13 @@ function Home() {
 													></PreviewImg>
 												</Link>
 												<UserName>
-												<Link  
-													to={`/${item?.creatorUid}/profile`}
-													onClick={() => PostingIconClicked(item)}
-												>
-													{item.creatorDisplayName}
-												</Link>
-
+													<Link
+														to={`/${item?.creatorUid}/profile`}
+														onClick={() => PostingIconClicked(item)}
+													>
+														{item.creatorDisplayName}
+													</Link>
 												</UserName>
-
 											</ProfileTag>
 											{item.soldOut ? (
 												<SaleTag>

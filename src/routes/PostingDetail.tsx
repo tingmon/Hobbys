@@ -76,7 +76,7 @@ const PostingHeader = styled.div`
 `;
 
 const SaleTag = styled.div`
-	font-family: 'Sniglet', cursive;
+	font-family: "Sniglet", cursive;
 	display: flex;
 	align-items: center;
 	span {
@@ -85,9 +85,9 @@ const SaleTag = styled.div`
 `;
 
 const ProfileTag = styled.div`
-	font-family: 'Sniglet', cursive;
-	font-weight: normal ;
-	font-size: 20px;	
+	font-family: "Sniglet", cursive;
+	font-weight: normal;
+	font-size: 20px;
 	display: flex;
 	align-items: center;
 	img {
@@ -116,9 +116,9 @@ const LikeAndComment = styled.div`
 `;
 
 const TextBox = styled.div`
-    word-wrap: break-word;
-    overflow: auto;
-    max-height: 50px;
+	word-wrap: break-word;
+	overflow: auto;
+	max-height: 50px;
 `;
 
 const IconElement = styled.a`
@@ -126,7 +126,6 @@ const IconElement = styled.a`
 `;
 
 const GoBackBtn = styled.button`
-
 	text-align: center;
 	background: #04aaff;
 	color: white;
@@ -141,7 +140,6 @@ const GoBackBtn = styled.button`
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
-
 `;
 
 const FormContainer = styled.div`
@@ -157,10 +155,8 @@ const CommentListContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: space-between;
-	font-family: 'Sniglet', cursive;
-
+	font-family: "Sniglet", cursive;
 `;
-
 
 function PostingDetail() {
 	const history = useHistory();
@@ -217,7 +213,7 @@ function PostingDetail() {
 		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 400, width: 400 }} src={props.item} />
+				<img style={{ height: 390, width: 390 }} src={props.item} />
 			</Paper>
 		);
 	}
@@ -471,31 +467,6 @@ function PostingDetail() {
 									<PostingFooter>
 										<LikeAndComment>
 											<div>
-												{isLike ? (
-													<>
-														<IconElement
-															href="#"
-															onClick={(event) =>
-																LikeIconClicked(event, selectedPosting)
-															}
-														>
-															<FavoriteBorderIcon
-																style={{ color: "#e61919" }}
-															/>
-														</IconElement>
-													</>
-												) : (
-													<>
-														<IconElement
-															href="#"
-															onClick={(event) =>
-																LikeIconClicked(event, selectedPosting)
-															}
-														>
-															<FavoriteBorderIcon />
-														</IconElement>
-													</>
-												)}
 												<IconElement
 													href="#"
 													onClick={(event) =>
@@ -579,7 +550,7 @@ function PostingDetail() {
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
-												<LoyaltyIcon style={{ fill: "#b81414" }}/>
+												<LoyaltyIcon style={{ fill: "#b81414" }} />
 												<span>Sold out</span>
 											</SaleTag>
 										) : posting?.forSale ? (
@@ -590,12 +561,11 @@ function PostingDetail() {
 											</SaleTag>
 										) : (
 											<SaleTag>
-												<LoyaltyIcon style={{ fill: "#827C76" }}  />
+												<LoyaltyIcon style={{ fill: "#827C76" }} />
 												<span>Not for Sale</span>
 											</SaleTag>
 										)}
 									</PostingHeader>
-							
 
 									<Carousel
 										className={carouselStyle.detailCarousel}

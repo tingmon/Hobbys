@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { addressInfoAtom } from "../atoms";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -334,7 +335,15 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 				}
 			}
 		}
-		alert("Profile Updated!");
+		Swal.fire({
+			title: "Your Profile is Updated!",
+			confirmButtonText: "Got It",
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				// Swal.fire("Saved!", "", "success");
+			}
+		});
 		history.push("/Hobbys/");
 	};
 
