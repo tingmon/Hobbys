@@ -266,7 +266,7 @@ function EditPostingForm() {
 
 						<InputField
 							type="text"
-							{...register("itemName", {})}
+							{...register("itemName", { required: "Item Name is Required" })}
 							placeholder="*Enter Item Name"
 						/>
 						<ErrorMessage>{errors?.itemName?.message}</ErrorMessage>

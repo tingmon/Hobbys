@@ -259,13 +259,6 @@ function Receipt() {
 									<TotalText>${transaction.priceTotalInfo.total}</TotalText>
 								</Label>
 							</Total>
-							<Link
-								to={{
-									pathname: `/cart`,
-								}}
-							>
-								<SubmitBtn>BACK</SubmitBtn>
-							</Link>
 						</Container>
 					)}
 				</>
