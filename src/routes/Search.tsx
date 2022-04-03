@@ -252,33 +252,28 @@ function Search() {
 			<Item>
 				<IconContainer>
 					<Icons onClick={() => Clicked("Cooking")}>
-						<FontAwesomeIcon icon={faUtensils} size="1x" />{" "}
 						<Text> Cooking </Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Woodwork")}>
-						<FontAwesomeIcon icon={faChair} size="1x" /> <Text> Woodwork</Text>{" "}
+						<Text> Woodwork</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Outdoor")}>
-						<SkateboardingIcon /> <Text> Outdoor</Text>{" "}
+						<Text> Outdoor</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Art")}>
-						<ColorLensIcon fontSize="samll" />
 						<Text>Art</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Knitting")}>
-						<FontAwesomeIcon icon={faMitten} size="1x" />
 						<Text> Knitting </Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Gardening")}>
-						<IoMdFlower size="2x" />
 						<Text> Gardening</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Accessory")}>
-						<GiDropEarrings size="1x" />
 						<Text> Accessory</Text>{" "}
 					</Icons>
 					<Icons onClick={() => Clicked("Others")}>
-						<IoMdCellular fontSize="samll" /> <Text> Others</Text>{" "}
+						<Text> Others</Text>{" "}
 					</Icons>
 				</IconContainer>
 			</Item>
