@@ -46,7 +46,9 @@ const Item = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	box-shadow: 0 1px 1px 1px  ${(props) => props.theme.secondColor};
+
 `;
 
 const CashBackContainer = styled.div`
@@ -55,8 +57,9 @@ const CashBackContainer = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	background-color: ${(props) => props.theme.postingBgColor}; 
 	flex-direction: column;
+
 `;
 
 const CashBack = styled.div`
@@ -65,7 +68,8 @@ const CashBack = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	
 `;
 
 const Description = styled.div`
@@ -74,7 +78,8 @@ const Description = styled.div`
 	flex-direction: column;
 	align-items: start;
 	width: 200px;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	
 `;
 
 const PreviewImg = styled.img`
@@ -89,9 +94,14 @@ const IconElement = styled.a`
 	display: flex;
 	align-items: center;
 `;
-
-const Text = styled.span`
+const Point = styled.span`
 	margin: 2px 5px;
+	font-weight: bold;
+	color:red;
+	font-size: 17px;
+`;
+const Text = styled.span`
+	margin: 3px 5px 5px 10px;
 `;
 
 const SubTotalShipping = styled.div`
@@ -143,9 +153,7 @@ const CashbackSubmitBtn = styled.button`
 	color: #000;
 	display: block;
 	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};
-
-	// background-color: ${(props) => props.theme.secondColor};
+	margin-left: 15px;
 
 	cursor: pointer;
 	max-width: 320px;
@@ -156,6 +164,9 @@ const CashbackSubmitBtn = styled.button`
 	font-size: 12px;
 	color: black;
 	display: inline;
+	border-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.secondColor};
+
 `;
 
 const ExpiryDateInputField = styled.input`
@@ -450,10 +461,26 @@ function Cart() {
 						"Your Cart is Empty!"
 					) : (
 						<>
+							<ItemContainer>
+								{cartItems?.map((item, index) => (
+									<Item key={index}>
+										<PreviewImg src={item.itemPhoto}></PreviewImg>
+										<Description>
+											<Text>Item Name: {item.itemName}</Text>
+											<Text>Category: {item.itemCategory}</Text>
+											<Text>Seller: {item.creatorDisplayName}</Text>
+											<Text>Price: ${item.itemPrice}</Text>
+										</Description>
+										<IconElement href="#" onClick={() => onDeleteClick(item)}>
+											<FontAwesomeIcon icon={faTrash} />
+										</IconElement>
+									</Item>
+								))}
+							</ItemContainer>
 							<CashBackContainer>
 								<CashBack>
 									<Text>
-										You have $ {userInfo[0]?.cashback} cashback points
+										You have<Point> ${userInfo[0]?.cashback}</Point>cashback points
 									</Text>
 									<FormControlLabel
 										control={
@@ -481,23 +508,7 @@ function Cart() {
 									</CashbackSubmitBtn>
 								</Collapse>
 							</CashBackContainer>
-
-							<ItemContainer>
-								{cartItems?.map((item, index) => (
-									<Item key={index}>
-										<PreviewImg src={item.itemPhoto}></PreviewImg>
-										<Description>
-											<Text>Item Name: {item.itemName}</Text>
-											<Text>Category: {item.itemCategory}</Text>
-											<Text>Seller: {item.creatorDisplayName}</Text>
-											<Text>Price: ${item.itemPrice}</Text>
-										</Description>
-										<IconElement href="#" onClick={() => onDeleteClick(item)}>
-											<FontAwesomeIcon icon={faTrash} />
-										</IconElement>
-									</Item>
-								))}
-							</ItemContainer>
+							
 							<SubTotalShipping>
 								<Label>
 									<Text>Subtotal: </Text>
@@ -518,7 +529,7 @@ function Cart() {
 									<Text>${subTotal + shipping - cashback}</Text>
 								</Label>
 							</Total>
-
+							<br/>
 							<Link
 								to={{
 									pathname: `/cart/${cart[0].cartOwnerUid}`,

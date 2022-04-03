@@ -9,7 +9,7 @@ export const lightTheme: DefaultTheme = {
 	formColor: "#34495e",
 
 	mainColor: "#fab73d",
-	secondColor: "#2F568A",
+	secondColor: "#9cc4ab",
 	logoColor:"#ffffff",
 	displayNameColor: "#2f3640",
 

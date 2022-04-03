@@ -66,7 +66,7 @@ const RecordContainer = styled.div`
 	grid-template-rows: repeat(1, 100px);
 	grid-auto-rows: 100px;
 	z-index: 0;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
 `;
 
 const RowDiv = styled.div`
@@ -81,6 +81,8 @@ const LinkDiv = styled.div`
 	&:last-child {
 		float: right;
 	}
+	margin-right: 10px;
+	font-weight: bold;
 `;
 
 const Record = styled.div`
@@ -91,8 +93,7 @@ const Record = styled.div`
 	width: 100%;
 	min-width: 400px;
 	flex-direction: column;
-	border: 1px solid black;
-	background-color: ${(props) => props.theme.postingBgColor};
+	box-shadow: 0px 2px 2px -1px ${(props) => props.theme.secondColor};
 `;
 
 function TradeRecord() {
@@ -247,7 +248,7 @@ function TradeRecord() {
 													<>
 														{transaction.sellerDisplayNames.map(
 															(name, index) => (
-																<Text key={index}>{name},</Text>
+																<Text key={index}>{name}</Text>
 															)
 														)}
 													</>

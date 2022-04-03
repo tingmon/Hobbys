@@ -61,7 +61,7 @@ const Item = styled.div`
 	display: flex;
 	justify-content: flex-start;
 	align-items: start;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
 	margin: 2px;
 	width: 100%;
 	display: flex;
@@ -71,7 +71,7 @@ const InputField = styled.input`
 	width: 100%;
 	padding: 10px;
 	border-radius: 10px;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
 	margin-top: 10px;
 	margin-left: 20px;
 	font-size: 12px;
@@ -101,6 +101,7 @@ const IconContainer = styled.div`
 	grid-auto-rows: 40px;
 	height: 80px;
 	width: 100vw;
+	
 `;
 const Icons = styled.button`
 	border: 1px solid #ffffff;
@@ -114,6 +115,10 @@ const Icons = styled.button`
 		width: 100%;
 		height: 100%;
 	}
+	margin-bottom:1px ;
+	box-shadow: -2px 3px 3px -2px ${(props) => props.theme.secondColor};
+;
+
 `;
 const PostingContainer = styled.div`
 	display: grid;
@@ -145,6 +150,7 @@ const Posting = styled.div`
 const Text = styled.span`
 	margin: 5px 5px;
 	font-weight: bold;
+	color: #000;
 `;
 
 const NameText = styled.span`
