@@ -61,14 +61,10 @@ const Posting = styled.div`
 	width: 100%;
 	max-width: 350px;
 	border-bottom: 0.2px solid #c9cdd2;
-<<<<<<< HEAD
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-		rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-=======
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 75px 5px 75px 5px/5px 75px 5px 75px;
-	border:solid 3px ${(props) => props.theme.secondColor};
->>>>>>> 325d268250fe5e1184a0234e68aca0db1657c30b
+	border: solid 3.5px ${(props) => props.theme.secondColor};
 	//max-width: 475px;
 	//max-hight: 490px;
 `;
@@ -81,9 +77,10 @@ const PostingHeader = styled.div`
 	justify-content: space-between;
 	margin: 2px;
 	width: 97%;
-	/* box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 75px 15px 180px 17px/15px 55px 10px 105px;
-	border:solid 3px ${(props) => props.theme.mainColor}; */
+	border: solid 3px ${(props) => props.theme.mainColor};
 `;
 
 const SaleTag = styled.div`
@@ -104,7 +101,8 @@ const ProfileTag = styled.div`
 	img {
 		margin: 5px;
 		margin-bottom: -2px;
-		box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+		box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+			rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 	}
 `;
 
@@ -127,6 +125,17 @@ const PostingFooter = styled.div`
 	a {
 		padding-left: 4px;
 	}
+`;
+
+const Footer = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 2px;
+	width: 97%;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 75px 15px 180px 17px/15px 55px 10px 105px;
+	border: solid 3px ${(props) => props.theme.mainColor};
 `;
 
 const LikeAndComment = styled.div``;
@@ -538,6 +547,7 @@ function Home() {
 												</>
 											))}
 										</Carousel>
+
 										<PostingFooter>
 											{item.creatorUid !== userObject?.uid && (
 												<LikeAndComment>
@@ -551,7 +561,7 @@ function Home() {
 																	}
 																>
 																	<FavoriteBorderIcon
-																		style={{ color: "red" }}
+																		style={{ color: "#EA2027" }}
 																	/>
 																</a>
 															</>
@@ -563,7 +573,9 @@ function Home() {
 																		LikeIconClicked(event, item)
 																	}
 																>
-																	<FavoriteBorderIcon />
+																	<FavoriteBorderIcon
+																		style={{ color: "#303952" }}
+																	/>
 																</a>
 															</>
 														)
@@ -572,7 +584,9 @@ function Home() {
 															href="#"
 															onClick={(event) => LikeIconClicked(event, item)}
 														>
-															<FavoriteBorderIcon />
+															<FavoriteBorderIcon
+																style={{ color: "#303952" }}
+															/>
 														</a>
 													)}
 												</LikeAndComment>
