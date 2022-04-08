@@ -213,7 +213,7 @@ function PostingDetail() {
 		// console.log(props);
 		return (
 			<Paper>
-				<img style={{ height: 390, width: 390 }} src={props.item} />
+				<img style={{ height: 350, width: 350 }} src={props.item} />
 			</Paper>
 		);
 	}

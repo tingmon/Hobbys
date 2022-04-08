@@ -84,6 +84,7 @@ html, body{
   }
   body{
 	min-height: 100%;
+	background-color: #ffffff;
   }
   input[type="file"] {
     display: none;

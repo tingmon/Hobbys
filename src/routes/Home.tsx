@@ -26,6 +26,8 @@ import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Swal from "sweetalert2";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
@@ -59,9 +61,14 @@ const Posting = styled.div`
 	width: 100%;
 	max-width: 350px;
 	border-bottom: 0.2px solid #c9cdd2;
+<<<<<<< HEAD
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+		rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+=======
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 75px 5px 75px 5px/5px 75px 5px 75px;
 	border:solid 3px ${(props) => props.theme.secondColor};
+>>>>>>> 325d268250fe5e1184a0234e68aca0db1657c30b
 	//max-width: 475px;
 	//max-hight: 490px;
 `;
@@ -474,10 +481,19 @@ function Home() {
 													to={`/${item?.creatorUid}/profile`}
 													onClick={() => PostingIconClicked(item)}
 												>
-													<PreviewImg
-														key={index}
-														src={item.creatorImgUrl}
-													></PreviewImg>
+													{item.creatorImgUrl ? (
+														<PreviewImg
+															key={index}
+															src={item.creatorImgUrl}
+														></PreviewImg>
+													) : (
+														<FontAwesomeIcon
+															style={{ padding: 6, margin: 5 }}
+															icon={faUser}
+															color={"#eb4d4b"}
+															size="2x"
+														/>
+													)}
 												</Link>
 												<UserName>
 													<Link
