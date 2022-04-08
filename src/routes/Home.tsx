@@ -29,8 +29,8 @@ import Swal from "sweetalert2";
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
-	width: 50px;
-	height: 50px;
+	width: 45px;
+	height: 45px;
 `;
 
 const Container = styled.div`
@@ -50,7 +50,7 @@ const PostingContainer = styled.div`
 	grid-auto-rows: 550px;
 	z-index: 0;
 	max-width: 400px;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
 `;
 
 const Posting = styled.div`
@@ -58,9 +58,10 @@ const Posting = styled.div`
 	margin: 2px;
 	width: 100%;
 	max-width: 350px;
-	background-color: ${(props) => props.theme.postingBgColor};
 	border-bottom: 0.2px solid #c9cdd2;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;	
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 75px 5px 75px 5px/5px 75px 5px 75px;
+	border:solid 3px ${(props) => props.theme.secondColor};
 	//max-width: 475px;
 	//max-hight: 490px;
 `;
@@ -72,7 +73,10 @@ const PostingHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin: 2px;
-	width: 100%;
+	width: 97%;
+	/* box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 75px 15px 180px 17px/15px 55px 10px 105px;
+	border:solid 3px ${(props) => props.theme.mainColor}; */
 `;
 
 const SaleTag = styled.div`
@@ -90,9 +94,10 @@ const SaleTag = styled.div`
 const ProfileTag = styled.div`
 	display: flex;
 	align-items: center;
-
 	img {
-		margin-right: 7px;
+		margin: 5px;
+		margin-bottom: -2px;
+		box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 	}
 `;
 
@@ -125,7 +130,6 @@ const TextBox = styled.div`
 	word-wrap: break-word;
 	overflow: auto;
 	max-height: 50px;
-
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 	-webkit-scrollbar: none;
@@ -141,9 +145,10 @@ const Price = styled.div`
 `;
 
 const UserName = styled.div`
+	margin-top: 5px;
 	font-family: "Sniglet", cursive;
 	font-weight: normal;
-	font-size: 20px;
+	font-size: 18px;
 `;
 function Home() {
 	const history = useHistory();
