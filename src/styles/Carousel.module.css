@@ -27,13 +27,13 @@
 }
 
 .detailCarousel {
-	width: 390px;
-	height: 390px;
+	width: 350px;
+	height: 350px;
 	margin: 10px auto;
 	z-index: 0;
 }
 
-@media (max-width: 390px) {
+@media (max-width: 380px) {
 	.detailCarousel {
 		width: auto;
 		height: auto;

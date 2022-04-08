@@ -95,7 +95,7 @@ const GoBackBtn = styled.button`
 	width: 100%;
 	padding: 10px;
 	border-radius: 15px;
-	margin-bottom: 10px;
+	margin-bottom: 100px;
 	font-size: 12px;
 	color: black;
 `;
@@ -112,6 +112,25 @@ const PreviewImg = styled.img`
 	border-radius: 10%;
 	width: 150px;
 	height: 150px;
+`;
+const PostingContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(2, 150px);
+	grid-template-rows: repeat(1, 150px);
+	grid-auto-rows: 150px;
+	z-index: 0;
+	max-width: 400px;
+	background-color: ${(props) => props.theme.postingBgColor};
+`;
+
+const Container = styled.div`
+	max-width: 480px;
+	margin: 0 auto;
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 interface IForm {
@@ -249,13 +268,13 @@ function PostingForm() {
 		}
 	};
 	return (
-		<>
+		<Container>
 			{photoURL && (
-				<div>
+				<PostingContainer>
 					{photoURL.map((item, index) => (
 						<PreviewImg key={index} src={item}></PreviewImg>
 					))}
-				</div>
+				</PostingContainer>
 			)}
 
 			<FormGroup>
@@ -378,7 +397,7 @@ function PostingForm() {
 					</LoginForm>
 				</>
 			)}
-		</>
+		</Container>
 	);
 }
 

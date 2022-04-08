@@ -74,7 +74,7 @@ const NavList = styled.ul`
 const NavList2 = styled.div`
 	display: flex;
 	width: 100%;
-	justify-content: space-around;
+	justify-content: center;
 `;
 const NavItem = styled.li`
 	font-size: 15px;
@@ -122,6 +122,7 @@ const Navigation = () => {
 			<NavList2>
 				{open ? (
 					<FormControlLabel
+						style={{ marginRight: 0 }}
 						control={
 							<ToggleButton checked={open} onChange={handleOpen}>
 								<FontAwesomeIcon
