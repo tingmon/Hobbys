@@ -6,7 +6,7 @@ import { photoURLAtom, uidAtom, userObjectAtom } from "../atoms";
 const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	height: 110vh;
 	justify-content: center;
 	align-items: center;
 	width: 320px;

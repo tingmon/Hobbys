@@ -96,6 +96,20 @@ const PreviewImg = styled.img`
 	height: 150px;
 `;
 
+const CategorySelect = styled.select`
+	font-family: "Noto Sans", sans-serif;
+	max-width: 295px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+	border-color: ${(props) => props.theme.secondColor};
+
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+`;
+
 interface IForm {
 	text: string;
 	forSale: boolean;
@@ -133,6 +147,7 @@ function EditPostingForm() {
 			text: selectedPosting.text,
 			category: selectedPosting.category,
 			price: selectedPosting.price,
+			itemName: selectedPosting.itemName,
 		},
 	});
 
@@ -257,11 +272,20 @@ function EditPostingForm() {
 							placeholder="*Enter Text"
 						/>
 						<ErrorMessage>{errors?.text?.message}</ErrorMessage>
-						<InputField
-							type="text"
+
+						<CategorySelect
 							{...register("category", {})}
 							placeholder="*Enter Category"
-						/>
+						>
+							<option value="Accessory">Accessory</option>
+							<option value="Cooking">Cooking</option>
+							<option value="Woodwork">Woodwork</option>
+							<option value="Knitting">Knitting</option>
+							<option value="Art">Art</option>
+							<option value="Outdoor">Outdoor</option>
+							<option value="Gardening">Gardening</option>
+							<option value="Others">Others</option>
+						</CategorySelect>
 						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
 
 						<InputField

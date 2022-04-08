@@ -10,11 +10,13 @@ export const lightTheme: DefaultTheme = {
 	redColor: "#e84118",
 	mainColor: "#fab73d",
 	secondColor: "#9cc4ab",
-	logoColor:"#ffffff",
+	logoColor: "#ffffff",
 	displayNameColor: "#2f3640",
 
 	postingBgColor: "#f7f8f9",
 
 	cursorActive: "pointer",
 	cursorNotActive: "wait",
+
+	iconColor: "#f53b57",
 };

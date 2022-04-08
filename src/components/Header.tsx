@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
 	selectedCommentAtom,
+	selectedIconAtom,
 	selectedPostingAtom,
 	uidAtom,
 	userObjectAtom,
@@ -59,9 +60,19 @@ const Hobbys = styled.h1`
 	margin: 0px 1px 3px 2px;
 	font-size: 35px;
 	font-weight: bold;
-	text-shadow: 1px 1px 3px red;
+	text-shadow: 1px 1px 3px #ff3f34;
 
 	color: ${(props) => props.theme.logoColor};
+`;
+
+const HobbysClicked = styled.h1`
+	font-family: "Sniglet", cursive;
+	margin: 0px 1px 3px 2px;
+	font-size: 35px;
+	font-weight: bold;
+	text-shadow: 1px 1px 3px #0be881;
+
+	color: #ef5777;
 `;
 
 const ProfileImage = styled.img`
@@ -74,6 +85,18 @@ const ProfileImage = styled.img`
 	background-color: ${(props) => props.theme.textColor};
 	box-shadow: 0px 0px 1px 1px #ffffff;
 `;
+
+const ProfileImageClicked = styled.img`
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 5px;
+	line-height: 50px;
+	text-align: center;
+	background-color: #e15f41;
+	box-shadow: 0px 0px 2px 2px #ef5777;
+	/* border: 1px solid #e15f41; */
+`;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
 
 function Header() {
@@ -81,6 +104,7 @@ function Header() {
 	const userObject = useRecoilValue(userObjectAtom);
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
+	const selectedIcon = useRecoilValue(selectedIconAtom);
 
 	const MyProfileClicked = () => {
 		setSelectedPosting(null);
@@ -94,7 +118,11 @@ function Header() {
 		<NavContainer>
 			<LogoContainer>
 				<Link to="/Hobbys/">
-					<Hobbys>HOBBY'S</Hobbys>
+					{selectedIcon === "home" ? (
+						<HobbysClicked>HOBBY'S</HobbysClicked>
+					) : (
+						<Hobbys>HOBBY'S</Hobbys>
+					)}
 				</Link>
 			</LogoContainer>
 			<NavList>
@@ -103,14 +131,34 @@ function Header() {
 						{userObject?.photoURL !== null ? (
 							<NavItem>
 								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-									<ProfileImage src={userObject?.photoURL} alt="No Img" />
+									{selectedIcon === "profile" ? (
+										<ProfileImageClicked
+											src={userObject?.photoURL}
+											alt="No Img"
+										/>
+									) : (
+										<ProfileImage src={userObject?.photoURL} alt="No Img" />
+									)}
+
 									{/* <FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" /> */}
 								</Link>
 							</NavItem>
 						) : (
 							<NavItem>
 								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+									{selectedIcon === "profile" ? (
+										<FontAwesomeIcon
+											icon={faUser}
+											color={"#e15f41"}
+											size="2x"
+										/>
+									) : (
+										<FontAwesomeIcon
+											icon={faUser}
+											color={"#E8EBED"}
+											size="2x"
+										/>
+									)}
 								</Link>
 							</NavItem>
 						)}
@@ -118,7 +166,11 @@ function Header() {
 				) : (
 					<NavItem>
 						<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-							<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+							{selectedIcon === "profile" ? (
+								<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+							) : (
+								<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+							)}
 						</Link>
 					</NavItem>
 				)}

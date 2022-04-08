@@ -304,6 +304,7 @@ function PostingForm() {
 							<option value="Gardening">Gardening</option>
 							<option value="Others">Others</option>
 						</CategorySelect>
+						<ErrorMessage>{errors?.category?.message}</ErrorMessage>
 						{isLoading ? (
 							<>
 								<SubmitBtn disabled style={{ cursor: "wait" }}>

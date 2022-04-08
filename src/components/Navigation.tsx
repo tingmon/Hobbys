@@ -4,12 +4,12 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Collapse from "@mui/material/Collapse";
-import SwitchUnstyled from '@mui/base/SwitchUnstyled';
+import SwitchUnstyled from "@mui/base/SwitchUnstyled";
 import { useEffect, useState } from "react";
-import ToggleButton from '@mui/material/ToggleButton';
-import { createTheme } from '@mui/material/styles';
+import ToggleButton from "@mui/material/ToggleButton";
+import { createTheme } from "@mui/material/styles";
 
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 //////////
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
@@ -24,21 +24,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { selectedCommentAtom, selectedPostingAtom } from "../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+	selectedCommentAtom,
+	selectedIconAtom,
+	selectedPostingAtom,
+} from "../atoms";
 
 const theme = createTheme({
 	status: {
-		danger: '#e53e3e',
+		danger: "#e53e3e",
 	},
 	palette: {
 		primary: {
-			main: '#0971f1',
-			darker: '#053e85',
+			main: "#0971f1",
+			darker: "#053e85",
 		},
 		neutral: {
-			main: '#64748B',
-			contrastText: '#fff',
+			main: "#64748B",
+			contrastText: "#fff",
 		},
 	},
 });
@@ -60,7 +64,6 @@ const NavContainer = styled.nav`
 	// width: 100%;
 	// background-color: ${(props) => props.theme.postingBgColor};
 	// flex-direction: column;
-	
 `;
 const NavList = styled.ul`
 	display: flex;
@@ -104,73 +107,121 @@ const Item = styled.div`
 	width: 30px;
 `;
 
-
-
-
 const Navigation = () => {
-
 	const [open, setOpen] = useState(true);
+	const [selectedIcon, setSelectedIcon] = useRecoilState(selectedIconAtom);
 	const handleOpen = () => {
 		setOpen((prev) => !prev);
 	};
-	return (
 
+	const OnIconClick = (iconName) => {
+		setSelectedIcon(iconName);
+	};
+	return (
 		<NavContainer>
 			<NavList2>
-
 				{open ? (
-						<FormControlLabel
-						control={<ToggleButton checked={open} onChange={handleOpen}>
-							<FontAwesomeIcon icon={faChevronDown} color={"#fab73d"} size="2x" />
-						</ToggleButton>}
+					<FormControlLabel
+						control={
+							<ToggleButton checked={open} onChange={handleOpen}>
+								<FontAwesomeIcon
+									icon={faChevronDown}
+									color={"#fab73d"}
+									size="2x"
+								/>
+							</ToggleButton>
+						}
 						label=""
 					/>
 				) : (
 					<FormControlLabel
-					control={<ToggleButton checked={open} onChange={handleOpen}>
-						<FontAwesomeIcon icon={faChevronUp} color={"#fab73d"} size="2x" />
-					</ToggleButton>}
-					label=""
-				/>
+						control={
+							<ToggleButton checked={open} onChange={handleOpen}>
+								<FontAwesomeIcon
+									icon={faChevronUp}
+									color={"#fab73d"}
+									size="2x"
+								/>
+							</ToggleButton>
+						}
+						label=""
+					/>
 				)}
-
 			</NavList2>
 
-			<Collapse in={open} collapsedSize={'0px'} >
-
-
+			<Collapse in={open} collapsedSize={"0px"}>
 				<NavList>
-					<NavItem>
+					<NavItem
+						onClick={() => {
+							OnIconClick("add");
+						}}
+					>
 						<Link to="/addposting">
-							<FontAwesomeIcon icon={faPlusSquare} color={"#edece8"} size="2x" />
+							{selectedIcon === "add" ? (
+								<FontAwesomeIcon
+									icon={faPlusSquare}
+									color={"#ef5777"}
+									size="2x"
+								/>
+							) : (
+								<FontAwesomeIcon
+									icon={faPlusSquare}
+									color={"#edece8"}
+									size="2x"
+								/>
+							)}
 						</Link>
 					</NavItem>
-					<NavItem>
+					<NavItem
+						onClick={() => {
+							OnIconClick("search");
+						}}
+					>
 						<Link to="/search">
-							<FontAwesomeIcon icon={faSearch} color={"#edece8"} size="2x" />
+							{selectedIcon === "search" ? (
+								<FontAwesomeIcon icon={faSearch} color={"#ef5777"} size="2x" />
+							) : (
+								<FontAwesomeIcon icon={faSearch} color={"#edece8"} size="2x" />
+							)}
 						</Link>
 					</NavItem>
-					<NavItem>
+					<NavItem
+						onClick={() => {
+							OnIconClick("list");
+						}}
+					>
 						<Link to="/likelist">
-							<FontAwesomeIcon icon={faHeart} color={"#edece8"} size="2x" />
+							{selectedIcon === "list" ? (
+								<FontAwesomeIcon icon={faHeart} color={"#ef5777"} size="2x" />
+							) : (
+								<FontAwesomeIcon icon={faHeart} color={"#edece8"} size="2x" />
+							)}
 						</Link>
 					</NavItem>
-					<NavItem>
+					<NavItem
+						onClick={() => {
+							OnIconClick("cart");
+						}}
+					>
 						<Link to="/cart">
-							<FontAwesomeIcon
-								icon={faShoppingCart}
-								color={"#edece8"}
-								size="2x"
-							/>
+							{selectedIcon === "cart" ? (
+								<FontAwesomeIcon
+									icon={faShoppingCart}
+									color={"#ef5777"}
+									size="2x"
+								/>
+							) : (
+								<FontAwesomeIcon
+									icon={faShoppingCart}
+									color={"#edece8"}
+									size="2x"
+								/>
+							)}
 						</Link>
 					</NavItem>
 				</NavList>
-
 			</Collapse>
-
-
 		</NavContainer>
-
 	);
 };
 
