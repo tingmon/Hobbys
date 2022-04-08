@@ -136,6 +136,11 @@ export const transactionAtom = atom<any>({
 	key: "transactionAtom",
 	default: null,
 });
+
+export const selectedIconAtom = atom<string>({
+	key: "transactionAtom",
+	default: "",
+});
 // export const userObjectState = atom<IUserObject>({
 // 	key: "userObject",
 // 	default: {

@@ -13,12 +13,13 @@ import { useEffect, useState } from "react";
 import EditProfile from "./EditProfile";
 import TradeRecord from "./TradeRecord";
 import { v4 as uuidv4 } from "uuid";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
 	selectedPostingAtom,
 	userObjectAtom,
 	postingsObject,
 	selectedCommentAtom,
+	selectedIconAtom,
 } from "../atoms";
 import { flexbox } from "@mui/system";
 import { Prev } from "react-bootstrap/esm/PageItem";
@@ -43,14 +44,74 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
-	font-family: 'Sniglet', cursive;
-	font-weight: normal ;
+	font-family: "Sniglet", cursive;
+	font-weight: normal;
 	font-size: 30px;
 	color: ${(props) => props.theme.displayNameColor};
 	margin-left: 15px;
 `;
 
 const TitleImage = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
+`;
+
+const TitleImageBronze = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
+`;
+
+const TitleImageSilver = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
+`;
+
+const TitleImageGold = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
+`;
+
+const TitleImagePlatinum = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 5px;
+	line-height: 60px;
+	text-align: center;
+	background-color: ${(props) => props.theme.textColor};
+	border: 2px solid ${(props) => props.theme.mainColor};
+	box-shadow: 0 1px 1px 1px #868e96;
+`;
+
+const TitleImageFamer = styled.img`
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
@@ -69,7 +130,6 @@ const Overview = styled.div`
 	padding: 10px 20px;
 	border-radius: 10px;
 	box-shadow: 0 1px 1px 1px ${(props) => props.theme.secondColor};
-
 `;
 const OverviewItem = styled.div`
 	display: flex;
@@ -88,7 +148,6 @@ const Tabs = styled.div`
 	grid-template-columns: repeat(2, 1fr);
 	margin: 15px 0px;
 	gap: 10px;
-	
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
@@ -104,8 +163,7 @@ const Tab = styled.span<{ isActive: boolean }>`
 		a {
 		display: block;
 	}
-	box-shadow: 0 1px 1px 1px  ${(props) => props.theme.secondColor};
-
+	box-shadow: 0 1px 1px 1px ${(props) => props.theme.secondColor};
 `;
 
 const GoHome = styled.span`
@@ -187,6 +245,7 @@ function Profile({ refreshUser }) {
 
 	// console.log(uid);
 	const [postings, setPostings] = useRecoilState(postingsObject);
+	const setSelectedIcon = useSetRecoilState(selectedIconAtom);
 
 	async function fetchUserPostings(userId) {
 		console.log("profile fetch posting");
@@ -329,6 +388,7 @@ function Profile({ refreshUser }) {
 	};
 
 	useEffect(async () => {
+		setSelectedIcon("profile");
 		setPostings(null);
 		console.log(selectedPostingInfo);
 		console.log(selectedComment);

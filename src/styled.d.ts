@@ -13,7 +13,7 @@ declare module "styled-components" {
 		logoColor: string;
 		postingBgColor: string;
 		displayNameColor: string;
-		
+		iconColor: string;
 
 		cursorActive: string;
 		cursorNotActive: string;

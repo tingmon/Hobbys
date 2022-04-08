@@ -14,6 +14,7 @@ import {
 	userObjectAtom,
 	selectedCommentAtom,
 	cartAtom,
+	selectedIconAtom,
 } from "../atoms";
 import { authService, dbService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
@@ -45,8 +46,8 @@ const Container = styled.div`
 const PostingContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
-	grid-template-rows: repeat(1, 600px);
-	grid-auto-rows: 600px;
+	grid-template-rows: repeat(1, 550px);
+	grid-auto-rows: 550px;
 	z-index: 0;
 	max-width: 400px;
 	background-color: ${(props) => props.theme.postingBgColor};
@@ -159,6 +160,7 @@ function Home() {
 		useRecoilState(selectedPostingAtom);
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const [cart, setCart] = useRecoilState(cartAtom);
+	const setSelectedIcon = useSetRecoilState(selectedIconAtom);
 
 	async function fetchHomePostings() {
 		dbService
@@ -239,6 +241,7 @@ function Home() {
 		setIsLoading(false);
 		fetchHomePostings();
 		fetchUserInfo(userObject.uid);
+		setSelectedIcon("home");
 	}, []);
 
 	function Item(props) {
