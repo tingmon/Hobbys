@@ -60,7 +60,6 @@ const TitleImage = styled.img`
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
 	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
 `;
 
 const TitleImageBronze = styled.img`
@@ -126,10 +125,9 @@ const TitleImageFamer = styled.img`
 const Overview = styled.div`
 	display: flex;
 	justify-content: space-between;
-	background-color: ${(props) => props.theme.textColor};
+	background-color: #f0ebc8;
 	padding: 10px 20px;
 	border-radius: 10px;
-	box-shadow: 0 1px 1px 1px ${(props) => props.theme.secondColor};
 `;
 const OverviewItem = styled.div`
 	display: flex;
@@ -155,7 +153,7 @@ const Tab = styled.span<{ isActive: boolean }>`
 	text-transform: uppercase;
 	font-size: 12px;
 	font-weight: 400;
-	background-color: ${(props) => props.theme.textColor};
+	background-color: #f0ebc8;
 	padding: 7px 0px;
 	border-radius: 10px;
 	color: ${(props) =>
@@ -163,7 +161,6 @@ const Tab = styled.span<{ isActive: boolean }>`
 		a {
 		display: block;
 	}
-	box-shadow: 0 1px 1px 1px ${(props) => props.theme.secondColor};
 `;
 
 const GoHome = styled.span`

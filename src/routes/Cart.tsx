@@ -46,7 +46,9 @@ const Item = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	box-shadow: ${(props) => props.theme.secondColor} 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+
 `;
 
 const CashBackContainer = styled.div`
@@ -55,8 +57,9 @@ const CashBackContainer = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	background-color: ${(props) => props.theme.postingBgColor}; 
 	flex-direction: column;
+
 `;
 
 const CashBack = styled.div`
@@ -65,7 +68,8 @@ const CashBack = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	
 `;
 
 const Description = styled.div`
@@ -74,7 +78,8 @@ const Description = styled.div`
 	flex-direction: column;
 	align-items: start;
 	width: 200px;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	
 `;
 
 const PreviewImg = styled.img`
@@ -89,9 +94,14 @@ const IconElement = styled.a`
 	display: flex;
 	align-items: center;
 `;
-
-const Text = styled.span`
+const Point = styled.span`
 	margin: 2px 5px;
+	font-weight: bold;
+	color:red;
+	font-size: 17px;
+`;
+const Text = styled.span`
+	margin: 3px 5px 5px 10px;
 `;
 
 const SubTotalShipping = styled.div`
@@ -120,54 +130,49 @@ const Label = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
-	color: #000;
-	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};
-
-	background-color: ${(props) => props.theme.secondColor};
-
-	cursor: pointer;
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 15px;
-
-	font-size: 12px;
-	color: black;
+	padding:3px;
+    margin-top:10px;
+    background-color:${(props) => props.theme.secondColor};
+    font-size:16px;
+    letter-spacing:2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const CashbackSubmitBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
-	color: #000;
-	display: block;
-	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};
-
-	// background-color: ${(props) => props.theme.secondColor};
-
-	cursor: pointer;
 	max-width: 320px;
-	width: 30%;
-	padding: 10px;
-	border-radius: 15px;
-
-	font-size: 12px;
-	color: black;
 	display: inline;
+	margin-left: 15px;
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	padding:3px;
+    margin-top:10px;
+    background-color:${(props) => props.theme.secondColor};
+    font-size:16px;
+    letter-spacing:2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const ExpiryDateInputField = styled.input`
 	max-width: 295px;
 	width: 50%;
 	padding: 10px;
-	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
+
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
+	border:solid 2px ${(props) => props.theme.textColor};
 `;
 
 const Value = styled.div``;
@@ -180,7 +185,6 @@ function Cart() {
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 	const [cartItems, setCartItems] = useRecoilState(cartItemsAtom);
-
 	const [checked, setChecked] = useState(false);
 	const [isApplied, setIsApplied] = useState(false);
 	const [userInfo, setUserInfo] = useState<any>([]);
@@ -450,10 +454,26 @@ function Cart() {
 						"Your Cart is Empty!"
 					) : (
 						<>
+							<ItemContainer>
+								{cartItems?.map((item, index) => (
+									<Item key={index}>
+										<PreviewImg src={item.itemPhoto}></PreviewImg>
+										<Description>
+											<Text>Item Name: {item.itemName}</Text>
+											<Text>Category: {item.itemCategory}</Text>
+											<Text>Seller: {item.creatorDisplayName}</Text>
+											<Text>Price: ${item.itemPrice}</Text>
+										</Description>
+										<IconElement href="#" onClick={() => onDeleteClick(item)}>
+											<FontAwesomeIcon icon={faTrash} />
+										</IconElement>
+									</Item>
+								))}
+							</ItemContainer>
 							<CashBackContainer>
 								<CashBack>
 									<Text>
-										You have $ {userInfo[0]?.cashback} cashback points
+										You have<Point> ${userInfo[0]?.cashback}</Point>cashback points
 									</Text>
 									<FormControlLabel
 										control={
@@ -482,22 +502,6 @@ function Cart() {
 								</Collapse>
 							</CashBackContainer>
 
-							<ItemContainer>
-								{cartItems?.map((item, index) => (
-									<Item key={index}>
-										<PreviewImg src={item.itemPhoto}></PreviewImg>
-										<Description>
-											<Text>Item Name: {item.itemName}</Text>
-											<Text>Category: {item.itemCategory}</Text>
-											<Text>Seller: {item.creatorDisplayName}</Text>
-											<Text>Price: ${item.itemPrice}</Text>
-										</Description>
-										<IconElement href="#" onClick={() => onDeleteClick(item)}>
-											<FontAwesomeIcon icon={faTrash} />
-										</IconElement>
-									</Item>
-								))}
-							</ItemContainer>
 							<SubTotalShipping>
 								<Label>
 									<Text>Subtotal: </Text>
@@ -518,7 +522,7 @@ function Cart() {
 									<Text>${subTotal + shipping - cashback}</Text>
 								</Label>
 							</Total>
-
+							<br />
 							<Link
 								to={{
 									pathname: `/cart/${cart[0].cartOwnerUid}`,

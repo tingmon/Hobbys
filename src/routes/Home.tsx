@@ -60,7 +60,7 @@ const Posting = styled.div`
 	max-width: 350px;
 	background-color: ${(props) => props.theme.postingBgColor};
 	border-bottom: 0.2px solid #c9cdd2;
-	box-shadow: 0 2px 2px -2px #000;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;	
 	//max-width: 475px;
 	//max-hight: 490px;
 `;

@@ -30,23 +30,13 @@ const Container = styled.div`
 
 `;
 
-// const Item = styled.div`
-// 	display: flex;
-// 	justify-content: start;
-// 	align-items: center;
-// 	margin-bottom: 10px;
-// 	width: 100%;
-// 	background-color: ${(props) => props.theme.postingBgColor};
-	
-// `;
-
 const PostingContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(1, 250px);
 	grid-auto-rows: 250px;
 	z-index: 0;
-	
+
 `;
 const Posting = styled.div`
 	border: 1px solid #ffffff;
@@ -54,12 +44,12 @@ const Posting = styled.div`
 	justify-content: center;
 	flex-direction: column;
 	align-items: left;
-
-	// overflow: hidden;
-	// a {
-	// 	width: 100%;
-	// 	height: 100%;
-	// }
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	 overflow: hidden;
+	 a {
+	 	width: 100%;
+	 	height: 100%;
+	 }
 	
 `;
 const InfoBox = styled.div`
