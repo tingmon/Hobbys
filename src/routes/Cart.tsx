@@ -47,7 +47,7 @@ const Item = styled.div`
 	margin-bottom: 10px;
 	width: 100%;
 	/* background-color: ${(props) => props.theme.postingBgColor}; */
-	box-shadow: 0 1px 1px 1px  ${(props) => props.theme.secondColor};
+	box-shadow: ${(props) => props.theme.secondColor} 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
 `;
 
@@ -130,55 +130,49 @@ const Label = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
-	color: #000;
-	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};
-
-	background-color: ${(props) => props.theme.secondColor};
-
-	cursor: pointer;
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 15px;
-
-	font-size: 12px;
-	color: black;
+	padding:3px;
+    margin-top:10px;
+    background-color:${(props) => props.theme.secondColor};
+    font-size:16px;
+    letter-spacing:2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const CashbackSubmitBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
-	color: #000;
-	display: block;
-	text-align: center;
-	margin-left: 15px;
-
-	cursor: pointer;
 	max-width: 320px;
-	width: 30%;
-	padding: 10px;
-	border-radius: 15px;
-
-	font-size: 12px;
-	color: black;
 	display: inline;
-	border-color: ${(props) => props.theme.secondColor};
-	background-color: ${(props) => props.theme.secondColor};
-
+	margin-left: 15px;
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	padding:3px;
+    margin-top:10px;
+    background-color:${(props) => props.theme.secondColor};
+    font-size:16px;
+    letter-spacing:2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const ExpiryDateInputField = styled.input`
 	max-width: 295px;
 	width: 50%;
 	padding: 10px;
-	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
+
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
+	border:solid 2px ${(props) => props.theme.textColor};
 `;
 
 const Value = styled.div``;
@@ -191,7 +185,6 @@ function Cart() {
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
 	const [cartItems, setCartItems] = useRecoilState(cartItemsAtom);
-
 	const [checked, setChecked] = useState(false);
 	const [isApplied, setIsApplied] = useState(false);
 	const [userInfo, setUserInfo] = useState<any>([]);
@@ -508,7 +501,7 @@ function Cart() {
 									</CashbackSubmitBtn>
 								</Collapse>
 							</CashBackContainer>
-							
+
 							<SubTotalShipping>
 								<Label>
 									<Text>Subtotal: </Text>
@@ -529,7 +522,7 @@ function Cart() {
 									<Text>${subTotal + shipping - cashback}</Text>
 								</Label>
 							</Total>
-							<br/>
+							<br />
 							<Link
 								to={{
 									pathname: `/cart/${cart[0].cartOwnerUid}`,

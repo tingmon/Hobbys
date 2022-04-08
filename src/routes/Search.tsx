@@ -19,8 +19,7 @@ import {
 import { Link, Route, Switch } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { faUtensils } from "@fortawesome/free-solid-svg-icons";
-import { faChair } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faMitten } from "@fortawesome/free-solid-svg-icons";
 import { faHandMiddleFinger } from "@fortawesome/free-solid-svg-icons";
 
@@ -70,16 +69,19 @@ const InputField = styled.input`
 	max-width: 300px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 10px;
-	/* background-color: ${(props) => props.theme.postingBgColor}; */
+	border-radius: 3px;
 	margin-top: 10px;
+	margin-bottom: 10px;
 	margin-left: 20px;
-	font-size: 12px;
+	font-size: 15px;
 	color: black;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 105px 5px 125px 5px/5px 125px 5px 155px;
+    border:solid 3px ${(props) => props.theme.secondColor};
 `;
 
 const SubmitBtn = styled.button`
-	text-align: center;
+	/* text-align: center;
 	color: white;
 	margin-top: 10px;
 	cursor: pointer;
@@ -92,7 +94,18 @@ const SubmitBtn = styled.button`
 	margin-left: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
+	font-weight: bold; */
+	  text-align: center;
+	  padding:3px;
+      margin:10px;
+      background-color:${(props) => props.theme.secondColor};
+      letter-spacing:2px;
+	  font-size: 20px;
+	  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	  border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	  border:solid 4px ${(props) => props.theme.secondColor};
+      cursor: pointer;
+
 `;
 const IconContainer = styled.div`
 	display: grid;
@@ -103,11 +116,12 @@ const IconContainer = styled.div`
 	width: 100vw;
 	
 `;
+
 const Icons = styled.button`
+	font-family: "Sniglet", cursive;
 	border: 1px solid #ffffff;
 	display: flex;
 	cursor: pointer;
-
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
@@ -115,24 +129,21 @@ const Icons = styled.button`
 		width: 100%;
 		height: 100%;
 	}
-	margin-bottom:1px ;
-	box-shadow: -2px 3px 3px -2px ${(props) => props.theme.secondColor};
+	margin:2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 10px 180px 20px/15px 225px 15px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+	background-color:${(props) => props.theme.secondColor};
 ;
 
 `;
 const PostingContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(3, 100px);
+	grid-template-rows: repeat(3, 150px);
 	grid-auto-rows: 100px;
-	width: 100vw;
-`;
+	z-index: 0;
 
-const CategoryContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(3, 100px);
-	grid-auto-rows: 100px;
 `;
 
 const Posting = styled.div`
@@ -149,7 +160,7 @@ const Posting = styled.div`
 
 const Text = styled.span`
 	margin: 5px 5px;
-	font-weight: bold;
+	/* font-weight: bold; */
 	color: #000;
 `;
 
@@ -252,7 +263,7 @@ function Search() {
 						SubmitClicked(input);
 					}}
 				>
-					Submit
+						<FontAwesomeIcon icon={faSearch} />
 				</SubmitBtn>
 			</Item>
 			<Item>
