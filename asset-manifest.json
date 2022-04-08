@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Hobbys/static/css/main.65ed06a7.css",
-    "main.js": "/Hobbys/static/js/main.d5a625da.js",
+    "main.js": "/Hobbys/static/js/main.99462b90.js",
     "static/media/fa-solid-900.svg": "/Hobbys/static/media/fa-solid-900.7a8b4f130182d19a2d7c.svg",
     "static/media/fa-brands-400.svg": "/Hobbys/static/media/fa-brands-400.2f517e09eb2ca6650ff5.svg",
     "static/media/fa-solid-900.eot": "/Hobbys/static/media/fa-solid-900.9bbb245e67a133f6e486.eot",
@@ -19,10 +19,10 @@
     "static/media/fa-regular-400.woff2": "/Hobbys/static/media/fa-regular-400.7a3337626410ca2f4071.woff2",
     "index.html": "/Hobbys/index.html",
     "main.65ed06a7.css.map": "/Hobbys/static/css/main.65ed06a7.css.map",
-    "main.d5a625da.js.map": "/Hobbys/static/js/main.d5a625da.js.map"
+    "main.99462b90.js.map": "/Hobbys/static/js/main.99462b90.js.map"
   },
   "entrypoints": [
     "static/css/main.65ed06a7.css",
-    "static/js/main.d5a625da.js"
+    "static/js/main.99462b90.js"
   ]
 }
