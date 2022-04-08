@@ -51,21 +51,21 @@ const InputField = styled.input`
 `;
 
 const SubmitBtn = styled.button`
+	font-family: 'Sniglet', cursive;
 	text-align: center;
-	background: #04aaff;
-	color: white;
-	margin-top: 10px;
-	cursor: pointer;
-
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 10px;
-	font-size: 12px;
+	/* max-width: 320px;
+	width: 100%; */
 	color: black;
 	font-weight: bold;
+	padding:3px;
+    margin:10px;
+    background-color:${(props) => props.theme.secondColor};
+    letter-spacing:2px;
+	font-size: 20px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const GoBackBtn = styled.button`

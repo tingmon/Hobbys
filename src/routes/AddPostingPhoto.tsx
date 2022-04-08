@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faPlus,
 	faTimes,
-	faCloudUploadAlt,
+	faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 import { authService, dbService, storageService } from "../fbase";
 import react, { useEffect, useState } from "react";
@@ -60,12 +60,15 @@ const SubmitBtn = styled.button`
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+
 `;
 
 const PostingForm = styled.form`
@@ -78,21 +81,24 @@ const PostingForm = styled.form`
 `;
 
 const NextBtn = styled.button`
-	font-family: "Noto Sans", sans-serif;
+	font-family: 'Sniglet', cursive;
 	text-align: center;
 	cursor: pointer;
-	border-color: ${(props) => props.theme.secondColor};
-	background-color: ${(props) => props.theme.secondColor};
-	min-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 15px;
-	margin-bottom: 60px;
-	font-size: 12px;
-	color: black;
+	/* min-width: 320px;
+	width: 100%; */
+	color: #000;
 	a {
 		display: block;
 	}
+	padding:3px;
+    margin:10px;
+    background-color:${(props) => props.theme.secondColor};
+    letter-spacing:2px;
+	font-size: 20px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const PreviewImg = styled.img`
@@ -102,14 +108,18 @@ const PreviewImg = styled.img`
 `;
 
 const PhotoInput = styled.span`
-	font-family: "Noto Sans", sans-serif;
+	font-family: 'Sniglet', cursive;
 	color: #000;
-	display: block;
-	cursor: pointer;
-	background-color: ${(props) => props.theme.secondColor};
-	padding: 10px;
-	border-radius: 15px;
-	margin-bottom: 5px;
+	text-align: center;
+	padding:3px;
+    margin:10px;
+    background-color:${(props) => props.theme.secondColor};
+    letter-spacing:2px;
+	font-size: 20px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 interface IForm {
@@ -186,7 +196,7 @@ function AddPostingPhoto() {
 						style={{ marginTop: 10, height: 27, paddingBottom: 3 }}
 					/>
 					<PhotoInput>
-						<FontAwesomeIcon icon={faCloudUploadAlt} />
+						<FontAwesomeIcon icon={faCamera} />
 						<span> Upload Photos</span>
 					</PhotoInput>
 				</label>
