@@ -33,6 +33,15 @@ const Container = styled.div`
 	align-items: center;
 `;
 
+const TransactionDiv = styled.div`
+	width: 100%;
+	max-width: 320px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
 const GoPaymentBtn = styled.button`
 	text-align: center;
 	background: #04aaff;
@@ -77,7 +86,7 @@ const RowDiv = styled.div`
 const LinkDiv = styled.div`
 	display: flex;
 	justify-content: end;
-	min-width: 400px;
+	min-width: 320px;
 	&:last-child {
 		float: right;
 	}
@@ -91,7 +100,7 @@ const Record = styled.div`
 	align-items: start;
 	margin-bottom: 10px;
 	width: 100%;
-	min-width: 400px;
+	max-width: 320px;
 	flex-direction: column;
 	box-shadow: 0px 2px 2px -1px ${(props) => props.theme.secondColor};
 `;
@@ -110,34 +119,6 @@ function TradeRecord() {
 	const setSelectedPosting = useSetRecoilState(selectedPostingAtom);
 	const [paymentInfo, setPaymentInfo] = useRecoilState(paymentInfoAtom);
 	const setTransaction = useSetRecoilState(transactionAtom);
-
-	// async function fetchSellTransactions(uid) {
-	// 	dbService
-	// 		.collection("TransactionInfo")
-	// 		.where("sellerUid", "==", uid)
-	// 		.orderBy("timeStamp", "desc")
-	// 		.onSnapshot((snapshot) => {
-	// 			const recordSnapshot = snapshot.docs.map((doc) => ({
-	// 				id: doc.id,
-	// 				...doc.data(),
-	// 			}));
-	// 			setSellingRecord(recordSnapshot);
-	// 		});
-	// }
-
-	// async function fetchBuyTransactions(uid) {
-	// 	dbService
-	// 		.collection("TransactionInfo")
-	// 		.where("buyerUid", "==", uid)
-	// 		.orderBy("timeStamp", "desc")
-	// 		.onSnapshot((snapshot) => {
-	// 			const recordSnapshot = snapshot.docs.map((doc) => ({
-	// 				id: doc.id,
-	// 				...doc.data(),
-	// 			}));
-	// 			setBuyingRecord(recordSnapshot);
-	// 		});
-	// }
 
 	async function fetchPaymentInfo(uid) {
 		dbService
@@ -206,11 +187,11 @@ function TradeRecord() {
 	// console.log(buyingRecord);
 
 	return (
-		<Container>
+		<>
 			{isLoading ? (
 				"Please Wait..."
 			) : (
-				<>
+				<Container>
 					<Link to={`/${userObject.uid}/profile/payment`}>
 						<GoPaymentBtn
 							onClick={() => {
@@ -224,7 +205,7 @@ function TradeRecord() {
 					{transactionRecord.length == 0 ? (
 						<>"You have no transaction record"</>
 					) : (
-						<>
+						<TransactionDiv>
 							<RecordContainer>
 								{transactionRecord.map((transaction, index) => (
 									<>
@@ -273,11 +254,11 @@ function TradeRecord() {
 									</>
 								))}
 							</RecordContainer>
-						</>
+						</TransactionDiv>
 					)}
-				</>
+				</Container>
 			)}
-		</Container>
+		</>
 	);
 }
 
