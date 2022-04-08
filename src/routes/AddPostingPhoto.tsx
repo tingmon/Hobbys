@@ -50,26 +50,26 @@ const InputField = styled.input`
 	font-weight: bold;
 `;
 
-const SubmitBtn = styled.button`
-	text-align: center;
-	background: #04aaff;
-	color: white;
-	margin-top: 10px;
-	cursor: pointer;
+// const SubmitBtn = styled.button`
+// 	text-align: center;
+// 	background: #04aaff;
+// 	color: white;
+// 	margin-top: 10px;
+// 	cursor: pointer;
 
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 10px;
-	font-size: 12px;
-	color: black;
-	font-weight: bold;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
-	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
+// 	max-width: 320px;
+// 	width: 100%;
+// 	padding: 10px;
+// 	background-color: rgba(255, 255, 255, 1);
+// 	margin-bottom: 10px;
+// 	font-size: 12px;
+// 	color: black;
+// 	font-weight: bold;
+// 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+// 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+// 	border:solid 4px ${(props) => props.theme.secondColor};
 
-`;
+// `;
 
 const PostingForm = styled.form`
 	width: 100%;
@@ -84,8 +84,6 @@ const NextBtn = styled.button`
 	font-family: 'Sniglet', cursive;
 	text-align: center;
 	cursor: pointer;
-	/* min-width: 320px;
-	width: 100%; */
 	color: #000;
 	a {
 		display: block;
