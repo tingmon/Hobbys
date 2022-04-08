@@ -42,13 +42,12 @@ const InputField = styled.input`
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 15px;
-	border-color: ${(props) => props.theme.secondColor};
-
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border:solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const CategorySelect = styled.select`
@@ -56,36 +55,40 @@ const CategorySelect = styled.select`
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 15px;
-	border-color: ${(props) => props.theme.secondColor};
-
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border:solid 2px ${(props) => props.theme.secondColor};
+	background-color: rgba(255, 255, 255, 1);
+
 `;
 
 const SubmitBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
-	color: #000;
 	display: block;
-	text-align: center;
-	border-color: ${(props) => props.theme.secondColor};
+	/* max-width: 320px;
+	width: 100%; */
 
-	background-color: ${(props) => props.theme.secondColor};
-	margin-top: 10px;
-	cursor: pointer;
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 15px;
-	margin-bottom: 10px;
-	font-size: 12px;
+	font-family: 'Sniglet', cursive;
+	text-align: center;
+	/* max-width: 320px;
+	width: 100%; */
 	color: black;
+	padding:3px;
+    margin:10px;
+    background-color:${(props) => props.theme.secondColor};
+    letter-spacing:2px;
+	font-size: 16px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const GoBackBtn = styled.button`
-	font-family: "Hammersmith One", sans-serif;
+	/* display: block; */
+	font-family: 'Sniglet', cursive;
 	text-align: center;
 	margin-top: 10px;
 	cursor: pointer;
@@ -98,6 +101,15 @@ const GoBackBtn = styled.button`
 	margin-bottom: 100px;
 	font-size: 12px;
 	color: black;
+	padding:3px;
+    margin:10px;
+    background-color:${(props) => props.theme.secondColor};
+    letter-spacing:2px;
+	font-size: 16px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border:solid 4px ${(props) => props.theme.secondColor};
+    cursor: pointer;
 `;
 
 const ErrorMessage = styled.span`
