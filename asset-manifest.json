@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Hobbys/static/css/main.a107c2ac.css",
-    "main.js": "/Hobbys/static/js/main.dac08820.js",
+    "main.css": "/Hobbys/static/css/main.d45261d2.css",
+    "main.js": "/Hobbys/static/js/main.f5248f3e.js",
     "static/media/fa-solid-900.svg": "/Hobbys/static/media/fa-solid-900.7a8b4f130182d19a2d7c.svg",
     "static/media/fa-brands-400.svg": "/Hobbys/static/media/fa-brands-400.2f517e09eb2ca6650ff5.svg",
     "static/media/fa-solid-900.eot": "/Hobbys/static/media/fa-solid-900.9bbb245e67a133f6e486.eot",
@@ -18,11 +18,11 @@
     "static/media/fa-regular-400.woff": "/Hobbys/static/media/fa-regular-400.bb58e57c48a3e911f15f.woff",
     "static/media/fa-regular-400.woff2": "/Hobbys/static/media/fa-regular-400.7a3337626410ca2f4071.woff2",
     "index.html": "/Hobbys/index.html",
-    "main.a107c2ac.css.map": "/Hobbys/static/css/main.a107c2ac.css.map",
-    "main.dac08820.js.map": "/Hobbys/static/js/main.dac08820.js.map"
+    "main.d45261d2.css.map": "/Hobbys/static/css/main.d45261d2.css.map",
+    "main.f5248f3e.js.map": "/Hobbys/static/js/main.f5248f3e.js.map"
   },
   "entrypoints": [
-    "static/css/main.a107c2ac.css",
-    "static/js/main.dac08820.js"
+    "static/css/main.d45261d2.css",
+    "static/js/main.f5248f3e.js"
   ]
 }
