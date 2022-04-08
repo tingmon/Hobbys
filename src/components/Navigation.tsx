@@ -30,6 +30,7 @@ import {
 	selectedIconAtom,
 	selectedPostingAtom,
 } from "../atoms";
+import { padding } from "@mui/system";
 
 const theme = createTheme({
 	status: {

@@ -589,7 +589,7 @@ function PostingDetail() {
 															}
 														>
 															<FavoriteBorderIcon
-																style={{ color: "#e61919" }}
+																style={{ color: "#EA2027" }}
 															/>
 														</IconElement>
 													</>
@@ -601,7 +601,9 @@ function PostingDetail() {
 																LikeIconClicked(event, selectedPosting)
 															}
 														>
-															<FavoriteBorderIcon />
+															<FavoriteBorderIcon
+																style={{ color: "#303952" }}
+															/>
 														</IconElement>
 													</>
 												)}
