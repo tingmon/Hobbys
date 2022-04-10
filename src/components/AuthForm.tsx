@@ -154,7 +154,11 @@ function AuthForm() {
 				// data.username
 			} else {
 				// login
-				user = await authService.signInWithEmailAndPassword(email, password);
+				try {
+					user = await authService.signInWithEmailAndPassword(email, password);
+				} catch (error) {
+					setError("password", { message: "Check your email or password" });
+				}
 			}
 			console.log(user);
 		} catch (error) {
