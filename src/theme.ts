@@ -14,4 +14,5 @@ export const lightTheme: DefaultTheme = {
 	cursorActive: "pointer",
 	cursorNotActive: "wait",
 	iconColor: "#f53b57",
+	highlightColor: "#ff6b81",
 };

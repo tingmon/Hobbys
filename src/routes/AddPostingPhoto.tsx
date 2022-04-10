@@ -185,7 +185,7 @@ function AddPostingPhoto() {
 	return (
 		<Container className="container">
 			<PostingForm>
-				<label style={{ color: "#04aaff" }}>
+				<label style={{ color: "#04aaff", marginTop: 10, marginBottom: 15 }}>
 					<input
 						multiple
 						type="file"

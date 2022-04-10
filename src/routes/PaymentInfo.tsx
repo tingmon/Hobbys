@@ -196,6 +196,14 @@ function PaymentInfo({ fromCheckout }) {
 			cardVendor = "UnionPay";
 		} else if (/^(?:2131|1800|35\d{3})\d{11}$/.test(data.cardNumber)) {
 			cardVendor = "JCB";
+		} else if (
+			/^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$/.test(
+				data.cardNumber
+			)
+		) {
+			cardVendor = "Discover";
+		} else if (/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(data.cardNumber)) {
+			cardVendor = "Diners Club";
 		} else {
 			cardVendor = "Other";
 		}

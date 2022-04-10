@@ -118,6 +118,10 @@ const Record = styled.div`
 	border: solid 3px ${(props) => props.theme.mainColor};
 `;
 
+const ViewReceipt = styled.a`
+	color: ${(props) => props.theme.highlightColor};
+`;
+
 function TradeRecord() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
@@ -253,14 +257,14 @@ function TradeRecord() {
 												<Text>{transaction.timeString}</Text>
 											</RowDiv>
 											<LinkDiv>
-												<a
+												<ViewReceipt
 													href="#"
 													onClick={() => {
 														onReceiptClick(transaction);
 													}}
 												>
 													View Receipt
-												</a>
+												</ViewReceipt>
 											</LinkDiv>
 											{/* {transaction.timeStamp} */}
 										</Record>

@@ -20,7 +20,7 @@ import { pink } from "@mui/material/colors";
 import Swal from "sweetalert2";
 
 const SignUpForm = styled.form`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	color: #000;
 	width: 100%;
 	max-width: 320px;
@@ -29,7 +29,7 @@ const SignUpForm = styled.form`
 `;
 
 const LoginForm = styled.form`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	color: #000;
 	width: 100%;
 	max-width: 320px;
@@ -38,7 +38,7 @@ const LoginForm = styled.form`
 `;
 
 const InputField = styled.input`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
@@ -51,7 +51,7 @@ const InputField = styled.input`
 `;
 
 const CategorySelect = styled.select`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
@@ -75,13 +75,13 @@ const SubmitBtn = styled.button`
 	color: black;
 	padding: 3px;
 	margin: 10px;
-	background-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.highlightColor};
 	letter-spacing: 2px;
 	font-size: 20px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
 		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border: solid 4px ${(props) => props.theme.secondColor};
+	border: solid 4px ${(props) => props.theme.highlightColor};
 	cursor: pointer;
 `;
 
@@ -89,18 +89,17 @@ const GoBackBtn = styled.button`
 	display: block;
 	font-family: "Sniglet", cursive;
 	text-align: center;
-	margin-top: 10px;
-	cursor: pointer;
 	border-color: ${(props) => props.theme.secondColor};
 	max-width: 300px;
 	width: 100%;
 	padding: 10px;
 	border-radius: 15px;
-	margin-bottom: 100px;
+
 	font-size: 20px;
 	color: black;
 	padding: 3px;
 	margin: 10px;
+	margin-bottom: 120px;
 	background-color: ${(props) => props.theme.secondColor};
 	letter-spacing: 2px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
@@ -263,7 +262,7 @@ function PostingForm() {
 			}
 			setPhotoURLAtom("");
 			Swal.fire({
-				title: "Your Posting is Uploaded!",
+				title: "Posting is Uploaded!",
 				confirmButtonText: "Got It",
 			}).then((result) => {
 				/* Read more about isConfirmed, isDenied below */

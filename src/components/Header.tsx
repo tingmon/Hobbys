@@ -115,67 +115,76 @@ function Header() {
 	console.log(userObject);
 
 	return (
-		<NavContainer>
-			<LogoContainer>
-				<Link to="/Hobbys/">
-					{selectedIcon === "home" ? (
-						<HobbysClicked>HOBBY'S</HobbysClicked>
-					) : (
-						<Hobbys>HOBBY'S</Hobbys>
-					)}
-				</Link>
-			</LogoContainer>
-			<NavList>
-				{userObject ? (
-					<>
-						{userObject?.photoURL !== null ? (
-							<NavItem>
-								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-									{selectedIcon === "profile" ? (
-										<ProfileImageClicked
-											src={userObject?.photoURL}
-											alt="No Img"
-										/>
-									) : (
-										<ProfileImage src={userObject?.photoURL} alt="No Img" />
-									)}
-
-									{/* <FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" /> */}
-								</Link>
-							</NavItem>
+		<>
+			{uid !== "" && ""}
+			<NavContainer>
+				<LogoContainer>
+					<Link to="/Hobbys/">
+						{selectedIcon === "home" ? (
+							<HobbysClicked>HOBBY'S</HobbysClicked>
 						) : (
-							<NavItem>
-								<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-									{selectedIcon === "profile" ? (
-										<FontAwesomeIcon
-											icon={faUser}
-											color={"#e15f41"}
-											size="2x"
-										/>
-									) : (
-										<FontAwesomeIcon
-											icon={faUser}
-											color={"#E8EBED"}
-											size="2x"
-										/>
-									)}
-								</Link>
-							</NavItem>
+							<Hobbys>HOBBY'S</Hobbys>
 						)}
-					</>
-				) : (
-					<NavItem>
-						<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
-							{selectedIcon === "profile" ? (
-								<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+					</Link>
+				</LogoContainer>
+				<NavList>
+					{userObject ? (
+						<>
+							{userObject?.photoURL !== null ? (
+								<NavItem>
+									<Link
+										to={`/${uid}/profile`}
+										onClick={() => MyProfileClicked()}
+									>
+										{selectedIcon === "profile" ? (
+											<ProfileImageClicked
+												src={userObject?.photoURL}
+												alt="No Img"
+											/>
+										) : (
+											<ProfileImage src={userObject?.photoURL} alt="No Img" />
+										)}
+
+										{/* <FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" /> */}
+									</Link>
+								</NavItem>
 							) : (
-								<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								<NavItem>
+									<Link
+										to={`/${uid}/profile`}
+										onClick={() => MyProfileClicked()}
+									>
+										{selectedIcon === "profile" ? (
+											<FontAwesomeIcon
+												icon={faUser}
+												color={"#e15f41"}
+												size="2x"
+											/>
+										) : (
+											<FontAwesomeIcon
+												icon={faUser}
+												color={"#E8EBED"}
+												size="2x"
+											/>
+										)}
+									</Link>
+								</NavItem>
 							)}
-						</Link>
-					</NavItem>
-				)}
-			</NavList>
-		</NavContainer>
+						</>
+					) : (
+						<NavItem>
+							<Link to={`/${uid}/profile`} onClick={() => MyProfileClicked()}>
+								{selectedIcon === "profile" ? (
+									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								) : (
+									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+								)}
+							</Link>
+						</NavItem>
+					)}
+				</NavList>
+			</NavContainer>
+		</>
 	);
 }
 

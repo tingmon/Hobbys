@@ -15,8 +15,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { addressInfoAtom } from "../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { addressInfoAtom, uidAtom } from "../atoms";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -82,6 +82,8 @@ const LogoutBtn = styled.button`
 	font-family: "Sniglet", cursive;
 	text-align: center;
 	padding: 10px;
+	max-width: 300px;
+	width: 100%;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	background-color: ${(props) => props.theme.redColor};
@@ -152,11 +154,10 @@ const GoAddressBtn = styled.button`
 	width: 100%;
 	padding: 10px;
 	border-radius: 15px;
-	margin-bottom: 100px;
 	font-size: 15px;
 	color: black;
 	padding: 3px;
-	margin: 10px;
+
 	background-color: ${(props) => props.theme.secondColor};
 	letter-spacing: 2px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
@@ -196,6 +197,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	const [previewImg, setpreviewImg] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [addressInfo, setAddressInfo] = useRecoilState(addressInfoAtom);
+	const setUid = useSetRecoilState(uidAtom);
 
 	// const userInfo = await dbService
 	// 	.collection("UserInfo")
@@ -237,6 +239,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 
 	const onLogOutClick = () => {
 		authService.signOut();
+		setUid("");
 		history.push("/Hobbys/");
 	};
 
@@ -427,7 +430,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					</GoAddressBtn>
 				</Link>
 
-				<label style={{ color: "#04aaff" }}>
+				<label style={{ color: "#04aaff", marginRight: 20 }}>
 					<InputField
 						type="file"
 						accept="image/*"

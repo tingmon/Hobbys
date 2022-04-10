@@ -24,11 +24,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
 	selectedCommentAtom,
 	selectedIconAtom,
 	selectedPostingAtom,
+	uidAtom,
 } from "../atoms";
 import { padding } from "@mui/system";
 
@@ -111,6 +112,8 @@ const Item = styled.div`
 const Navigation = () => {
 	const [open, setOpen] = useState(true);
 	const [selectedIcon, setSelectedIcon] = useRecoilState(selectedIconAtom);
+	const uid = useRecoilValue(uidAtom);
+
 	const handleOpen = () => {
 		setOpen((prev) => !prev);
 	};
@@ -118,112 +121,133 @@ const Navigation = () => {
 	const OnIconClick = (iconName) => {
 		setSelectedIcon(iconName);
 	};
-	return (
-		<NavContainer>
-			<NavList2>
-				{open ? (
-					<FormControlLabel
-						style={{ marginRight: 0 }}
-						control={
-							<ToggleButton checked={open} onChange={handleOpen}>
-								<FontAwesomeIcon
-									icon={faChevronDown}
-									color={"#fab73d"}
-									size="2x"
-								/>
-							</ToggleButton>
-						}
-						label=""
-					/>
-				) : (
-					<FormControlLabel
-						control={
-							<ToggleButton checked={open} onChange={handleOpen}>
-								<FontAwesomeIcon
-									icon={faChevronUp}
-									color={"#fab73d"}
-									size="2x"
-								/>
-							</ToggleButton>
-						}
-						label=""
-					/>
-				)}
-			</NavList2>
 
-			<Collapse in={open} collapsedSize={"0px"}>
-				<NavList>
-					<NavItem
-						onClick={() => {
-							OnIconClick("add");
-						}}
-					>
-						<Link to="/addposting">
-							{selectedIcon === "add" ? (
-								<FontAwesomeIcon
-									icon={faPlusSquare}
-									color={"#ef5777"}
-									size="2x"
-								/>
-							) : (
-								<FontAwesomeIcon
-									icon={faPlusSquare}
-									color={"#edece8"}
-									size="2x"
-								/>
-							)}
-						</Link>
-					</NavItem>
-					<NavItem
-						onClick={() => {
-							OnIconClick("search");
-						}}
-					>
-						<Link to="/search">
-							{selectedIcon === "search" ? (
-								<FontAwesomeIcon icon={faSearch} color={"#ef5777"} size="2x" />
-							) : (
-								<FontAwesomeIcon icon={faSearch} color={"#edece8"} size="2x" />
-							)}
-						</Link>
-					</NavItem>
-					<NavItem
-						onClick={() => {
-							OnIconClick("list");
-						}}
-					>
-						<Link to="/likelist">
-							{selectedIcon === "list" ? (
-								<FontAwesomeIcon icon={faHeart} color={"#ef5777"} size="2x" />
-							) : (
-								<FontAwesomeIcon icon={faHeart} color={"#edece8"} size="2x" />
-							)}
-						</Link>
-					</NavItem>
-					<NavItem
-						onClick={() => {
-							OnIconClick("cart");
-						}}
-					>
-						<Link to="/cart">
-							{selectedIcon === "cart" ? (
-								<FontAwesomeIcon
-									icon={faShoppingCart}
-									color={"#ef5777"}
-									size="2x"
-								/>
-							) : (
-								<FontAwesomeIcon
-									icon={faShoppingCart}
-									color={"#edece8"}
-									size="2x"
-								/>
-							)}
-						</Link>
-					</NavItem>
-				</NavList>
-			</Collapse>
-		</NavContainer>
+	return (
+		<>
+			{uid !== "" && (
+				<NavContainer>
+					<NavList2>
+						{open ? (
+							<FormControlLabel
+								style={{ marginRight: 0 }}
+								control={
+									<ToggleButton checked={open} onChange={handleOpen}>
+										<FontAwesomeIcon
+											icon={faChevronDown}
+											color={"#fab73d"}
+											size="2x"
+										/>
+									</ToggleButton>
+								}
+								label=""
+							/>
+						) : (
+							<FormControlLabel
+								control={
+									<ToggleButton checked={open} onChange={handleOpen}>
+										<FontAwesomeIcon
+											icon={faChevronUp}
+											color={"#fab73d"}
+											size="2x"
+										/>
+									</ToggleButton>
+								}
+								label=""
+							/>
+						)}
+					</NavList2>
+
+					<Collapse in={open} collapsedSize={"0px"}>
+						<NavList>
+							<NavItem
+								onClick={() => {
+									OnIconClick("add");
+								}}
+							>
+								<Link to="/addposting">
+									{selectedIcon === "add" ? (
+										<FontAwesomeIcon
+											icon={faPlusSquare}
+											color={"#ef5777"}
+											size="2x"
+										/>
+									) : (
+										<FontAwesomeIcon
+											icon={faPlusSquare}
+											color={"#edece8"}
+											size="2x"
+										/>
+									)}
+								</Link>
+							</NavItem>
+							<NavItem
+								onClick={() => {
+									OnIconClick("search");
+								}}
+							>
+								<Link to="/search">
+									{selectedIcon === "search" ? (
+										<FontAwesomeIcon
+											icon={faSearch}
+											color={"#ef5777"}
+											size="2x"
+										/>
+									) : (
+										<FontAwesomeIcon
+											icon={faSearch}
+											color={"#edece8"}
+											size="2x"
+										/>
+									)}
+								</Link>
+							</NavItem>
+							<NavItem
+								onClick={() => {
+									OnIconClick("list");
+								}}
+							>
+								<Link to="/likelist">
+									{selectedIcon === "list" ? (
+										<FontAwesomeIcon
+											icon={faHeart}
+											color={"#ef5777"}
+											size="2x"
+										/>
+									) : (
+										<FontAwesomeIcon
+											icon={faHeart}
+											color={"#edece8"}
+											size="2x"
+										/>
+									)}
+								</Link>
+							</NavItem>
+							<NavItem
+								onClick={() => {
+									OnIconClick("cart");
+								}}
+							>
+								<Link to="/cart">
+									{selectedIcon === "cart" ? (
+										<FontAwesomeIcon
+											icon={faShoppingCart}
+											color={"#ef5777"}
+											size="2x"
+										/>
+									) : (
+										<FontAwesomeIcon
+											icon={faShoppingCart}
+											color={"#edece8"}
+											size="2x"
+										/>
+									)}
+								</Link>
+							</NavItem>
+						</NavList>
+					</Collapse>
+				</NavContainer>
+			)}
+		</>
 	);
 };
 
