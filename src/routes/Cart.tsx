@@ -101,6 +101,12 @@ const Text = styled.span`
 	margin: 3px 5px 5px 10px;
 `;
 
+const TotalText = styled.span`
+	color: ${(props) => props.theme.highlightColor};
+	margin: 3px 5px 5px 10px;
+	font-weight: bold;
+`;
+
 const SubTotalShipping = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -533,8 +539,8 @@ function Cart() {
 							</SubTotalShipping>
 							<Total>
 								<Label>
-									<Text>Total: </Text>
-									<Text>${subTotal + shipping - cashback}</Text>
+									<TotalText>Total: </TotalText>
+									<TotalText>${subTotal + shipping - cashback}</TotalText>
 								</Label>
 							</Total>
 							<br />

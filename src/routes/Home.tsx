@@ -108,15 +108,18 @@ const ProfileTag = styled.div`
 `;
 
 const InputField = styled.input`
-	max-width: 255px;
+	font-family: "Sniglet", cursive;
+	max-width: 260px;
 	width: 100%;
 	padding: 5px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-right: 10px;
-	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 3px;
+	font-size: 13px;
 	color: black;
-	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const PostingFooter = styled.div`
@@ -167,6 +170,26 @@ const UserName = styled.div`
 	font-weight: normal;
 	font-size: 18px;
 `;
+
+const SubmitBtn = styled.a`
+	width: 100%;
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	max-width: 80px;
+	width: 100%;
+	color: black;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.highlightColor};
+	letter-spacing: 2px;
+	font-size: 13px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border: solid 4px ${(props) => props.theme.highlightColor};
+	cursor: pointer;
+`;
+
 function Home() {
 	const history = useHistory();
 	const [likeList, setLikeList] = useState<any>([]);
@@ -625,7 +648,7 @@ function Home() {
 														placeholder="Enter Comment"
 													/>
 													{comment && (
-														<button>
+														<SubmitBtn>
 															<Link
 																to={`/postingDetail/${selectedPosting?.id}`}
 																onClick={(event) =>
@@ -634,7 +657,7 @@ function Home() {
 															>
 																submit
 															</Link>
-														</button>
+														</SubmitBtn>
 													)}
 												</>
 											)}

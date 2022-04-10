@@ -25,46 +25,52 @@ import { v4 as uuidv4 } from "uuid";
 import { pink } from "@mui/material/colors";
 
 const SignUpForm = styled.form`
-	width: 100%;
-	max-width: 320px;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 320px;
 `;
 
 const LoginForm = styled.form`
-	width: 100%;
-	max-width: 320px;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 320px;
 `;
 
 const InputField = styled.input`
+	font-family: "Sniglet", cursive;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const SubmitBtn = styled.button`
+	display: block;
+	width: 100%;
+
 	font-family: "Sniglet", cursive;
 	text-align: center;
-	/* max-width: 320px;
-	width: 100%; */
+	max-width: 300px;
+	width: 100%;
 	color: black;
 	padding: 3px;
 	margin: 10px;
-	background-color: ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.highlightColor};
 	letter-spacing: 2px;
 	font-size: 20px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
 		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border: solid 4px ${(props) => props.theme.secondColor};
+	border: solid 4px ${(props) => props.theme.highlightColor};
 	cursor: pointer;
 `;
 
@@ -97,7 +103,7 @@ const PreviewImg = styled.img`
 `;
 
 const CategorySelect = styled.select`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	max-width: 320px;
 	width: 100%;
 	padding: 10px;
@@ -108,6 +114,9 @@ const CategorySelect = styled.select`
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 interface IForm {
@@ -235,7 +244,6 @@ function EditPostingForm() {
 			</FormGroup>
 			{!forSale ? (
 				<>
-					<PageTitle></PageTitle>
 					<SignUpForm onSubmit={handleSubmit(onValid)}>
 						<InputField
 							type="text"

@@ -176,8 +176,6 @@ const NameText = styled.span`
 
 function Search() {
 	const [postings, setPostings] = useRecoilState(postingsObject);
-	const [selectedPosting, setSelectedPosting] =
-		useRecoilState(selectedPostingAtom);
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
 
@@ -233,6 +231,226 @@ function Search() {
 		setPostings(null);
 	}, []);
 
+	const changeBackgroundColor = (page) => {
+		if (page === "Cooking") {
+			document.getElementById("Cooking").style.backgroundColor = "#ef5777";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#ef5777";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "#f0ebc8";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Woodwork") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#ef5777";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#ef5777";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "#f0ebc8";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Outdoor") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#ef5777";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#ef5777";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "#f0ebc8";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Art") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#ef5777";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#ef5777";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "#f0ebc8";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Knitting") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#ef5777";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#ef5777";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "#f0ebc8";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Gardening") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#ef5777";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#ef5777";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "#f0ebc8";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Accessory") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#ef5777";
+			document.getElementById("Others").style.backgroundColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#ef5777";
+			document.getElementById("Others").style.borderColor = "#9cc4ab";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "#f0ebc8";
+			document.getElementById("Others").style.color = "black";
+		} else if (page === "Others") {
+			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Art").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Knitting").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Gardening").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Accessory").style.backgroundColor = "#9cc4ab";
+			document.getElementById("Others").style.backgroundColor = "#ef5777";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.borderColor = "#9cc4ab";
+			document.getElementById("Woodwork").style.borderColor = "#9cc4ab";
+			document.getElementById("Outdoor").style.borderColor = "#9cc4ab";
+			document.getElementById("Art").style.borderColor = "#9cc4ab";
+			document.getElementById("Knitting").style.borderColor = "#9cc4ab";
+			document.getElementById("Gardening").style.borderColor = "#9cc4ab";
+			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
+			document.getElementById("Others").style.borderColor = "#ef5777";
+			//-----------------------------------------------------------------------
+			document.getElementById("Cooking").style.color = "black";
+			document.getElementById("Woodwork").style.color = "black";
+			document.getElementById("Outdoor").style.color = "black";
+			document.getElementById("Art").style.color = "black";
+			document.getElementById("Knitting").style.color = "black";
+			document.getElementById("Gardening").style.color = "black";
+			document.getElementById("Accessory").style.color = "black";
+			document.getElementById("Others").style.color = "#f0ebc8";
+		}
+	};
+
 	console.log(postings);
 
 	return (
@@ -253,29 +471,77 @@ function Search() {
 			</Item>
 			<Item>
 				<IconContainer>
-					<Icons onClick={() => Clicked("Cooking")}>
-						<Text> Cooking </Text>{" "}
+					<Icons
+						id="Art"
+						onClick={() => {
+							Clicked("Art");
+							changeBackgroundColor("Art");
+						}}
+					>
+						Art
 					</Icons>
-					<Icons onClick={() => Clicked("Woodwork")}>
-						<Text> Woodwork</Text>{" "}
+					<Icons
+						id="Cooking"
+						onClick={() => {
+							Clicked("Cooking");
+							changeBackgroundColor("Cooking");
+						}}
+					>
+						Cooking
 					</Icons>
-					<Icons onClick={() => Clicked("Outdoor")}>
-						<Text> Outdoor</Text>{" "}
+					<Icons
+						id="Woodwork"
+						onClick={() => {
+							Clicked("Woodwork");
+							changeBackgroundColor("Woodwork");
+						}}
+					>
+						Woodwork
 					</Icons>
-					<Icons onClick={() => Clicked("Art")}>
-						<Text>Art</Text>{" "}
+					<Icons
+						id="Outdoor"
+						onClick={() => {
+							Clicked("Outdoor");
+							changeBackgroundColor("Outdoor");
+						}}
+					>
+						Outdoor
 					</Icons>
-					<Icons onClick={() => Clicked("Knitting")}>
-						<Text> Knitting </Text>{" "}
+					<Icons
+						id="Knitting"
+						onClick={() => {
+							Clicked("Knitting");
+							changeBackgroundColor("Knitting");
+						}}
+					>
+						Knitting
 					</Icons>
-					<Icons onClick={() => Clicked("Gardening")}>
-						<Text> Gardening</Text>{" "}
+					<Icons
+						id="Gardening"
+						onClick={() => {
+							Clicked("Gardening");
+							changeBackgroundColor("Gardening");
+						}}
+					>
+						Gardening
 					</Icons>
-					<Icons onClick={() => Clicked("Accessory")}>
-						<Text> Accessory</Text>{" "}
+					<Icons
+						id="Accessory"
+						onClick={() => {
+							Clicked("Accessory");
+							changeBackgroundColor("Accessory");
+						}}
+					>
+						Accessory
 					</Icons>
-					<Icons onClick={() => Clicked("Others")}>
-						<Text> Others</Text>{" "}
+					<Icons
+						id="Others"
+						onClick={() => {
+							Clicked("Others");
+							changeBackgroundColor("Others");
+						}}
+					>
+						Others
 					</Icons>
 				</IconContainer>
 			</Item>

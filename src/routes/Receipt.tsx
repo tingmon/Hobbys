@@ -23,6 +23,12 @@ import { dbService, firebaseInstance } from "../fbase";
 import { Link, useHistory } from "react-router-dom";
 import { Collapse, FormControlLabel, Switch } from "@mui/material";
 import Swal from "sweetalert2";
+import {
+	faCcVisa,
+	faCcAmex,
+	faCcMastercard,
+	faCcJcb,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Container = styled.div`
 	max-width: 480px;
@@ -85,11 +91,13 @@ const Text = styled.span`
 `;
 
 const TotalText = styled.span`
+	color: ${(props) => props.theme.highlightColor};
 	margin: 20px 5px;
 	font-weight: bold;
 `;
 
 const HeaderText = styled.span`
+	color: ${(props) => props.theme.highlightColor};
 	margin: 2px 5px;
 	font-weight: bold;
 `;
@@ -115,7 +123,7 @@ const SubmitBtn = styled.button`
 const ItemLink = styled.a`
 	padding: 2px;
 	:hover {
-		color: red;
+		color: ${(props) => props.theme.highlightColor};
 	}
 `;
 
@@ -210,8 +218,46 @@ function Receipt() {
 							<PaymentDetails>
 								<HeaderText>CREDIT CARD</HeaderText>
 								<Text>
-									{transaction.paymentInfo.vendor} {" **** "}{" "}
-									{transaction.paymentInfo.cardNumber.slice(12)}
+									{transaction.paymentInfo.vendor == "Visa" ? (
+										<FontAwesomeIcon
+											icon={faCcVisa}
+											size="2x"
+											color={"#341f97"}
+										/>
+									) : (
+										<>
+											{transaction.paymentInfo.vendor == "Master" ? (
+												<FontAwesomeIcon
+													icon={faCcMastercard}
+													size="2x"
+													color={"#353b48"}
+												/>
+											) : (
+												<>
+													{transaction.paymentInfo.vendor == "Amex" ? (
+														<FontAwesomeIcon
+															icon={faCcAmex}
+															size="2x"
+															color={"#0097e6"}
+														/>
+													) : (
+														<>
+															{transaction.paymentInfo.vendor == "JCB" ? (
+																<FontAwesomeIcon
+																	icon={faCcJcb}
+																	size="2x"
+																	color={"#44bd32"}
+																/>
+															) : (
+																transaction.paymentInfo.vendor
+															)}
+														</>
+													)}
+												</>
+											)}
+										</>
+									)}{" "}
+									{" **** "} {transaction.paymentInfo.cardNumber.slice(12)}
 								</Text>
 							</PaymentDetails>
 							<BillingAddress>

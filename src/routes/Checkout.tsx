@@ -15,6 +15,12 @@ import {
 	userObjectAtom,
 } from "../atoms";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCcVisa,
+	faCcAmex,
+	faCcMastercard,
+	faCcJcb,
+} from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, firebaseInstance } from "../fbase";
 import { Link, useHistory } from "react-router-dom";
@@ -79,14 +85,17 @@ const Label = styled.div`
 
 const Text = styled.span`
 	margin: 2px 5px;
+	font-size: 15px;
 `;
 
 const TotalText = styled.span`
+	color: ${(props) => props.theme.highlightColor};
 	margin: 20px 5px;
 	font-weight: bold;
 `;
 
 const HeaderText = styled.span`
+	color: ${(props) => props.theme.highlightColor};
 	margin: 2px 5px;
 	font-weight: bold;
 `;
@@ -97,6 +106,22 @@ const SubmitBtn = styled.button`
 	padding: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	background-color: ${(props) => props.theme.highlightColor};
+	font-size: 20px;
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border: solid 4px ${(props) => props.theme.highlightColor};
+	cursor: pointer;
+`;
+
+const BackBtn = styled.button`
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 120px;
 	background-color: ${(props) => props.theme.secondColor};
 	font-size: 16px;
 	letter-spacing: 2px;
@@ -320,7 +345,6 @@ function Checkout() {
 		) {
 			rank = "Silver";
 			isPromoted = true;
-			console.log("promoted1");
 		} else if (
 			newBuyerPoint + sellerPoint >= 500 &&
 			rank === "Silver" &&
@@ -328,7 +352,6 @@ function Checkout() {
 		) {
 			rank = "Gold";
 			isPromoted = true;
-			console.log("promoted2");
 		} else if (
 			newBuyerPoint + sellerPoint >= 1500 &&
 			rank === "Gold" &&
@@ -336,8 +359,6 @@ function Checkout() {
 		) {
 			rank = "Platinum";
 			isPromoted = true;
-
-			console.log("promoted3");
 		} else if (
 			newBuyerPoint + sellerPoint >= 3500 &&
 			rank === "Platinum" &&
@@ -345,7 +366,6 @@ function Checkout() {
 		) {
 			rank = "Master";
 			isPromoted = true;
-			console.log("promoted4");
 		} else if (
 			newBuyerPoint + sellerPoint >= 8000 &&
 			rank === "Master" &&
@@ -353,7 +373,6 @@ function Checkout() {
 		) {
 			rank = "HallofFamer";
 			isPromoted = true;
-			console.log("promoted5");
 		}
 
 		dbService.doc(`UserInfo/${buyer.id}`).update({
@@ -476,8 +495,46 @@ function Checkout() {
 							<PaymentDetails>
 								<HeaderText>CREDIT CARD</HeaderText>
 								<Text>
-									{payment[0]?.vendor} {" **** "}{" "}
-									{payment[0]?.cardNumber.slice(12)}
+									{payment[0]?.vendor == "Visa" ? (
+										<FontAwesomeIcon
+											icon={faCcVisa}
+											size="2x"
+											color={"#341f97"}
+										/>
+									) : (
+										<>
+											{payment[0]?.vendor == "Master" ? (
+												<FontAwesomeIcon
+													icon={faCcMastercard}
+													size="2x"
+													color={"#353b48"}
+												/>
+											) : (
+												<>
+													{payment[0]?.vendor == "Amex" ? (
+														<FontAwesomeIcon
+															icon={faCcAmex}
+															size="2x"
+															color={"#0097e6"}
+														/>
+													) : (
+														<>
+															{payment[0]?.vendor == "JCB" ? (
+																<FontAwesomeIcon
+																	icon={faCcJcb}
+																	size="2x"
+																	color={"#44bd32"}
+																/>
+															) : (
+																payment[0]?.vendor
+															)}
+														</>
+													)}
+												</>
+											)}
+										</>
+									)}{" "}
+									{" **** "} {payment[0]?.cardNumber.slice(12)}
 								</Text>
 							</PaymentDetails>
 							<BillingAddress>
@@ -527,7 +584,7 @@ function Checkout() {
 									pathname: `/cart`,
 								}}
 							>
-								<SubmitBtn>BACK</SubmitBtn>
+								<BackBtn>BACK</BackBtn>
 							</Link>
 						</Container>
 					)}

@@ -64,11 +64,16 @@ const SubmitBtn = styled.button`
 `;
 
 const ErrorMessage = styled.span`
+	font-family: "Sniglet", cursive;
 	color: red;
 `;
 
 const PageTitle = styled.span`
 	margin: 5px 0px 5px 0px;
+`;
+
+const Text = styled.span`
+	font-family: "Sniglet", cursive;
 `;
 
 interface IAdditionalUserInfo {
@@ -177,7 +182,7 @@ function AuthForm() {
 					setNewAccount((prev) => !prev);
 				}}
 			>
-				<span>{newAccount ? "I Have Account" : "I Don't Have Account"}</span>
+				<Text>{newAccount ? "I Have Account" : "I Don't Have Account"}</Text>
 				<CheckIcon />
 			</ToggleButton>
 
