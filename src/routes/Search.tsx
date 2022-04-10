@@ -75,9 +75,10 @@ const InputField = styled.input`
 	margin-left: 20px;
 	font-size: 15px;
 	color: black;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 105px 5px 125px 5px/5px 125px 5px 155px;
-    border:solid 3px ${(props) => props.theme.secondColor};
+	border: solid 3px ${(props) => props.theme.secondColor};
 `;
 
 const SubmitBtn = styled.button`
@@ -95,17 +96,17 @@ const SubmitBtn = styled.button`
 	font-size: 12px;
 	color: black;
 	font-weight: bold; */
-	  text-align: center;
-	  padding:3px;
-      margin:10px;
-      background-color:${(props) => props.theme.secondColor};
-      letter-spacing:2px;
-	  font-size: 20px;
-	  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
-	  border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	  border:solid 4px ${(props) => props.theme.secondColor};
-      cursor: pointer;
-
+	text-align: center;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	font-size: 20px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 const IconContainer = styled.div`
 	display: grid;
@@ -114,7 +115,6 @@ const IconContainer = styled.div`
 	grid-auto-rows: 40px;
 	height: 80px;
 	width: 100vw;
-	
 `;
 
 const Icons = styled.button`
@@ -129,13 +129,12 @@ const Icons = styled.button`
 		width: 100%;
 		height: 100%;
 	}
-	margin:2px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	margin: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 10px 180px 20px/15px 225px 15px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-	background-color:${(props) => props.theme.secondColor};
-;
-
+	border: solid 4px ${(props) => props.theme.secondColor};
+	background-color: ${(props) => props.theme.secondColor}; ;
 `;
 const PostingContainer = styled.div`
 	display: grid;
@@ -143,7 +142,6 @@ const PostingContainer = styled.div`
 	grid-template-rows: repeat(3, 150px);
 	grid-auto-rows: 100px;
 	z-index: 0;
-
 `;
 
 const Posting = styled.div`
@@ -207,34 +205,21 @@ function Search() {
 
 	const SubmitClicked = async (text) => {
 		console.log(text);
-		// dbService
-		// 	.collection("Posting")
-		// 	.where("creatorDisplayName", "array-contains", text)
-		// 	.onSnapshot((snapshot) => {
-		// 		const postingSnapshot = snapshot.docs.map((doc) => ({
-		// 			id: doc.id,
-		// 			...doc.data(),
-		// 		}));
-		// 		console.log(postingSnapshot);
-		// 		setPostings(postingSnapshot);
-		// 	});
 		setPostings(null);
 		dbService
 			.collection("Posting")
-			.where("creatorDisplayName" ,"==",  text)
+			.where("creatorDisplayName", ">=", text)
+			.where("creatorDisplayName", "<=", text + "\uf8ff")
 			.onSnapshot((snapshot) => {
-				const creatorSnapshot = snapshot.docs.map((doc) => ({
+				const postingSnapshot = snapshot.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(creatorSnapshot);
-				setPostings(creatorSnapshot);
-
-			
+				console.log(postingSnapshot);
+				setPostings(postingSnapshot);
 			});
 
-			console.log(postings);
-
+		console.log(postings);
 	};
 
 	const InputOnChange = (event) => {
@@ -263,7 +248,7 @@ function Search() {
 						SubmitClicked(input);
 					}}
 				>
-						<FontAwesomeIcon icon={faSearch} />
+					<FontAwesomeIcon icon={faSearch} />
 				</SubmitBtn>
 			</Item>
 			<Item>
@@ -296,28 +281,22 @@ function Search() {
 			</Item>
 			<Item>
 				<PostingContainer>
-
-				{postings !== null && (
-						 <>
-						
-						 {postings?.map((posting, index) => (
-							<Posting key={index}>
-									
-								<Link
-									to={`/postingDetail/${posting?.id}`}
-									onClick={() => Clicked(posting)}
-								>
-									<PostingCenter>
-										<PostingPreviewImg src={posting.photoUrl[0]} />
-									</PostingCenter>
-								</Link>
-							</Posting>
-						))} 
+					{postings !== null && (
+						<>
+							{postings?.map((posting, index) => (
+								<Posting key={index}>
+									<Link
+										to={`/postingDetail/${posting?.id}`}
+										onClick={() => Clicked(posting)}
+									>
+										<PostingCenter>
+											<PostingPreviewImg src={posting.photoUrl[0]} />
+										</PostingCenter>
+									</Link>
+								</Posting>
+							))}
 						</>
-					) 
-					}	
-
-					
+					)}
 				</PostingContainer>
 			</Item>
 			<div style={{ width: 300, height: 150 }}></div>

@@ -47,8 +47,8 @@ const Item = styled.div`
 	margin-bottom: 10px;
 	width: 100%;
 	/* background-color: ${(props) => props.theme.postingBgColor}; */
-	box-shadow: ${(props) => props.theme.secondColor} 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-
+	box-shadow: ${(props) => props.theme.secondColor} 0px 0px 5px 0px,
+		rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 `;
 
 const CashBackContainer = styled.div`
@@ -57,9 +57,8 @@ const CashBackContainer = styled.div`
 	align-items: center;
 	margin-bottom: 10px;
 	width: 100%;
-	background-color: ${(props) => props.theme.postingBgColor}; 
+	background-color: ${(props) => props.theme.postingBgColor};
 	flex-direction: column;
-
 `;
 
 const CashBack = styled.div`
@@ -69,7 +68,6 @@ const CashBack = styled.div`
 	margin-bottom: 10px;
 	width: 100%;
 	/* background-color: ${(props) => props.theme.postingBgColor}; */
-	
 `;
 
 const Description = styled.div`
@@ -77,9 +75,8 @@ const Description = styled.div`
 	justify-content: flex-start;
 	flex-direction: column;
 	align-items: start;
-	width: 200px;
+	width: 220px;
 	/* background-color: ${(props) => props.theme.postingBgColor}; */
-	
 `;
 
 const PreviewImg = styled.img`
@@ -89,7 +86,7 @@ const PreviewImg = styled.img`
 `;
 
 const IconElement = styled.a`
-	margin-left: 50px;
+	margin-left: 40px;
 	margin-right: 10px;
 	display: flex;
 	align-items: center;
@@ -97,7 +94,7 @@ const IconElement = styled.a`
 const Point = styled.span`
 	margin: 2px 5px;
 	font-weight: bold;
-	color:red;
+	color: red;
 	font-size: 17px;
 `;
 const Text = styled.span`
@@ -132,15 +129,17 @@ const Label = styled.div`
 const SubmitBtn = styled.button`
 	font-family: "Sniglet", cursive;
 	text-align: center;
-	padding:3px;
-    margin-top:10px;
-    background-color:${(props) => props.theme.secondColor};
-    font-size:16px;
-    letter-spacing:2px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	padding: 3px;
+	margin-top: 10px;
+	min-width: 200px;
+	background-color: ${(props) => props.theme.secondColor};
+	font-size: 20px;
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const CashbackSubmitBtn = styled.button`
@@ -149,15 +148,16 @@ const CashbackSubmitBtn = styled.button`
 	margin-left: 15px;
 	font-family: "Sniglet", cursive;
 	text-align: center;
-	padding:3px;
-    margin-top:10px;
-    background-color:${(props) => props.theme.secondColor};
-    font-size:16px;
-    letter-spacing:2px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	padding: 3px;
+	margin-top: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	font-size: 16px;
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const ExpiryDateInputField = styled.input`
@@ -170,9 +170,10 @@ const ExpiryDateInputField = styled.input`
 	color: black;
 	font-weight: bold;
 
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 5px 180px 10px/5px 225px 10px 235px;
-	border:solid 2px ${(props) => props.theme.textColor};
+	border: solid 2px ${(props) => props.theme.textColor};
 `;
 
 const Value = styled.div``;
@@ -362,6 +363,15 @@ function Cart() {
 				// soldOut: item.soldOut,
 			}),
 		});
+		Swal.fire({
+			title: "Item is Removed!",
+			confirmButtonText: "Got It",
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+			} else if (result.isDenied) {
+			}
+		});
 	};
 
 	const onCheckoutClick = () => {
@@ -389,7 +399,7 @@ function Cart() {
 		console.log(cashback);
 		if (cashback < 10) {
 			Swal.fire({
-				title: "Sorry, Minimum 10 points is required",
+				title: "Sorry, Enter Minimum 10 Points",
 				confirmButtonText: "Got It",
 			}).then((result) => {
 				if (result.isConfirmed) {
@@ -398,13 +408,17 @@ function Cart() {
 			});
 		} else if (cashback > subTotal + shipping) {
 			Swal.fire({
-				title: `Do you want to use $${cashback} cashback points?`,
+				title: `Do You Want to Use $${cashback} Cashback Points?`,
 				showDenyButton: true,
 				confirmButtonText: "Yes",
 				denyButtonText: `No`,
 			}).then((result) => {
 				if (result.isConfirmed) {
-					Swal.fire("Cashback points is bigger than total!", "", "error");
+					Swal.fire(
+						"Cashback Points is Bigger Than Total Amount!",
+						"",
+						"error"
+					);
 					setCashback(validCashback);
 				} else if (result.isDenied) {
 					setCashback(validCashback);
@@ -412,13 +426,13 @@ function Cart() {
 			});
 		} else if (cashback > userInfo[0].cashback) {
 			Swal.fire({
-				title: `Do you want to use $${cashback} cashback points?`,
+				title: `Do You Want to Use $${cashback} Cashback Points?`,
 				showDenyButton: true,
 				confirmButtonText: "Yes",
 				denyButtonText: `No`,
 			}).then((result) => {
 				if (result.isConfirmed) {
-					Swal.fire("You exceeded your available points!", "", "error");
+					Swal.fire("You Exceeded Your Available Points!", "", "error");
 					setCashback(validCashback);
 				} else if (result.isDenied) {
 					setCashback(validCashback);
@@ -426,7 +440,7 @@ function Cart() {
 			});
 		} else {
 			Swal.fire({
-				title: `Do you want to use $${cashback} cashback points?`,
+				title: `Do You Want to Use $${cashback} Cashback Points?`,
 				showDenyButton: true,
 				confirmButtonText: "Yes",
 				denyButtonText: `No`,
@@ -459,7 +473,7 @@ function Cart() {
 									<Item key={index}>
 										<PreviewImg src={item.itemPhoto}></PreviewImg>
 										<Description>
-											<Text>Item Name: {item.itemName}</Text>
+											<Text>Item: {item.itemName}</Text>
 											<Text>Category: {item.itemCategory}</Text>
 											<Text>Seller: {item.creatorDisplayName}</Text>
 											<Text>Price: ${item.itemPrice}</Text>
@@ -473,7 +487,8 @@ function Cart() {
 							<CashBackContainer>
 								<CashBack>
 									<Text>
-										You have<Point> ${userInfo[0]?.cashback}</Point>cashback points
+										You have<Point> ${userInfo[0]?.cashback}</Point>cashback
+										points
 									</Text>
 									<FormControlLabel
 										control={

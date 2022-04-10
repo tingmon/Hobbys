@@ -47,12 +47,12 @@ const InputField = styled.input`
 	color: black;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
 	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
-	border:solid 2px ${(props) => props.theme.secondColor};
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const CategorySelect = styled.select`
 	font-family: "Noto Sans", sans-serif;
-	max-width: 295px;
+	max-width: 320px;
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 10px;
@@ -60,56 +60,54 @@ const CategorySelect = styled.select`
 	color: black;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
 	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
-	border:solid 2px ${(props) => props.theme.secondColor};
+	border: solid 2px ${(props) => props.theme.secondColor};
 	background-color: rgba(255, 255, 255, 1);
-
 `;
 
 const SubmitBtn = styled.button`
 	display: block;
-	/* max-width: 320px;
-	width: 100%; */
+	width: 100%;
 
-	font-family: 'Sniglet', cursive;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	/* max-width: 320px;
-	width: 100%; */
+	max-width: 300px;
+	width: 100%;
 	color: black;
-	padding:3px;
-    margin:10px;
-    background-color:${(props) => props.theme.secondColor};
-    letter-spacing:2px;
-	font-size: 16px;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	font-size: 20px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const GoBackBtn = styled.button`
-	/* display: block; */
-	font-family: 'Sniglet', cursive;
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
 	margin-top: 10px;
 	cursor: pointer;
 	border-color: ${(props) => props.theme.secondColor};
-	background-color: ${(props) => props.theme.secondColor};
-	max-width: 320px;
+	max-width: 300px;
 	width: 100%;
 	padding: 10px;
 	border-radius: 15px;
 	margin-bottom: 100px;
-	font-size: 12px;
+	font-size: 20px;
 	color: black;
-	padding:3px;
-    margin:10px;
-    background-color:${(props) => props.theme.secondColor};
-    letter-spacing:2px;
-	font-size: 16px;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
 	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const ErrorMessage = styled.span`
@@ -342,13 +340,13 @@ function PostingForm() {
 									Uploading...
 								</SubmitBtn>
 								<GoBackBtn disabled style={{ cursor: "wait" }}>
-									Go Back
+									Back
 								</GoBackBtn>
 							</>
 						) : (
 							<>
 								<SubmitBtn onClick={onUploadClicked}>Upload Posting</SubmitBtn>
-								<GoBackBtn onClick={onGoBackClicked}>Go Back</GoBackBtn>
+								<GoBackBtn onClick={onGoBackClicked}>Back</GoBackBtn>
 							</>
 						)}
 					</SignUpForm>
@@ -397,13 +395,13 @@ function PostingForm() {
 									Uploading...
 								</SubmitBtn>
 								<GoBackBtn disabled style={{ cursor: "wait" }}>
-									Go Back
+									Back
 								</GoBackBtn>
 							</>
 						) : (
 							<>
 								<SubmitBtn onClick={onUploadClicked}>Upload Posting</SubmitBtn>
-								<GoBackBtn onClick={onGoBackClicked}>Go Back</GoBackBtn>
+								<GoBackBtn onClick={onGoBackClicked}>Back</GoBackBtn>
 							</>
 						)}
 					</LoginForm>

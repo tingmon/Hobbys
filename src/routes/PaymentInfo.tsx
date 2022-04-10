@@ -66,7 +66,7 @@ const Text = styled.span`
 `;
 
 const PaymentForm = styled.form`
-	font-family: "Noto Sans", sans-serif;
+	font-family: "Sniglet", cursive;
 	color: #000;
 	width: 100%;
 	max-width: 320px;
@@ -75,15 +75,16 @@ const PaymentForm = styled.form`
 `;
 
 const InputField = styled.input`
+	font-family: "Sniglet", cursive;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const DateContainer = styled.div`
@@ -93,33 +94,41 @@ const DateContainer = styled.div`
 `;
 
 const ExpiryDateInputField = styled.input`
+	font-family: "Sniglet", cursive;
 	max-width: 295px;
 	width: 20%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
 	color: black;
-	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const SubmitBtn = styled.button`
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	background: #04aaff;
-	color: white;
 	margin-top: 10px;
 	cursor: pointer;
-
-	max-width: 320px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 10px;
-	font-size: 12px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 20px;
 	color: black;
-	font-weight: bold;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const ErrorMessage = styled.span`

@@ -92,32 +92,36 @@ const HeaderText = styled.span`
 `;
 
 const SubmitBtn = styled.button`
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	padding:10px;
-    margin-top:10px;
+	padding: 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
-    background-color:${(props) => props.theme.secondColor};
-    font-size:16px;
-    letter-spacing:2px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	background-color: ${(props) => props.theme.secondColor};
+	font-size: 16px;
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const DisabledBtn = styled.button`
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	padding:10px;
-    margin-top:10px;
+	padding: 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
-    background-color:${(props) => props.theme.redColor};
-    font-size:16px;
-	color:${(props) => props.theme.logoColor};
-    letter-spacing:2px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	background-color: ${(props) => props.theme.redColor};
+	font-size: 16px;
+	color: ${(props) => props.theme.logoColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.redColor};
-    cursor: not-allowed;
+	border: solid 4px ${(props) => props.theme.redColor};
+	cursor: not-allowed;
 `;
 
 function Checkout() {
@@ -385,9 +389,9 @@ function Checkout() {
 						sellerDisplayNames.push(element.creatorDisplayName);
 					}
 					//*****************THIS CODE IS COMMENTED OUT FOR TEST */
-					// dbService.doc(`Posting/${element.postingId}`).update({
-					// 	soldOut: true,
-					// });
+					dbService.doc(`Posting/${element.postingId}`).update({
+						soldOut: true,
+					});
 				});
 
 				console.log(sellerInfo);

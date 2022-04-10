@@ -59,67 +59,7 @@ const TitleImage = styled.img`
 	line-height: 60px;
 	text-align: center;
 	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-`;
-
-const TitleImageBronze = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-top: 5px;
-	line-height: 60px;
-	text-align: center;
-	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
-`;
-
-const TitleImageSilver = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-top: 5px;
-	line-height: 60px;
-	text-align: center;
-	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
-`;
-
-const TitleImageGold = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-top: 5px;
-	line-height: 60px;
-	text-align: center;
-	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
-`;
-
-const TitleImagePlatinum = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-top: 5px;
-	line-height: 60px;
-	text-align: center;
-	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
-`;
-
-const TitleImageFamer = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-top: 5px;
-	line-height: 60px;
-	text-align: center;
-	background-color: ${(props) => props.theme.textColor};
-	border: 2px solid ${(props) => props.theme.mainColor};
-	box-shadow: 0 1px 1px 1px #868e96;
+	border: 2px solid ${(props) => props.theme.secondColor};
 `;
 
 const Overview = styled.div`
@@ -130,6 +70,7 @@ const Overview = styled.div`
 	border-radius: 10px;
 `;
 const OverviewItem = styled.div`
+	font-family: "Sniglet", cursive;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -142,13 +83,23 @@ const OverviewItem = styled.div`
 `;
 
 const Tabs = styled.div`
+	font-family: "Sniglet", cursive;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	margin: 15px 0px;
 	gap: 10px;
 `;
 
-const Tab = styled.span<{ isActive: boolean }>`
+const NotMyProfileTabs = styled.div`
+	font-family: "Sniglet", cursive;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	margin: 15px 0px;
+	gap: 10px;
+`;
+
+const FollowTab = styled.span`
+	font-family: "Sniglet", cursive;
 	text-align: center;
 	text-transform: uppercase;
 	font-size: 12px;
@@ -156,27 +107,42 @@ const Tab = styled.span<{ isActive: boolean }>`
 	background-color: #f0ebc8;
 	padding: 7px 0px;
 	border-radius: 10px;
-	color: ${(props) =>
-			props.isActive ? props.theme.secondColor : props.theme.textColor}
-		a {
+
+	a {
 		display: block;
 	}
 `;
 
-const GoHome = styled.span`
+const UnFollowTab = styled.span`
+	font-family: "Sniglet", cursive;
+	color: blanchedalmond;
 	text-align: center;
 	text-transform: uppercase;
-	font-size: 15px;
+	font-size: 12px;
 	font-weight: 400;
-	background-color: ${(props) => props.theme.mainColor};
+	background-color: #ef5777;
 	padding: 7px 0px;
 	border-radius: 10px;
+
 	a {
 		display: block;
-		margin-top: 20px;
-		padding: 15px;
-		background-color: ${(props) => props.theme.textColor};
-		border-radius: 10px;
+	}
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 400;
+	background-color: #f0ebc8;
+	/* background-color: #ef5777; */
+	padding: 7px 0px;
+	border-radius: 10px;
+	color: ${(props) =>
+			props.isActive ? props.theme.secondColor : props.theme.textColor}
+		a {
+		display: block;
 	}
 `;
 
@@ -188,7 +154,8 @@ const PostingContainer = styled.div`
 `;
 
 const Posting = styled.div`
-	border: 1px solid #ffffff;
+	border: 1px solid #f1f2f6;
+	border-radius: 5%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -212,6 +179,10 @@ const PostingPreviewImg = styled.img`
 	min-height: 100%;
 	max-width: 100%;
 	max-height: 100%;
+`;
+
+const Follow = styled.a`
+	background-color: #ef5777;
 `;
 
 function Profile({ refreshUser }) {
@@ -243,6 +214,9 @@ function Profile({ refreshUser }) {
 	// console.log(uid);
 	const [postings, setPostings] = useRecoilState(postingsObject);
 	const setSelectedIcon = useSetRecoilState(selectedIconAtom);
+
+	const editMatch = useRouteMatch(`/${userObject.uid}/profile/edit`);
+	const transactionMatch = useRouteMatch(`/${userObject.uid}/profile/record`);
 
 	async function fetchUserPostings(userId) {
 		console.log("profile fetch posting");
@@ -282,7 +256,8 @@ function Profile({ refreshUser }) {
 				selectedPostingInfo?.creatorUid || selectedComment?.commenterUid,
 			followingPhotoURL:
 				selectedPostingInfo?.creatorImgUrl ||
-				selectedComment?.commenterPhotoURL,
+				selectedComment?.commenterPhotoURL ||
+				"",
 			followingDisplayName:
 				selectedPostingInfo?.creatorDisplayName ||
 				selectedComment?.commeterDisplayName,
@@ -480,6 +455,22 @@ function Profile({ refreshUser }) {
 	// console.log(uid);
 	// console.log(photoURL);
 
+	const changeBackgroundColor = (page) => {
+		if (page === "edit") {
+			document.getElementById("editTab").style.backgroundColor = "#ef5777";
+			document.getElementById("transactionTab").style.backgroundColor =
+				"#f0ebc8";
+			document.getElementById("editTab").style.color = "#f0ebc8";
+			document.getElementById("transactionTab").style.color = "black";
+		} else {
+			document.getElementById("editTab").style.backgroundColor = "#f0ebc8";
+			document.getElementById("transactionTab").style.backgroundColor =
+				"#ef5777";
+			document.getElementById("editTab").style.color = "black";
+			document.getElementById("transactionTab").style.color = "#f0ebc8";
+		}
+	};
+
 	return (
 		<>
 			{isLoading ? (
@@ -492,7 +483,7 @@ function Profile({ refreshUser }) {
 								{photoURL !== null ? (
 									<TitleImage src={photoURL} alt="Profile" />
 								) : (
-									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+									<FontAwesomeIcon icon={faUser} color={"#eb4d4b"} size="2x" />
 								)}
 							</label>
 							<Title>{displayName}</Title>
@@ -503,7 +494,7 @@ function Profile({ refreshUser }) {
 								{photoURL !== null ? (
 									<TitleImage src={photoURL} alt="Profile" />
 								) : (
-									<FontAwesomeIcon icon={faUser} color={"#E8EBED"} size="2x" />
+									<FontAwesomeIcon icon={faUser} color={"#eb4d4b"} size="2x" />
 								)}
 							</label>
 							<Title>{displayName}</Title>
@@ -526,7 +517,7 @@ function Profile({ refreshUser }) {
 					</Overview>
 					{isOwner ? (
 						<Tabs>
-							<Tab isActive={true}>
+							<Tab id="editTab" isActive={editMatch !== null}>
 								<Link
 									onClick={() => {
 										if (showRecord === true) {
@@ -537,13 +528,14 @@ function Profile({ refreshUser }) {
 											setShowEdit((prev) => !prev);
 											setShowPosting((prev) => !prev);
 										}
+										changeBackgroundColor("edit");
 									}}
 									to={`/${userObject.uid}/profile/edit`}
 								>
 									<span>Edit Profile</span>
 								</Link>
 							</Tab>
-							<Tab isActive={true}>
+							<Tab id="transactionTab" isActive={transactionMatch !== null}>
 								<Link
 									onClick={() => {
 										if (showEdit === true) {
@@ -554,6 +546,7 @@ function Profile({ refreshUser }) {
 											setShowRecord((prev) => !prev);
 											setShowPosting((prev) => !prev);
 										}
+										changeBackgroundColor("transaction");
 									}}
 									to={`/${userObject.uid}/profile/record`}
 								>
@@ -562,22 +555,21 @@ function Profile({ refreshUser }) {
 							</Tab>
 						</Tabs>
 					) : (
-						<Tabs>
-							<Tab isActive={true} onMouseEnter={() => setFollowInfoCheck()}>
-								{!isFollowing ? (
+						<NotMyProfileTabs>
+							{!isFollowing ? (
+								<FollowTab onMouseEnter={() => setFollowInfoCheck()}>
 									<a href="#" onClick={followClicked}>
-										Follow
+										Follow This User
 									</a>
-								) : (
+								</FollowTab>
+							) : (
+								<UnFollowTab onMouseEnter={() => setFollowInfoCheck()}>
 									<a href="#" onClick={unFollowClicked}>
-										UnFollow
+										You Are Following
 									</a>
-								)}
-							</Tab>
-							<Tab isActive={true}>
-								<Link to={`/${userObject.uid}/profile/message`}>Message</Link>
-							</Tab>
-						</Tabs>
+								</UnFollowTab>
+							)}
+						</NotMyProfileTabs>
 					)}
 
 					{showPosting && !showEdit && !showRecord ? (

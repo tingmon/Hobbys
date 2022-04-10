@@ -3,11 +3,7 @@
 // @ts-nocheck
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faPlus,
-	faTimes,
-	faCamera,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes, faCamera } from "@fortawesome/free-solid-svg-icons";
 import { authService, dbService, storageService } from "../fbase";
 import react, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -49,27 +45,26 @@ const InputField = styled.input`
 	color: black;
 	font-weight: bold;
 `;
+const SubmitBtn = styled.button`
+	text-align: center;
+	background: #04aaff;
+	color: white;
+	margin-top: 10px;
+	cursor: pointer;
 
-// const SubmitBtn = styled.button`
-// 	text-align: center;
-// 	background: #04aaff;
-// 	color: white;
-// 	margin-top: 10px;
-// 	cursor: pointer;
-
-// 	max-width: 320px;
-// 	width: 100%;
-// 	padding: 10px;
-// 	background-color: rgba(255, 255, 255, 1);
-// 	margin-bottom: 10px;
-// 	font-size: 12px;
-// 	color: black;
-// 	font-weight: bold;
-// 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
-// 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-// 	border:solid 4px ${(props) => props.theme.secondColor};
-
-// `;
+	max-width: 320px;
+	width: 100%;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
+`;
 
 const PostingForm = styled.form`
 	width: 100%;
@@ -81,22 +76,26 @@ const PostingForm = styled.form`
 `;
 
 const NextBtn = styled.button`
-	font-family: 'Sniglet', cursive;
+	font-family: "Sniglet", cursive;
 	text-align: center;
 	cursor: pointer;
+	min-width: 300px;
+	width: 100%;
 	color: #000;
 	a {
 		display: block;
 	}
-	padding:3px;
-    margin:10px;
-    background-color:${(props) => props.theme.secondColor};
-    letter-spacing:2px;
+	padding: 3px;
+	margin: 10px;
+	margin-bottom: 90px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
 	font-size: 20px;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px, rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const PreviewImg = styled.img`
@@ -106,18 +105,19 @@ const PreviewImg = styled.img`
 `;
 
 const PhotoInput = styled.span`
-	font-family: 'Sniglet', cursive;
-	color: #000;
+	font-family: "Sniglet", cursive;
+	color: blanchedalmond;
 	text-align: center;
-	padding:3px;
-    margin:10px;
-    background-color:${(props) => props.theme.secondColor};
-    letter-spacing:2px;
+	padding: 3px;
+	margin: 10px;
+	background-color: #04aaff;
+	letter-spacing: 2px;
 	font-size: 20px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px, rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
-	border:solid 4px ${(props) => props.theme.secondColor};
-    cursor: pointer;
+	border: solid 4px #04aaff;
+	cursor: pointer;
 `;
 
 interface IForm {
