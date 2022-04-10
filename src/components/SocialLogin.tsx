@@ -20,14 +20,26 @@ const AuthBtns = styled.div`
 `;
 
 const AuthBtn = styled.button`
-	cursor: pointer;
-	border-radius: 20px;
-	border: none;
-	padding: 10px 0px;
-	font-size: 12px;
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	width: 150px;
-	background: white;
+	margin-top: 10px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 10px;
+	color: black;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
 	cursor: pointer;
 `;
 
