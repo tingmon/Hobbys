@@ -12,6 +12,7 @@ import {
 	isNewUserAtom,
 	userObjectAtom,
 	cartAtom,
+	selectedIconAtom,
 } from "../atoms";
 import {
 	authService,
@@ -26,6 +27,7 @@ import carouselStyle from "../styles/Carousel.module.css";
 import LoyaltyIcon from "@mui/icons-material/PaidRounded";
 import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import CommentIcon from "@mui/icons-material/ChatBubbleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Prev } from "react-bootstrap/esm/PageItem";
@@ -102,6 +104,7 @@ const InputField = styled.input`
 	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 1);
 	margin-right: 10px;
+	margin-top: 10px;
 	font-size: 12px;
 	color: black;
 	font-weight: bold;
@@ -110,19 +113,28 @@ const InputField = styled.input`
 const PostingFooter = styled.div``;
 
 const LikeAndComment = styled.div`
+	padding-left: 10px;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
+	span {
+	}
+`;
+
+const HeartIcon = styled.a`
+	margin-left: 2px;
 `;
 
 const TextBox = styled.div`
 	word-wrap: break-word;
 	overflow: auto;
 	max-height: 50px;
+	margin-bottom: 1px;
+	padding: 2px;
 `;
 
 const IconElement = styled.a`
-	margin: 10px;
+	margin: 3px 5px;
 `;
 
 const GoBackBtn = styled.button`
@@ -158,6 +170,13 @@ const CommentListContainer = styled.div`
 	font-family: "Sniglet", cursive;
 `;
 
+const LikeCount = styled.span`
+	text-align: center;
+	font-size: 13px;
+	font-weight: bold;
+	color: #ea2027;
+`;
+
 function PostingDetail() {
 	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
@@ -169,10 +188,12 @@ function PostingDetail() {
 	const [newComment, setNewComment] = useState("");
 	const [isCommenting, setIsCommenting] = useState(false);
 	const [posting, setPosting] = useState<any>(null);
+	const [likeCount, setLikeCount] = useState<number>(0);
 
 	const [cart, setCart] = useRecoilState(cartAtom);
 	const selectedPosting = useRecoilValue(selectedPostingAtom);
 	const userObject = useRecoilValue(userObjectAtom);
+	const selectedIcon = useRecoilValue(selectedIconAtom);
 
 	useEffect(() => {
 		fetchCart();
@@ -202,6 +223,13 @@ function PostingDetail() {
 				});
 			console.log(comments);
 			setIsLoading(false);
+			if (selectedPosting.likes.likerUid?.length) {
+				console.log(selectedPosting.likes.likerUid?.length);
+				setLikeCount(selectedPosting.likes.likerUid?.length);
+			} else {
+				console.log("no likes");
+				setLikeCount(0);
+			}
 		}
 
 		//posting
@@ -217,10 +245,6 @@ function PostingDetail() {
 			</Paper>
 		);
 	}
-
-	const onGoBackClicked = () => {
-		history.push("/Hobbys/");
-	};
 
 	const LikeIconClicked = async (event, postingInfo) => {
 		event.preventDefault();
@@ -252,6 +276,8 @@ function PostingDetail() {
 					userObject.uid
 				),
 			});
+			setLikeCount((prev) => prev - 1);
+			console.log("likeCount " + selectedPosting.likes.likerUid?.length);
 		} else {
 			await dbService.collection("Like").add(like);
 
@@ -260,6 +286,8 @@ function PostingDetail() {
 					userObject.uid
 				),
 			});
+			setLikeCount((prev) => prev + 1);
+			console.log("likeCount " + selectedPosting.likes.likerUid?.length);
 		}
 		setIsLike((prev) => !prev);
 	};
@@ -426,9 +454,20 @@ function PostingDetail() {
 									<PostingHeader>
 										<ProfileTag>
 											<Link to={`/${posting?.creatorUid}/profile`}>
-												<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
+												{posting?.creatorImgUrl ? (
+													<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
+												) : (
+													<FontAwesomeIcon
+														style={{ padding: 6, margin: 5 }}
+														icon={faUser}
+														color={"#eb4d4b"}
+														size="2x"
+													/>
+												)}
 											</Link>
-											{posting?.creatorDisplayName}
+											<Link to={`/${posting?.creatorUid}/profile`}>
+												{posting?.creatorDisplayName}
+											</Link>
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
@@ -509,8 +548,11 @@ function PostingDetail() {
 
 										{isCommenting && (
 											<>
-												<p>add comment</p>
-												<InputField onChange={CommentOnChange} type="text" />
+												<InputField
+													placeholder="Enter Comment"
+													onChange={CommentOnChange}
+													type="text"
+												/>
 
 												{newComment && (
 													<button
@@ -543,10 +585,21 @@ function PostingDetail() {
 								<Posting>
 									<PostingHeader>
 										<ProfileTag>
-											<Link to={`/${selectedPosting?.creatorUid}/profile`}>
-												<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
+											<Link to={`/${posting?.creatorUid}/profile`}>
+												{posting?.creatorImgUrl ? (
+													<PreviewImg src={posting?.creatorImgUrl}></PreviewImg>
+												) : (
+													<FontAwesomeIcon
+														style={{ padding: 6, margin: 5 }}
+														icon={faUser}
+														color={"#eb4d4b"}
+														size="2x"
+													/>
+												)}
 											</Link>
-											{posting?.creatorDisplayName}
+											<Link to={`/${posting?.creatorUid}/profile`}>
+												{posting?.creatorDisplayName}
+											</Link>
 										</ProfileTag>
 										{posting?.soldOut ? (
 											<SaleTag>
@@ -579,55 +632,50 @@ function PostingDetail() {
 
 									<PostingFooter>
 										<LikeAndComment>
-											<div>
-												{isLike ? (
-													<>
-														<IconElement
-															href="#"
-															onClick={(event) =>
-																LikeIconClicked(event, selectedPosting)
-															}
-														>
-															<FavoriteBorderIcon
-																style={{ color: "#EA2027" }}
-															/>
-														</IconElement>
-													</>
-												) : (
-													<>
-														<IconElement
-															href="#"
-															onClick={(event) =>
-																LikeIconClicked(event, selectedPosting)
-															}
-														>
-															<FavoriteBorderIcon
-																style={{ color: "#303952" }}
-															/>
-														</IconElement>
-													</>
-												)}
-												<IconElement
-													href="#"
-													onClick={(event) =>
-														CommentIconClicked(event, selectedPosting)
-													}
-												>
-													<CommentIcon />
-												</IconElement>
+											{isLike ? (
+												<>
+													<LikeCount>{likeCount}</LikeCount>
+													<HeartIcon
+														href="#"
+														onClick={(event) =>
+															LikeIconClicked(event, selectedPosting)
+														}
+													>
+														<FavoriteBorderIcon style={{ color: "#EA2027" }} />
+													</HeartIcon>
+												</>
+											) : (
+												<>
+													<LikeCount>{likeCount}</LikeCount>
+													<HeartIcon
+														href="#"
+														onClick={(event) =>
+															LikeIconClicked(event, selectedPosting)
+														}
+													>
+														<FavoriteBorderIcon style={{ color: "#303952" }} />
+													</HeartIcon>
+												</>
+											)}
+											<IconElement
+												href="#"
+												onClick={(event) =>
+													CommentIconClicked(event, selectedPosting)
+												}
+											>
+												<CommentIcon />
+											</IconElement>
 
-												{posting?.creatorUid !== userObject.uid &&
-													posting?.forSale === true && (
-														<IconElement
-															href="#"
-															onClick={() =>
-																AddCartIconClicked(selectedPosting)
-															}
-														>
-															<AddShoppingCartIcon />
-														</IconElement>
-													)}
-											</div>
+											{posting?.creatorUid !== userObject.uid &&
+												posting?.forSale === true &&
+												posting?.soldOut === false && (
+													<IconElement
+														href="#"
+														onClick={() => AddCartIconClicked(selectedPosting)}
+													>
+														<AddShoppingCartIcon />
+													</IconElement>
+												)}
 										</LikeAndComment>
 										<TextBox>
 											<span>Item Name: {posting?.itemName}</span>
@@ -640,8 +688,11 @@ function PostingDetail() {
 										</TextBox>
 										{isCommenting && (
 											<>
-												<p>add comment</p>
-												<InputField onChange={CommentOnChange} type="text" />
+												<InputField
+													placeholder="Add Comment"
+													onChange={CommentOnChange}
+													type="text"
+												/>
 												{newComment && (
 													<a
 														href="#"

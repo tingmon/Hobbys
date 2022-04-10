@@ -26,8 +26,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-family: 'Lato', sans-serif;
-
+	font-family: "Lato", sans-serif;
 `;
 
 const PostingContainer = styled.div`
@@ -36,7 +35,6 @@ const PostingContainer = styled.div`
 	grid-template-rows: repeat(1, 250px);
 	grid-auto-rows: 250px;
 	z-index: 0;
-
 `;
 const Posting = styled.div`
 	border: 1px solid #ffffff;
@@ -45,12 +43,11 @@ const Posting = styled.div`
 	flex-direction: column;
 	align-items: left;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
-	 overflow: hidden;
-	 a {
-	 	width: 100%;
-	 	height: 100%;
-	 }
-	
+	overflow: hidden;
+	a {
+		width: 100%;
+		height: 100%;
+	}
 `;
 const InfoBox = styled.div`
 	display: flex;
@@ -63,12 +60,11 @@ const InfoBox = styled.div`
 `;
 const PostingPreviewImg = styled.img`
 	width: 150px;
-	height:180px;
+	height: 180px;
 `;
 const Text = styled.span`
-	margin-bottom:5px;
-	font-size:17px;
-
+	margin-bottom: 5px;
+	font-size: 17px;
 `;
 function LikeList() {
 	const [postingArr, setPostingArr] = useState<any>([]);
@@ -92,11 +88,10 @@ function LikeList() {
 					...doc.data(),
 				}));
 				console.log(likeSnapshot);
-				if(likeSnapshot.length !== 0){
+				if (likeSnapshot.length !== 0) {
 					setIsEmpty(false);
 				}
 				setLikes(likeSnapshot);
-
 			});
 	}
 
@@ -128,59 +123,80 @@ function LikeList() {
 		});
 
 		setIsLoading(false);
-
 	}, []);
 
 	console.log(isEmpty);
 
-
 	return (
 		<Container>
-		{isLoading ? (
+			{isLoading ? (
 				"Loading..."
 			) : (
 				<>
-				{isEmpty ? (
-					"Your Like List is Empty!"
-				) : (
-					<PostingContainer>
-						{postingArr?.map((posting, index) => (
-							<Posting key={index}>
-								<Link
-									to={`/postingDetail/${posting?.id}`}
-									onClick={() => PostingClicked(posting)}
-									onMouseEnter={() => PostingClicked(posting)}
-								>
-								<PostingPreviewImg src={posting.photoUrl[0]} />
-								
-							
-								<InfoBox>
-								<Text>{posting.itemName}</Text> 
-
-								</InfoBox>
-								{posting.forSale ? 	(
-									<InfoBox>
-									<LoyaltyIcon style={{ fill: "#206a22" } } fontSize="small"/> 
-									<Text>{posting.price}</Text>
-									</InfoBox>
-								):(
-									<InfoBox>
-										<LoyaltyIcon style={{ fill: "#827C76" } } fontSize="small"/> 
-										<Text>Not for Sale</Text>
-									</InfoBox>
-									
-								)}
-								</Link>
-							</Posting>
-
-						))}
-							
-					</PostingContainer>
-					
-				)}
+					{isEmpty ? (
+						"Your Like List is Empty!"
+					) : (
+						<PostingContainer>
+							{postingArr?.map((posting, index) => (
+								<Posting key={index}>
+									<Link
+										to={`/postingDetail/${posting?.id}`}
+										onClick={() => PostingClicked(posting)}
+										onMouseEnter={() => PostingClicked(posting)}
+									>
+										<PostingPreviewImg src={posting.photoUrl[0]} />
+										{posting.soldOut ? (
+											<>
+												<InfoBox>
+													<Text>{posting.itemName}</Text>
+												</InfoBox>
+												<InfoBox>
+													<LoyaltyIcon
+														style={{ fill: "#b81414" }}
+														fontSize="small"
+													/>
+													<Text>Sold Out</Text>
+												</InfoBox>
+											</>
+										) : (
+											<>
+												{posting.forSale ? (
+													<>
+														<InfoBox>
+															<Text>{posting.itemName}</Text>
+														</InfoBox>
+														<InfoBox>
+															<LoyaltyIcon
+																style={{ fill: "#206a22" }}
+																fontSize="small"
+															/>
+															<Text>{posting.price}</Text>
+														</InfoBox>
+													</>
+												) : (
+													<>
+														<InfoBox>
+															<Text>{posting.category}</Text>
+														</InfoBox>
+														<InfoBox>
+															<LoyaltyIcon
+																style={{ fill: "#827C76" }}
+																fontSize="small"
+															/>
+															<Text>Not for Sale</Text>
+														</InfoBox>
+													</>
+												)}
+											</>
+										)}
+									</Link>
+									<div style={{ width: 300, height: 450 }}></div>
+								</Posting>
+							))}
+						</PostingContainer>
+					)}
 				</>
 			)}
-			<div style={{ width: 300, height: 150 }}></div>
 		</Container>
 	);
 }

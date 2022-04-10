@@ -98,6 +98,7 @@ const SaleTag = styled.div`
 const ProfileTag = styled.div`
 	display: flex;
 	align-items: center;
+	padding-bottom: 3px;
 	img {
 		margin: 5px;
 		margin-bottom: -2px;
@@ -601,7 +602,8 @@ function Home() {
 												</a>
 
 												{item.creatorUid !== userObject?.uid &&
-													item.forSale === true && (
+													item.forSale === true &&
+													item.soldOut === false && (
 														<CartIcon onClick={() => AddCartIconClicked(item)}>
 															<AddShoppingCartIcon />
 														</CartIcon>
@@ -619,7 +621,7 @@ function Home() {
 													<InputField
 														onChange={CommentOnChange}
 														type="text"
-														placeholder="enter comment"
+														placeholder="Enter Comment"
 													/>
 													{comment && (
 														<button>

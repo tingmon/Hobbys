@@ -30,33 +30,40 @@ const Container = styled.div`
 `;
 
 const InputField = styled.input`
+	font-family: "Sniglet", cursive;
 	max-width: 295px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
-	font-size: 12px;
+	font-size: 14px;
 	color: black;
-	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
 `;
 
 const SubmitBtn = styled.button`
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	background: #04aaff;
-	color: white;
 	margin-top: 10px;
-	cursor: pointer;
-
-	max-width: 320px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 10px;
-	font-size: 12px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 20px;
 	color: black;
-	font-weight: bold;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const EditForm = styled.form`
@@ -70,28 +77,50 @@ const EditForm = styled.form`
 
 const LogoutBtn = styled.button`
 	cursor: pointer;
-	width: 100%;
-	padding: 7px 20px;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	color: white;
-	border-radius: 20px;
-	cursor: pointer;
-	background-color: tomato;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: ${(props) => props.theme.redColor};
+	font-size: 16px;
+	color: ${(props) => props.theme.logoColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
+		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
+	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
+	border: solid 4px ${(props) => props.theme.redColor};
 `;
 
 const PreviewImg = styled.img`
 	border-radius: 50%;
 	width: 170px;
 	height: 170px;
+	margin-bottom: 10px;
 `;
 
 const PhotoInput = styled.span`
 	display: block;
-	cursor: pointer;
-	background-color: ${(props) => props.theme.textColor};
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	margin-top: 10px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
+	width: 100%;
 	padding: 10px;
-	border-radius: 40px;
-	margin-bottom: 5px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 15px;
+	color: blanchedalmond;
+	padding: 3px;
+	margin: 10px;
+	background-color: #04aaff;
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px #04aaff;
+	cursor: pointer;
 `;
 
 const ErrorMessage = styled.span`
@@ -99,39 +128,27 @@ const ErrorMessage = styled.span`
 `;
 
 const GoAddressBtn = styled.button`
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	background: #04aaff;
-	color: white;
 	margin-top: 10px;
-	cursor: pointer;
-
-	max-width: 320px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 3px;
-	font-size: 12px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 15px;
 	color: black;
-	font-weight: bold;
-`;
-
-const GoAddressBtnRed = styled.button`
-	text-align: center;
-	background: #ea2027;
-	color: white;
-	margin-top: 10px;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
 	cursor: pointer;
-
-	max-width: 320px;
-	width: 100%;
-	padding: 10px;
-	border-radius: 30px;
-	background-color: #ea2027;
-
-	font-size: 12px;
-	color: white;
-	font-weight: bold;
 `;
 
 interface IForm {
@@ -380,7 +397,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 				</Link>
 
 				<label style={{ color: "#04aaff" }}>
-					<input
+					<InputField
 						type="file"
 						accept="image/*"
 						onChange={onFileChange}
@@ -389,7 +406,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 					/>
 					<PhotoInput>
 						<FontAwesomeIcon icon={faCloudUploadAlt} />
-						<span> Change profile photo</span>
+						<span> Choose Profile Photo</span>
 					</PhotoInput>
 				</label>
 

@@ -43,21 +43,27 @@ const TransactionDiv = styled.div`
 `;
 
 const GoPaymentBtn = styled.button`
+	display: block;
+	font-family: "Sniglet", cursive;
 	text-align: center;
-	background: #04aaff;
-	color: white;
 	margin-top: 10px;
-	cursor: pointer;
-
-	max-width: 320px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
 	width: 100%;
 	padding: 10px;
-	border-radius: 30px;
-	background-color: rgba(255, 255, 255, 1);
-	margin-bottom: 3px;
-	font-size: 12px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 15px;
 	color: black;
-	font-weight: bold;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.secondColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.secondColor};
+	cursor: pointer;
 `;
 
 const HeaderText = styled.span`
@@ -66,6 +72,7 @@ const HeaderText = styled.span`
 `;
 
 const Text = styled.span`
+	font-family: "Sniglet", cursive;
 	margin: 2px 5px;
 `;
 
@@ -81,6 +88,8 @@ const RecordContainer = styled.div`
 const RowDiv = styled.div`
 	display: flex;
 	justify-content: start;
+	border-bottom: 0.5px solid salmon;
+	margin-left: 1px;
 `;
 
 const LinkDiv = styled.div`
@@ -95,6 +104,7 @@ const LinkDiv = styled.div`
 `;
 
 const Record = styled.div`
+	font-family: "Montserrat", sans-serif;
 	display: flex;
 	justify-content: start;
 	align-items: start;
@@ -102,7 +112,10 @@ const Record = styled.div`
 	width: 100%;
 	max-width: 320px;
 	flex-direction: column;
-	box-shadow: 0px 2px 2px -1px ${(props) => props.theme.secondColor};
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 3px ${(props) => props.theme.mainColor};
 `;
 
 function TradeRecord() {
@@ -246,7 +259,7 @@ function TradeRecord() {
 														onReceiptClick(transaction);
 													}}
 												>
-													Go to Receipt
+													View Receipt
 												</a>
 											</LinkDiv>
 											{/* {transaction.timeStamp} */}
