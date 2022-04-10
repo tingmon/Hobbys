@@ -45,7 +45,6 @@ const InputField = styled.input`
 	color: black;
 	font-weight: bold;
 `;
-
 const SubmitBtn = styled.button`
 	text-align: center;
 	background: #04aaff;
