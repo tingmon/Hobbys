@@ -517,6 +517,7 @@ function Home() {
 											{item.soldOut ? (
 												<SaleTag>
 													<LoyaltyIcon style={{ fill: "#b81414" }} />
+													Sold Out
 												</SaleTag>
 											) : item.forSale ? (
 												<SaleTag>
