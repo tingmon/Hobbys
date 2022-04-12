@@ -82,20 +82,6 @@ const InputField = styled.input`
 `;
 
 const SubmitBtn = styled.button`
-	/* text-align: center;
-	color: white;
-	margin-top: 10px;
-	cursor: pointer;
-	max-width: 80px;
-	width: 80px;
-	padding: 10px;
-	border-radius: 15px;
-	background-color: ${(props) => props.theme.postingBgColor};
-	margin-bottom: 10px;
-	margin-left: 10px;
-	font-size: 12px;
-	color: black;
-	font-weight: bold; */
 	text-align: center;
 	padding: 3px;
 	margin: 10px;
@@ -107,6 +93,7 @@ const SubmitBtn = styled.button`
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
 	border: solid 4px ${(props) => props.theme.secondColor};
 	cursor: pointer;
+	color: #000;
 `;
 const IconContainer = styled.div`
 	display: grid;
@@ -120,6 +107,7 @@ const IconContainer = styled.div`
 const Icons = styled.button`
 	font-family: "Sniglet", cursive;
 	border: 1px solid #ffffff;
+	color: black;
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
@@ -175,6 +163,7 @@ const NameText = styled.span`
 `;
 
 function Search() {
+	const history = useHistory();
 	const [postings, setPostings] = useRecoilState(postingsObject);
 	const [selectedPostingInfo, setSelectedPostingInfo] =
 		useRecoilState(selectedPostingAtom);
@@ -191,7 +180,9 @@ function Search() {
 					...doc.data(),
 				}));
 				console.log(postingSnapshot);
-				setPostings(postingSnapshot);
+				if (history.location.pathname === `/search`) {
+					setPostings(postingSnapshot);
+				}
 			});
 	}
 
@@ -214,7 +205,10 @@ function Search() {
 					...doc.data(),
 				}));
 				console.log(postingSnapshot);
-				setPostings(postingSnapshot);
+				console.log(history.location.pathname);
+				if (history.location.pathname === `/search`) {
+					setPostings(postingSnapshot);
+				}
 			});
 
 		console.log(postings);
@@ -451,7 +445,8 @@ function Search() {
 		}
 	};
 
-	console.log(postings);
+	// console.log(postings);
+	console.log(history.location.pathname);
 
 	return (
 		<Container>

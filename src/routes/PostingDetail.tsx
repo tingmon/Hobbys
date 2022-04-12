@@ -66,7 +66,7 @@ const Posting = styled.div`
 	padding: 10px;
 	width: 90%;
 	height: 100vh;
-	background-color: ${(props) => props.theme.postingBgColor};
+	/* background-color: ${(props) => props.theme.highlightColor}; */
 `;
 
 const PostingHeader = styled.div`
@@ -97,7 +97,7 @@ const ProfileTag = styled.div`
 
 const InputField = styled.input`
 	font-family: "Sniglet", cursive;
-	max-width: 260px;
+	max-width: 230px;
 	width: 100%;
 	padding: 5px;
 	margin-bottom: 10px;
@@ -130,6 +130,10 @@ const TextBox = styled.div`
 	max-height: 50px;
 	margin-bottom: 1px;
 	padding: 2px;
+`;
+
+const Text = styled.span`
+	font-family: "Sniglet", cursive;
 `;
 
 const IconElement = styled.a`
@@ -500,18 +504,18 @@ function PostingDetail() {
 										{posting?.soldOut ? (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#b81414" }} />
-												<span>Sold out</span>
+												<Text>Sold out</Text>
 											</SaleTag>
 										) : posting?.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#206a22" }} />
-												<span>For Sale / </span>
-												<span>Price: ${posting?.price}</span>
+												<Text>For Sale / </Text>
+												<Text>Price: ${posting?.price}</Text>
 											</SaleTag>
 										) : (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#827C76" }} />
-												<span>Not for Sale</span>
+												<Text>Not for Sale</Text>
 											</SaleTag>
 										)}
 									</PostingHeader>
@@ -567,13 +571,13 @@ function PostingDetail() {
 											</div>
 										</LikeAndComment>
 										<TextBox>
-											<span>Item Name: {posting?.itemName}</span>
+											<Text>Item Name: {posting?.itemName}</Text>
 										</TextBox>
 										<TextBox>
-											<span>Category: {posting?.category}</span>
+											<Text>Category: {posting?.category}</Text>
 										</TextBox>
 										<TextBox>
-											<span>Text: {posting?.text}</span>
+											<Text>Text: {posting?.text}</Text>
 										</TextBox>
 
 										{isCommenting && (
@@ -634,18 +638,18 @@ function PostingDetail() {
 										{posting?.soldOut ? (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#b81414" }} />
-												<span>Sold out</span>
+												<Text>Sold out</Text>
 											</SaleTag>
 										) : posting?.forSale ? (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#206a22" }} />
-												<span>On Sale / </span>
-												<span>Price: ${posting?.price}</span>
+												<Text>On Sale / </Text>
+												<Text>Price: ${posting?.price}</Text>
 											</SaleTag>
 										) : (
 											<SaleTag>
 												<LoyaltyIcon style={{ fill: "#827C76" }} />
-												<span>Not for Sale</span>
+												<Text>Not for Sale</Text>
 											</SaleTag>
 										)}
 									</PostingHeader>
@@ -708,13 +712,13 @@ function PostingDetail() {
 												)}
 										</LikeAndComment>
 										<TextBox>
-											<span>Item Name: {posting?.itemName}</span>
+											<Text>Item Name: {posting?.itemName}</Text>
 										</TextBox>
 										<TextBox>
-											<span>Category: {posting?.category}</span>
+											<Text>Category: {posting?.category}</Text>
 										</TextBox>
 										<TextBox>
-											<span>Text: {posting?.text}</span>
+											<Text>Text: {posting?.text}</Text>
 										</TextBox>
 										{isCommenting && (
 											<>

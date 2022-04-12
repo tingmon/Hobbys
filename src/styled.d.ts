@@ -16,7 +16,7 @@ declare module "styled-components" {
 		displayNameColor: string;
 		iconColor: string;
 		highlightColor: string;
-
+		thirdColor: string;
 		cursorActive: string;
 		cursorNotActive: string;
 	}

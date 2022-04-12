@@ -70,7 +70,7 @@ const HobbysClicked = styled.h1`
 	margin: 0px 1px 3px 2px;
 	font-size: 35px;
 	font-weight: bold;
-	text-shadow: 1px 1px 3px #0be881;
+	text-shadow: 1px 2px 3px #32ff7e;
 
 	color: #ef5777;
 `;

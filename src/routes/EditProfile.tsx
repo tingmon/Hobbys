@@ -288,6 +288,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 		// 	);
 		// 	throw "too expensive";
 		// }
+		console.log("on valid: " + data);
 		const userInfo = await dbService
 			.collection("UserInfo")
 			.where("uid", "==", userObject?.uid)
@@ -297,7 +298,9 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 			.where("creatorUid", "==", userObject.uid)
 			.orderBy("createdAt", "desc")
 			.get();
+
 		const appliedPosting = posting.docs.map((doc) => doc.id);
+
 		if (data.userName !== "") {
 			console.log(data);
 			const userUpdate = {

@@ -218,7 +218,9 @@ function Home() {
 					...doc.data(),
 				}));
 				console.log(postingSnapshot);
-				setPostings(postingSnapshot);
+				if (history.location.pathname === `/Hobbys/`) {
+					setPostings(postingSnapshot);
+				}
 			});
 	}
 
