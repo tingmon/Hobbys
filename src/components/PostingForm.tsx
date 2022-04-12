@@ -118,7 +118,6 @@ const PageTitle = styled.span`
 `;
 
 const PreviewImg = styled.img`
-	border-radius: 10%;
 	width: 150px;
 	height: 150px;
 `;
@@ -129,7 +128,6 @@ const PostingContainer = styled.div`
 	grid-auto-rows: 150px;
 	z-index: 0;
 	max-width: 400px;
-	background-color: ${(props) => props.theme.postingBgColor};
 `;
 
 const Container = styled.div`

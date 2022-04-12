@@ -3,7 +3,13 @@
 // @ts-nocheck
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
+import {
+	Link,
+	useLocation,
+	useParams,
+	useRouteMatch,
+	useHistory,
+} from "react-router-dom";
 import styled from "styled-components";
 import { Switch, Route } from "react-router";
 import { useQuery } from "react-query";
@@ -65,10 +71,46 @@ const TitleImage = styled.img`
 const Overview = styled.div`
 	display: flex;
 	justify-content: space-between;
-	background-color: #f0ebc8;
+	background-color: #f7d794;
 	padding: 10px 20px;
 	border-radius: 10px;
+	opacity: 90%;
 `;
+
+const FollowTab = styled.span`
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 400;
+	background-color: #f7d794;
+	padding: 7px 0px;
+	border-radius: 10px;
+	opacity: 90%;
+
+	a {
+		display: block;
+	}
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 400;
+	background-color: #f7d794;
+	/* background-color: #ef5777; */
+	padding: 7px 0px;
+	border-radius: 10px;
+	opacity: 90%;
+	color: ${(props) =>
+			props.isActive ? props.theme.secondColor : props.theme.textColor}
+		a {
+		display: block;
+	}
+`;
+
 const OverviewItem = styled.div`
 	font-family: "Sniglet", cursive;
 	display: flex;
@@ -98,21 +140,6 @@ const NotMyProfileTabs = styled.div`
 	gap: 10px;
 `;
 
-const FollowTab = styled.span`
-	font-family: "Sniglet", cursive;
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: 400;
-	background-color: #f0ebc8;
-	padding: 7px 0px;
-	border-radius: 10px;
-
-	a {
-		display: block;
-	}
-`;
-
 const UnFollowTab = styled.span`
 	font-family: "Sniglet", cursive;
 	color: blanchedalmond;
@@ -125,23 +152,6 @@ const UnFollowTab = styled.span`
 	border-radius: 10px;
 
 	a {
-		display: block;
-	}
-`;
-
-const Tab = styled.span<{ isActive: boolean }>`
-	font-family: "Sniglet", cursive;
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: 400;
-	background-color: #f0ebc8;
-	/* background-color: #ef5777; */
-	padding: 7px 0px;
-	border-radius: 10px;
-	color: ${(props) =>
-			props.isActive ? props.theme.secondColor : props.theme.textColor}
-		a {
 		display: block;
 	}
 `;
@@ -188,6 +198,7 @@ const Follow = styled.a`
 function Profile({ refreshUser }) {
 	let { uid } = useParams();
 
+	const history = useHistory();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOwner, setIsOwner] = useState(false);
 	const [rank, setRank] = useState("");
@@ -231,9 +242,19 @@ function Profile({ refreshUser }) {
 					...doc.data(),
 				}));
 				console.log(postingSnapshot);
-				setPostings(postingSnapshot);
+				console.log(selectedPostingInfo);
+				console.log(postings);
+				if (history.location.pathname === `/${uid}/profile`) {
+					setPostings(postingSnapshot);
+				}
 			});
 	}
+
+	console.log(history.location.pathname);
+
+	const settingPostings = (postingSnapshot) => {
+		setPostings(postingSnapshot);
+	};
 
 	const isOwnerChange = (flag) => {
 		setIsOwner(flag);
@@ -242,6 +263,14 @@ function Profile({ refreshUser }) {
 	const PostingIconClicked = (postingInfo) => {
 		setSelectedPostingInfo(postingInfo);
 		setSelectedComment(null);
+	};
+
+	const followBtnClick = () => {
+		if (isFollowing) {
+			unFollowClicked();
+		} else {
+			followClicked();
+		}
 	};
 
 	const followClicked = async () => {
@@ -263,8 +292,9 @@ function Profile({ refreshUser }) {
 				selectedComment?.commeterDisplayName,
 		};
 
-		await dbService.collection("Follow").add(follow);
+		const element = await dbService.collection("Follow").add(follow);
 		setIsFollowing(true);
+		setFollowInfo(element);
 		// 레코드 저장하고 setFollowInfo로 현재 저장된 기록을 갖고 있어야 함.
 
 		// retrieveFollowInfo(
@@ -459,15 +489,15 @@ function Profile({ refreshUser }) {
 		if (page === "edit") {
 			document.getElementById("editTab").style.backgroundColor = "#ef5777";
 			document.getElementById("transactionTab").style.backgroundColor =
-				"#f0ebc8";
-			document.getElementById("editTab").style.color = "#f0ebc8";
+				"#f7d794";
+			document.getElementById("editTab").style.color = "#f7d794";
 			document.getElementById("transactionTab").style.color = "black";
 		} else {
-			document.getElementById("editTab").style.backgroundColor = "#f0ebc8";
+			document.getElementById("editTab").style.backgroundColor = "#f7d794";
 			document.getElementById("transactionTab").style.backgroundColor =
 				"#ef5777";
 			document.getElementById("editTab").style.color = "black";
-			document.getElementById("transactionTab").style.color = "#f0ebc8";
+			document.getElementById("transactionTab").style.color = "#f7d794";
 		}
 	};
 

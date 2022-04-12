@@ -119,7 +119,8 @@ const Record = styled.div`
 `;
 
 const ViewReceipt = styled.a`
-	color: ${(props) => props.theme.highlightColor};
+	/* color: ${(props) => props.theme.secondColor}; */
+	color: #2f3542;
 `;
 
 function TradeRecord() {
@@ -160,10 +161,8 @@ function TradeRecord() {
 					id: doc.id,
 					...doc.data(),
 				}));
-				console.log(recordSnapshot);
 				setTransactionRecord(recordSnapshot);
-				console.log(recordSnapshot[0].timeStamp);
-				const date = Date.parse(recordSnapshot[0].timeStamp);
+				const date = Date.parse(recordSnapshot[0]?.timeStamp);
 				console.log(date);
 			});
 	}
