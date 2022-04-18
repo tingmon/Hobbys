@@ -60,7 +60,7 @@ const Hobbys = styled.h1`
 	margin: 0px 1px 3px 2px;
 	font-size: 35px;
 	font-weight: bold;
-	text-shadow: 1px 1px 3px #ff3f34;
+	text-shadow: 1px 2px 3px #ff3f34;
 
 	color: ${(props) => props.theme.logoColor};
 `;
@@ -70,9 +70,10 @@ const HobbysClicked = styled.h1`
 	margin: 0px 1px 3px 2px;
 	font-size: 35px;
 	font-weight: bold;
-	text-shadow: 1px 2px 3px #32ff7e;
+	text-shadow: 1px 2px 3px #05c46b;
+	color: #ff4757;
 
-	color: #ef5777;
+	/* color: #ef5777; */
 `;
 
 const ProfileImage = styled.img`
@@ -93,8 +94,8 @@ const ProfileImageClicked = styled.img`
 	margin-right: 5px;
 	line-height: 50px;
 	text-align: center;
-	background-color: #e15f41;
-	box-shadow: 0px 0px 2px 2px #ef5777;
+	background-color: #ff4757;
+	box-shadow: 0px 0px 2px 2px #ff4757;
 	/* border: 1px solid #e15f41; */
 `;
 //<FontAwesomeIcon icon={faTools} color={"#F9C963"} size="1x" />
@@ -157,7 +158,7 @@ function Header() {
 										{selectedIcon === "profile" ? (
 											<FontAwesomeIcon
 												icon={faUser}
-												color={"#e15f41"}
+												color={"#2F5597"}
 												size="2x"
 											/>
 										) : (

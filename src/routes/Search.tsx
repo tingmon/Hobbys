@@ -74,7 +74,7 @@ const InputField = styled.input`
 	margin-bottom: 10px;
 	margin-left: 20px;
 	font-size: 15px;
-	color: black;
+	color: #2f3542;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
 		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 105px 5px 125px 5px/5px 125px 5px 155px;
@@ -93,7 +93,7 @@ const SubmitBtn = styled.button`
 	border-radius: 205px 35px 180px 20px/15px 225px 10px 235px;
 	border: solid 4px ${(props) => props.theme.secondColor};
 	cursor: pointer;
-	color: #000;
+	color: #ffffff;
 `;
 const IconContainer = styled.div`
 	display: grid;
@@ -106,8 +106,7 @@ const IconContainer = styled.div`
 
 const Icons = styled.button`
 	font-family: "Sniglet", cursive;
-	border: 1px solid #ffffff;
-	color: black;
+	color: #ffffff;
 	display: flex;
 	cursor: pointer;
 	justify-content: center;
@@ -159,7 +158,7 @@ const NameText = styled.span`
 	margin-top: 10px;
 	margin-left: 20px;
 	font-size: 12px;
-	color: black;
+	color: #ffffff;
 `;
 
 function Search() {
@@ -245,14 +244,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "#f0ebc8";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#2f3542";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Woodwork") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#ef5777";
@@ -272,14 +271,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "#f0ebc8";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#2f3542";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Outdoor") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -299,14 +298,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "#f0ebc8";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#2f3542";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Art") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -326,14 +325,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "#f0ebc8";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#2f3542";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Knitting") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -353,14 +352,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "#f0ebc8";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#2f3542";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Gardening") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -380,14 +379,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "#f0ebc8";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#2f3542";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Accessory") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -407,14 +406,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#ef5777";
 			document.getElementById("Others").style.borderColor = "#9cc4ab";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "#f0ebc8";
-			document.getElementById("Others").style.color = "black";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#2f3542";
+			document.getElementById("Others").style.color = "#ffffff";
 		} else if (page === "Others") {
 			document.getElementById("Cooking").style.backgroundColor = "#9cc4ab";
 			document.getElementById("Woodwork").style.backgroundColor = "#9cc4ab";
@@ -434,14 +433,14 @@ function Search() {
 			document.getElementById("Accessory").style.borderColor = "#9cc4ab";
 			document.getElementById("Others").style.borderColor = "#ef5777";
 			//-----------------------------------------------------------------------
-			document.getElementById("Cooking").style.color = "black";
-			document.getElementById("Woodwork").style.color = "black";
-			document.getElementById("Outdoor").style.color = "black";
-			document.getElementById("Art").style.color = "black";
-			document.getElementById("Knitting").style.color = "black";
-			document.getElementById("Gardening").style.color = "black";
-			document.getElementById("Accessory").style.color = "black";
-			document.getElementById("Others").style.color = "#f0ebc8";
+			document.getElementById("Cooking").style.color = "#ffffff";
+			document.getElementById("Woodwork").style.color = "#ffffff";
+			document.getElementById("Outdoor").style.color = "#ffffff";
+			document.getElementById("Art").style.color = "#ffffff";
+			document.getElementById("Knitting").style.color = "#ffffff";
+			document.getElementById("Gardening").style.color = "#ffffff";
+			document.getElementById("Accessory").style.color = "#ffffff";
+			document.getElementById("Others").style.color = "#2f3542";
 		}
 	};
 

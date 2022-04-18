@@ -54,7 +54,7 @@ const GoPaymentBtn = styled.button`
 	border-radius: 15px;
 	margin-bottom: 100px;
 	font-size: 15px;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 	margin: 10px;
 	background-color: ${(props) => props.theme.secondColor};
@@ -119,8 +119,8 @@ const Record = styled.div`
 `;
 
 const ViewReceipt = styled.a`
-	/* color: ${(props) => props.theme.secondColor}; */
-	color: #2f3542;
+	color: ${(props) => props.theme.highlightColor};
+	/* color: #2f3542; */
 `;
 
 function TradeRecord() {

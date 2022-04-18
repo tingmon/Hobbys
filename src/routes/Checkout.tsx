@@ -119,6 +119,7 @@ const SubmitBtn = styled.button`
 const BackBtn = styled.button`
 	font-family: "Sniglet", cursive;
 	text-align: center;
+	color: #ffffff;
 	padding: 10px;
 	margin-top: 10px;
 	margin-bottom: 120px;

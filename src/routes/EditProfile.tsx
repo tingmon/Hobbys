@@ -37,6 +37,20 @@ const InputField = styled.input`
 	padding: 10px;
 	margin-bottom: 10px;
 	font-size: 14px;
+	color: #ffffff;
+
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 2px ${(props) => props.theme.secondColor};
+`;
+
+const UserNameInputField = styled.input`
+	font-family: "Sniglet", cursive;
+	max-width: 295px;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	font-size: 14px;
 	color: black;
 
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
@@ -56,7 +70,7 @@ const SubmitBtn = styled.button`
 	border-radius: 15px;
 	margin-bottom: 100px;
 	font-size: 20px;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 	margin: 10px;
 	background-color: ${(props) => props.theme.secondColor};
@@ -104,7 +118,7 @@ const PreviewImg = styled.img`
 `;
 
 const PhotoInput = styled.span`
-	color: black;
+	color: #ffffff;
 	font-family: "Sniglet", cursive;
 	text-align: center;
 	margin: 10px;
@@ -155,7 +169,7 @@ const GoAddressBtn = styled.button`
 	padding: 10px;
 	border-radius: 15px;
 	font-size: 15px;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 
 	background-color: ${(props) => props.theme.secondColor};
@@ -204,7 +218,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 	// 	.where("uid", "==", userObject?.uid)
 	// 	.get();
 
-	console.log(userInfo.docs[0].data());
+	console.log(userInfo.docs[0]?.data());
 
 	async function fetchAddressInfo(uid) {
 		dbService
@@ -448,7 +462,7 @@ function EditProfile({ userObject, refreshUser, userInfo, uid }) {
 				</label>
 
 				{previewImg && <PreviewImg src={previewImg}></PreviewImg>}
-				<InputField
+				<UserNameInputField
 					type="text"
 					{...register("userName", {
 						minLength: { value: 2, message: "User Name is too Short" },

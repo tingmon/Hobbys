@@ -167,7 +167,7 @@ const GoBackBtn = styled.button`
 	text-align: center;
 	max-width: 300px;
 	width: 100%;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 	margin: 10px;
 	background-color: ${(props) => props.theme.secondColor};

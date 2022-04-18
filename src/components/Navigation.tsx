@@ -168,7 +168,7 @@ const Navigation = () => {
 									{selectedIcon === "add" ? (
 										<FontAwesomeIcon
 											icon={faPlusSquare}
-											color={"#ef5777"}
+											color={"#ff4757"}
 											size="2x"
 										/>
 									) : (
@@ -189,7 +189,7 @@ const Navigation = () => {
 									{selectedIcon === "search" ? (
 										<FontAwesomeIcon
 											icon={faSearch}
-											color={"#ef5777"}
+											color={"#ff4757"}
 											size="2x"
 										/>
 									) : (
@@ -210,7 +210,7 @@ const Navigation = () => {
 									{selectedIcon === "list" ? (
 										<FontAwesomeIcon
 											icon={faHeart}
-											color={"#ef5777"}
+											color={"#ff4757"}
 											size="2x"
 										/>
 									) : (
@@ -231,7 +231,7 @@ const Navigation = () => {
 									{selectedIcon === "cart" ? (
 										<FontAwesomeIcon
 											icon={faShoppingCart}
-											color={"#ef5777"}
+											color={"#ff4757"}
 											size="2x"
 										/>
 									) : (

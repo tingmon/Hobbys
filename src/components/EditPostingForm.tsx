@@ -47,7 +47,7 @@ const InputField = styled.input`
 	padding: 10px;
 	margin-bottom: 10px;
 	font-size: 12px;
-	color: black;
+	color: #000;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
 	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
 	border: solid 2px ${(props) => props.theme.secondColor};
@@ -113,7 +113,7 @@ const CategorySelect = styled.select`
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
-	color: black;
+	color: #000;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px 0px;
 	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
 	border: solid 2px ${(props) => props.theme.secondColor};

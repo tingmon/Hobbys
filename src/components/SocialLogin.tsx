@@ -31,7 +31,7 @@ const AuthBtn = styled.button`
 	border-radius: 15px;
 	margin-bottom: 100px;
 	font-size: 10px;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 	margin: 10px;
 	background-color: ${(props) => props.theme.secondColor};
@@ -80,7 +80,7 @@ function SocialLogin() {
 		if (data.additionalUserInfo?.isNewUser) {
 			const userInfo: IAdditionalUserInfo = {
 				uid: data.user?.uid,
-				displayName: data.user?.displayName || undefined,
+				displayName: data.user?.displayName || "New User",
 				sellerPoint: 0,
 				buyerPoint: 0,
 				cashback: 0,
