@@ -58,7 +58,7 @@ const SubmitBtn = styled.button`
 	background-color: rgba(255, 255, 255, 1);
 	margin-bottom: 10px;
 	font-size: 12px;
-	color: black;
+	color: #ffffff;
 	font-weight: bold;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
 		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
@@ -81,7 +81,7 @@ const NextBtn = styled.button`
 	cursor: pointer;
 	min-width: 300px;
 	width: 100%;
-	color: #000;
+	color: #ffffff;
 	a {
 		display: block;
 	}

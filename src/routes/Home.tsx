@@ -57,6 +57,7 @@ const PostingContainer = styled.div`
 
 const Posting = styled.div`
 	font-size: 15px;
+	padding: 2px;
 	margin: 2px;
 	width: 100%;
 	max-width: 350px;
@@ -64,7 +65,7 @@ const Posting = styled.div`
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 1px 0px,
 		rgba(0, 0, 0, 0.1) 0px 4px 2px 0px;
 	border-radius: 75px 5px 75px 5px/5px 75px 5px 75px;
-	border: solid 3.5px ${(props) => props.theme.secondColor};
+	border: solid 4px ${(props) => props.theme.secondColor};
 	//max-width: 475px;
 	//max-hight: 490px;
 `;
@@ -260,7 +261,7 @@ function Home() {
 					...doc.data(),
 				}));
 				// console.log(recordSnapshot);
-				if (recordSnapshot[0].isPromoted === true) {
+				if (recordSnapshot[0]?.isPromoted === true) {
 					dbService.doc(`UserInfo/${recordSnapshot[0].id}`).update({
 						isPromoted: false,
 					});

@@ -136,7 +136,7 @@ function App() {
 			.where("uid", "==", user?.uid)
 			.get();
 
-		const newDisplayName = noDNUser.docs[0].data().displayName;
+		const newDisplayName = noDNUser.docs[0]?.data().displayName;
 		// console.log(newDisplayName);
 		await user?.updateProfile({
 			displayName: newDisplayName,

@@ -51,7 +51,7 @@ const SubmitBtn = styled.button`
 	border-radius: 15px;
 	margin-bottom: 100px;
 	font-size: 20px;
-	color: black;
+	color: #ffffff;
 	padding: 3px;
 	margin: 10px;
 	background-color: ${(props) => props.theme.mainColor};

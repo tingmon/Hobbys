@@ -414,7 +414,7 @@ function Profile({ refreshUser }) {
 				.collection("UserInfo")
 				.where("uid", "==", userObject.uid)
 				.get();
-			setRank(userInfo.docs[0].data().rank);
+			setRank(userInfo.docs[0]?.data().rank);
 			setUserData(userInfo);
 
 			setDisplayNameAndPhotoURL(userObject.displayName, userObject.photoURL);

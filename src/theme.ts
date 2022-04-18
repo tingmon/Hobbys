@@ -7,7 +7,7 @@ export const lightTheme: DefaultTheme = {
 	formColor: "#34495e",
 	redColor: "#e84118",
 	// mainColor: "#63cdda",
-	mainColor: "#fab73d",
+	mainColor: "#FFC312",
 	secondColor: "#9cc4ab",
 	// secondColor: "#9cc4ab",
 	thirdColor: "#9cc4ab",
@@ -18,4 +18,5 @@ export const lightTheme: DefaultTheme = {
 	cursorNotActive: "wait",
 	iconColor: "#f53b57",
 	highlightColor: "#ff6b81",
+	//#2F5597
 };

@@ -133,7 +133,7 @@ const Label = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-	color: black;
+	color: #ffffff;
 	font-family: "Sniglet", cursive;
 	text-align: center;
 	padding: 3px;
@@ -150,7 +150,7 @@ const SubmitBtn = styled.button`
 `;
 
 const CashbackSubmitBtn = styled.button`
-	color: black;
+	color: #ffffff;
 	max-width: 320px;
 	display: inline;
 	margin-left: 15px;
