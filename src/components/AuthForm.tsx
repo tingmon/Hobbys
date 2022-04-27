@@ -10,7 +10,7 @@ import { authService, dbService } from "../fbase";
 import SocialLogin from "./SocialLogin";
 import CheckIcon from "@mui/icons-material/Check";
 import ToggleButton from "@mui/material/ToggleButton";
-import { Ranks } from "../atoms";
+import { isVisitorAtom, Ranks } from "../atoms";
 
 const SignUpForm = styled.form`
 	width: 100%;
@@ -63,6 +63,30 @@ const SubmitBtn = styled.button`
 	cursor: pointer;
 `;
 
+const VisitorBtn = styled.button`
+	display: block;
+	font-family: "Sniglet", cursive;
+	text-align: center;
+	margin-top: 10px;
+	border-color: ${(props) => props.theme.secondColor};
+	max-width: 300px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+	margin-bottom: 100px;
+	font-size: 20px;
+	color: #ffffff;
+	padding: 3px;
+	margin: 10px;
+	background-color: ${(props) => props.theme.highlightColor};
+	letter-spacing: 2px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px,
+		rgba(0, 0, 0, 0.23) 0px 3px 6px 0px;
+	border-radius: 205px 15px 180px 5px/7px 225px 25px 235px;
+	border: solid 4px ${(props) => props.theme.highlightColor};
+	cursor: pointer;
+`;
+
 const ErrorMessage = styled.span`
 	font-family: "Sniglet", cursive;
 	color: red;
@@ -104,6 +128,7 @@ interface IForm {
 
 function AuthForm() {
 	const [newAccount, setNewAccount] = useState(false);
+	const setIsVisitor = useSetRecoilState(isVisitorAtom);
 	const {
 		register,
 		handleSubmit,
@@ -169,6 +194,14 @@ function AuthForm() {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const visitorLogin = async () => {
+		let user;
+		let email = "baba@naver.com";
+		let password = "1234qwer";
+		user = await authService.signInWithEmailAndPassword(email, password);
+		setIsVisitor(true);
 	};
 
 	return (
@@ -264,6 +297,13 @@ function AuthForm() {
 					<SocialLogin />
 				</>
 			)}
+			<VisitorBtn
+				onClick={() => {
+					visitorLogin();
+				}}
+			>
+				I'm Recruiter
+			</VisitorBtn>
 		</>
 	);
 }
