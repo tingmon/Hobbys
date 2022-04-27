@@ -15,6 +15,7 @@ import {
 	selectedCommentAtom,
 	cartAtom,
 	selectedIconAtom,
+	isVisitorAtom,
 } from "../atoms";
 import { authService, dbService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
@@ -207,6 +208,7 @@ function Home() {
 	const setSelectedComment = useSetRecoilState(selectedCommentAtom);
 	const [cart, setCart] = useRecoilState(cartAtom);
 	const setSelectedIcon = useSetRecoilState(selectedIconAtom);
+	const [isVisitor, setIsVisitor] = useRecoilState(isVisitorAtom);
 
 	async function fetchHomePostings() {
 		dbService
@@ -283,6 +285,24 @@ function Home() {
 			});
 	}
 
+	const welcome = () => {
+		if (isVisitor === true) {
+			setIsVisitor(false);
+			Swal.fire(
+				{
+					title: "Welcome Recruiter!",
+					confirmButtonText: "Hello!",
+				},
+				"",
+				"success"
+			).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					Swal.fire("Please Test This App on Moblie Environment", "", "info");
+				}
+			});
+		}
+	};
 	useEffect(() => {
 		fetchLike();
 		fetchCart();
@@ -506,6 +526,7 @@ function Home() {
 				"Loading..."
 			) : (
 				<>
+					{isVisitor && <>{welcome()}</>}
 					{postings && (
 						<Container>
 							<PostingContainer>

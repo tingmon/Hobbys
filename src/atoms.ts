@@ -65,6 +65,11 @@ export const isLoggedInState = atom<boolean>({
 	default: false,
 });
 
+export const isVisitorAtom = atom<boolean>({
+	key: "isVisitor",
+	default: false,
+});
+
 export const isNewUserAtom = atom<any>({
 	key: "isNewUserAtom",
 	default: false,
